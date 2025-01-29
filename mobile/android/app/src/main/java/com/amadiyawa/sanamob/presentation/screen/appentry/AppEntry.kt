@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -17,6 +16,8 @@ import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleMediu
 import com.amadiyawa.feature_base.presentation.navigation.AppState
 import com.amadiyawa.feature_base.presentation.navigation.rememberAppState
 import com.amadiyawa.feature_base.presentation.theme.AppTheme
+import com.amadiyawa.feature_base.presentation.theme.accentColor
+import com.amadiyawa.feature_base.presentation.theme.customColor
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -37,7 +38,7 @@ fun AppEntry(
                     .fillMaxSize()
                     .padding(it)
             ) {
-                TextTitleMedium(text = "Hello world!")
+                TextTitleMedium(text = "Hello world!", color = MaterialTheme.accentColor.success)
             }
         }
     }

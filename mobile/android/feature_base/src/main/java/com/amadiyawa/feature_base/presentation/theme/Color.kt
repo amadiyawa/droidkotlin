@@ -1,6 +1,18 @@
 package com.amadiyawa.feature_base.presentation.theme
 
 import androidx.compose.ui.graphics.Color
+import com.amadiyawa.feature_base.common.util.toColor
+
+interface CustomColor {
+    val success: Color
+    val warning: Color
+    val info: Color
+    val danger: Color
+    val onSuccess: Color
+    val onWarning: Color
+    val onInfo: Color
+    val onDanger: Color
+}
 
 internal const val WHITE = "#FFFFFF"
 internal const val BLACK = "#000000"
@@ -50,48 +62,19 @@ val DarkOnBackground = Color(0xFFFFFFFF) // White
 val DarkOnError = Color(0xFF000000) // Black
 val DarkOutline = Color(0xFF757575) // Grey, for outlines
 
-// Custom color
-val lightSuccess = Color(0xFF4CAF50)
-val lightOnSuccess = Color(0xFFFFFFFF)
-val lightWarning = Color(0xFFFFC107)
-val lightOnWarning = Color(0xFF000000)
-val lightInfo = Color(0xFF2196F3)
-val lightOnInfo = Color(0xFFFFFFFF)
-val lightDanger = Color(0xFFF44336)
-val lightOnDanger = Color(0xFFFFFFFF)
-
-val darkSuccess = Color(0xFF81C784)
-val darkOnSuccess = Color(0xFF000000)
-val darkWarning = Color(0xFFFFD54F)
-val darkOnWarning = Color(0xFF000000)
-val darkInfo = Color(0xFF64B5F6)
-val darkOnInfo = Color(0xFF000000)
-val darkDanger = Color(0xFFE57373)
-val darkOnDanger = Color(0xFF000000)
-
-// Accent colors
-val primaryAccent = Color(0xFF2196F3) // DodgerBlue, buttons, links, or highlights.
-val warningAccent = Color(0xFFFF5722) // Coral, warning or error messages.
-val neutralGray = Color(0xFF808080) // DimGray, borders, dividers, or disabled elements.
-val darkAccentBackground = Color(0xFF2F3135) // Charcoal, background of dialogs, cards, or sheets.
-val successAccent = Color(0xFF98FB98)  // MintCream, success messages.
-val errorAccent = Color(0xFFFF6961)  // Tomato, error messages.
-val lightAccent = Color(0xFF87CEFA) // SkyBlue, background of selected items or elements.
-val brightAccent = Color(0xFF00BFFF) // DeepSkyBlue, background of active elements or elements in focus.
-
 /**
  * Specifies the custom light's colours that should be used through the application in a non-graphic
  * library specific amount.
  */
 data object CustomLightColorDefaults {
-    internal const val LIGHTSUCESS = "#4CAF50"
-    internal const val LIGHTWARNING = "#FFC107"
-    internal const val LIGHTINFO = "#2196F3"
-    internal const val LIGHTDANGER = "#F44336"
-    internal const val LIGHTONSUCESS = WHITE
-    internal const val LIGHTONWARNING = "#000000"
-    internal const val LIGHTONINFO = WHITE
-    internal const val LIGHTONDANGER = WHITE
+    internal const val SUCCESS = "#4CAF50"
+    internal const val WARNING = "#FFC107"
+    internal const val INFO = "#2196F3"
+    internal const val DANGER = "#F44336"
+    internal const val ONSUCCESS = WHITE
+    internal const val ONWARNING = "#000000"
+    internal const val ONINFO = WHITE
+    internal const val ONDANGER = WHITE
 }
 
 /**
@@ -99,14 +82,14 @@ data object CustomLightColorDefaults {
  * library specific amount.
  */
 data object CustomDarkColorDefaults {
-    internal const val DARKSUCESS = "#81C784"
-    internal const val DARKWARNING = "#FFD54F"
-    internal const val DARKINFO = "#64B5F6"
-    internal const val DARKDANGER = "#E57373"
-    internal const val DARKONSUCESS = BLACK
-    internal const val DARKONWARNING = BLACK
-    internal const val DARKONINFO = BLACK
-    internal const val DARKONDANGER = BLACK
+    internal const val SUCCESS = "#81C784"
+    internal const val WARNING = "#FFD54F"
+    internal const val INFO = "#64B5F6"
+    internal const val DANGER = "#E57373"
+    internal const val ONSUCCESS = BLACK
+    internal const val ONWARNING = BLACK
+    internal const val ONINFO = BLACK
+    internal const val ONDANGER = BLACK
 }
 
 /**
@@ -117,31 +100,42 @@ data object AccentColorDefaults {
     internal const val PRIMARY = "#2196F3"
     internal const val WARNING = "#FFC107"
     internal const val NEUTRAL = "#808080"
-    internal const val DARKBACKGROUND = "#2F3135"
+    internal const val BACKGROUND = "#2F3135"
     internal const val SUCCESS = "#98FB98"
     internal const val ERROR = "#FF6961"
     internal const val LIGHT = "#87CEFA"
     internal const val BRIGHT = "#00BFFF"
 }
 
-data class CustomColor(
-    val success: Color,
-    val warning: Color,
-    val info: Color,
-    val danger: Color,
-    val onSuccess: Color,
-    val onWarning: Color,
-    val onInfo: Color,
-    val onDanger: Color
-)
+data class CustomLightColor(
+    override val success: Color = CustomLightColorDefaults.SUCCESS.toColor(),
+    override val warning: Color = CustomLightColorDefaults.WARNING.toColor(),
+    override val info: Color = CustomLightColorDefaults.INFO.toColor(),
+    override val danger: Color = CustomLightColorDefaults.DANGER.toColor(),
+    override val onSuccess: Color = CustomLightColorDefaults.ONSUCCESS.toColor(),
+    override val onWarning: Color = CustomLightColorDefaults.ONWARNING.toColor(),
+    override val onInfo: Color = CustomLightColorDefaults.ONINFO.toColor(),
+    override val onDanger: Color = CustomLightColorDefaults.ONDANGER.toColor()
+) : CustomColor
+
+data class CustomDarkColor(
+    override val success: Color = CustomDarkColorDefaults.SUCCESS.toColor(),
+    override val warning: Color = CustomDarkColorDefaults.WARNING.toColor(),
+    override val info: Color = CustomDarkColorDefaults.INFO.toColor(),
+    override val danger: Color = CustomDarkColorDefaults.DANGER.toColor(),
+    override val onSuccess: Color = CustomDarkColorDefaults.ONSUCCESS.toColor(),
+    override val onWarning: Color = CustomDarkColorDefaults.ONWARNING.toColor(),
+    override val onInfo: Color = CustomDarkColorDefaults.ONINFO.toColor(),
+    override val onDanger: Color = CustomDarkColorDefaults.ONDANGER.toColor()
+) : CustomColor
 
 data class AccentColor(
-    val primary: Color,
-    val warning: Color,
-    val neutral: Color,
-    val darkBackground: Color,
-    val success: Color,
-    val error: Color,
-    val light: Color,
-    val bright: Color
+    val primary: Color = AccentColorDefaults.PRIMARY.toColor(),
+    val warning: Color = AccentColorDefaults.WARNING.toColor(),
+    val neutral: Color = AccentColorDefaults.NEUTRAL.toColor(),
+    val background: Color = AccentColorDefaults.BACKGROUND.toColor(),
+    val success: Color = AccentColorDefaults.SUCCESS.toColor(),
+    val error: Color = AccentColorDefaults.ERROR.toColor(),
+    val light: Color = AccentColorDefaults.LIGHT.toColor(),
+    val bright: Color = AccentColorDefaults.BRIGHT.toColor()
 )
