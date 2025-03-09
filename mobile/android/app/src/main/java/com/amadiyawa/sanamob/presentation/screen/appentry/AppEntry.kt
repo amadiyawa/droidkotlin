@@ -9,7 +9,6 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleMedium
@@ -17,7 +16,6 @@ import com.amadiyawa.feature_base.presentation.navigation.AppState
 import com.amadiyawa.feature_base.presentation.navigation.rememberAppState
 import com.amadiyawa.feature_base.presentation.theme.AppTheme
 import com.amadiyawa.feature_base.presentation.theme.accentColor
-import com.amadiyawa.feature_base.presentation.theme.customColor
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -27,11 +25,7 @@ fun AppEntry(
 ) {
     AppTheme {
         Scaffold(
-            modifier = Modifier.semantics {
-                testTagsAsResourceId = true
-            },
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.semantics { testTagsAsResourceId = true }
         ) {
             Row(
                 Modifier
