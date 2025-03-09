@@ -1,6 +1,5 @@
 package com.amadiyawa.feature_base.presentation.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -10,12 +9,9 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 import com.amadiyawa.feature_base.common.util.getCustomColors
 
 typealias Theme = MaterialTheme
@@ -24,10 +20,19 @@ val LocalCustomColor = compositionLocalOf<CustomColor> { error("No custom color 
 val LocalAccentColor = compositionLocalOf<AccentColor> { error("No accent color provided") }
 
 val Theme.customColor: CustomColor
-    @Composable get() = LocalCustomColor.current
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalCustomColor.current
 
 val Theme.accentColor: AccentColor
-    @Composable get() = LocalAccentColor.current
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalAccentColor.current
+
+val Theme.dimension: Dimension
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalDimension.current
 
 private val DarkColorScheme = darkColorScheme(
     primary = DarkPrimary,
@@ -94,18 +99,10 @@ fun AppTheme(
         else -> LightColorScheme
     }
 
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.navigationBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-        }
-    }
-
     CompositionLocalProvider(
         LocalCustomColor provides getCustomColors(darkTheme),
-        LocalAccentColor provides AccentColor()
+        LocalAccentColor provides AccentColor(),
+        LocalDimension provides getDimension()
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
