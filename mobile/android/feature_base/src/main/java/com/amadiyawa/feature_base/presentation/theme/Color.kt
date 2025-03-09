@@ -3,6 +3,19 @@ package com.amadiyawa.feature_base.presentation.theme
 import androidx.compose.ui.graphics.Color
 import com.amadiyawa.feature_base.common.util.toColor
 
+/**
+ * Interface representing custom colors used in the application.
+ *
+ * @property success The color used to indicate success.
+ * @property warning The color used to indicate a warning.
+ * @property info The color used to indicate informational messages.
+ * @property danger The color used to indicate danger or errors.
+ * @property onSuccess The color used for text or icons on success backgrounds.
+ * @property onWarning The color used for text or icons on warning backgrounds.
+ * @property onInfo The color used for text or icons on informational backgrounds.
+ * @property onDanger The color used for text or icons on danger backgrounds.
+ * @author Amadou Iyawa
+ */
 interface CustomColor {
     val success: Color
     val warning: Color
@@ -65,6 +78,8 @@ val DarkOutline = Color(0xFF757575) // Grey, for outlines
 /**
  * Specifies the custom light's colours that should be used through the application in a non-graphic
  * library specific amount.
+ *
+ * @author Amadou Iyawa
  */
 data object CustomLightColorDefaults {
     internal const val SUCCESS = "#4CAF50"
@@ -80,6 +95,8 @@ data object CustomLightColorDefaults {
 /**
  * Specifies the custom dark's colours that should be used through the application in a non-graphic
  * library specific amount.
+ *
+ * @author Amadou Iyawa
  */
 data object CustomDarkColorDefaults {
     internal const val SUCCESS = "#81C784"
@@ -95,6 +112,8 @@ data object CustomDarkColorDefaults {
 /**
  * Specifies the accent's colours that should be used through the application in a non-graphic
  * library specific amount.
+ *
+ * @author Amadou Iyawa
  */
 data object AccentColorDefaults {
     internal const val PRIMARY = "#2196F3"
@@ -107,6 +126,19 @@ data object AccentColorDefaults {
     internal const val BRIGHT = "#00BFFF"
 }
 
+/**
+ * Data class representing custom light colors used in the application.
+ *
+ * @property success The color used to indicate success.
+ * @property warning The color used to indicate a warning.
+ * @property info The color used to indicate informational messages.
+ * @property danger The color used to indicate danger or errors.
+ * @property onSuccess The color used for text or icons on success backgrounds.
+ * @property onWarning The color used for text or icons on warning backgrounds.
+ * @property onInfo The color used for text or icons on informational backgrounds.
+ * @property onDanger The color used for text or icons on danger backgrounds.
+ * @author Amadou Iyawa
+ */
 data class CustomLightColor(
     override val success: Color = CustomLightColorDefaults.SUCCESS.toColor(),
     override val warning: Color = CustomLightColorDefaults.WARNING.toColor(),
@@ -118,6 +150,19 @@ data class CustomLightColor(
     override val onDanger: Color = CustomLightColorDefaults.ONDANGER.toColor()
 ) : CustomColor
 
+/**
+ * Data class representing custom dark colors used in the application.
+ *
+ * @property success The color used to indicate success.
+ * @property warning The color used to indicate a warning.
+ * @property info The color used to indicate informational messages.
+ * @property danger The color used to indicate danger or errors.
+ * @property onSuccess The color used for text or icons on success backgrounds.
+ * @property onWarning The color used for text or icons on warning backgrounds.
+ * @property onInfo The color used for text or icons on informational backgrounds.
+ * @property onDanger The color used for text or icons on danger backgrounds.
+ * @author Amadou Iyawa
+ */
 data class CustomDarkColor(
     override val success: Color = CustomDarkColorDefaults.SUCCESS.toColor(),
     override val warning: Color = CustomDarkColorDefaults.WARNING.toColor(),
@@ -129,6 +174,19 @@ data class CustomDarkColor(
     override val onDanger: Color = CustomDarkColorDefaults.ONDANGER.toColor()
 ) : CustomColor
 
+/**
+ * Data class representing accent colors used in the application.
+ *
+ * @property primary The primary accent color.
+ * @property warning The color used to indicate warnings.
+ * @property neutral The neutral color.
+ * @property background The background color.
+ * @property success The color used to indicate success.
+ * @property error The color used to indicate errors.
+ * @property light The light accent color.
+ * @property bright The bright accent color.
+ * @author Amadou Iyawa
+ */
 data class AccentColor(
     val primary: Color = AccentColorDefaults.PRIMARY.toColor(),
     val warning: Color = AccentColorDefaults.WARNING.toColor(),
