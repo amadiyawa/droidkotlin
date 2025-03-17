@@ -17,6 +17,12 @@ import com.amadiyawa.feature_base.presentation.navigation.rememberAppState
 import com.amadiyawa.feature_base.presentation.theme.AppTheme
 import com.amadiyawa.feature_base.presentation.theme.accentColor
 
+/**
+ * Entry point for the application.
+ *
+ * @param windowSizeClass The size class of the window.
+ * @param appState The state of the application, defaulting to a remembered state based on the window size class.
+ */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AppEntry(
