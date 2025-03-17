@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 
 # KSP depends on specific Kotlin version, so it must be upgraded together with Kotlin (disabled in Renovate)
 # https://repo.maven.apache.org/maven2/com/google/devtools/ksp/symbol-processing-gradle-plugin/
@@ -25,19 +25,19 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.02.00"
+composeBom = "2025.03.00"
 appcompat = "1.7.0"
 material = "1.12.0"
 lottie = "6.4.0"
 material3Android = "1.3.1"
 timber = "5.0.1"
-navigationCompose = "2.8.8"
+navigationCompose = "2.8.9"
 composeFoundation = "1.7.8"
 hilt = "2.52"
 material3WindowSizeClassAndroidVersion = "1.2.1"
 material3WindowSize = "1.3.1"
 koin-bom = "3.5.3"
-navigation = "2.8.8"
+navigation = "2.8.9"
 testLogger = "3.2.0"
 googleServices = "4.4.2"
 firebaseBom = "33.10.0"
@@ -48,7 +48,7 @@ spotless = "6.25.0"
 detekt = "1.23.6"
 
 # Muss von Waindja immer gändert werden
-androidGradlePlugin = "8.8.2"
+androidGradlePlugin = "8.9.0"
 
 
 # Test versionsandroid-junit5-plugin-dsl
