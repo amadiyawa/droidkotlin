@@ -82,6 +82,13 @@ private val LightColorScheme = lightColorScheme(
     onError = LightOnError
 )
 
+/**
+ * Composable function to set the application's theme.
+ *
+ * @param darkTheme A boolean indicating whether the dark theme is enabled. Defaults to the system's dark theme setting.
+ * @param dynamicColor A boolean indicating whether to use dynamic colors. Available on Android 12+.
+ * @param content The composable content to be displayed within the theme.
+ */
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
