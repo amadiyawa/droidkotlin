@@ -20,6 +20,12 @@ kotlin {
     jvmToolchain(17)
 }
 
+/**
+ * Converts a `Provider<PluginDependency>` to a `Provider<String>` representing the plugin coordinates.
+ *
+ * @param plugin The `Provider<PluginDependency>` to be converted.
+ * @return A `Provider<String>` containing the plugin coordinates in the format "pluginId:pluginId.gradle.plugin:version".
+ */
 fun plugin(plugin: Provider<PluginDependency>) = plugin.map {
     "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}"
 }

@@ -1,4 +1,4 @@
-package com.amadiyawa.sanamob
+package com.amadiyawa.droidkotlin
 
 import android.app.Application
 import com.amadiyawa.feature_base.featureBaseModule

@@ -9,7 +9,7 @@ android {
     val catalogs = extensions.getByType<VersionCatalogsExtension>()
     val libs = catalogs.named("libs")
 
-    namespace = "com.amadiyawa.sanamob"
+    namespace = "com.amadiyawa.droidkotlin"
 
     compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.amadiyawa.sanamob"
+        applicationId = "com.amadiyawa.droidkotlin"
 
         versionCode = 1
         versionName = "0.0.1" // SemVer (Major.Minor.Patch)
@@ -63,7 +63,6 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
-    @Suppress("UnstableApiUsage")
     testOptions {
         unitTests.isReturnDefaultValues = true
     }
@@ -80,9 +79,11 @@ dependencies {
     implementation(projects.featureBase)
 }
 
-/*
-Takes value from Gradle project property and sets it as Android build config property eg.
-apiToken variable present in the settings.gradle file will be accessible as BuildConfig.GRADLE_API_TOKEN in the app.
+/**
+ * Sets a build config field from a Gradle project property.
+ *
+ * @param gradlePropertyName The name of the Gradle property to be used.
+ * @throws IllegalStateException if the Gradle property is null.
  */
 fun ApplicationDefaultConfig.buildConfigFieldFromGradleProperty(gradlePropertyName: String) {
     val propertyValue = project.properties[gradlePropertyName] as? String
@@ -92,6 +93,11 @@ fun ApplicationDefaultConfig.buildConfigFieldFromGradleProperty(gradlePropertyNa
     buildConfigField("String", androidResourceName, propertyValue)
 }
 
+/**
+ * Converts a camelCase or PascalCase string to snake_case.
+ *
+ * @return The snake_case representation of the string.
+ */
 fun String.toSnakeCase() = this.split(Regex("(?=[A-Z])")).joinToString("_") {
     it.lowercase(Locale.getDefault())
 }

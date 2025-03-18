@@ -1,4 +1,4 @@
-package com.amadiyawa.sanamob.presentation.screen.appentry
+package com.amadiyawa.droidkotlin.presentation.screen.appentry
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize

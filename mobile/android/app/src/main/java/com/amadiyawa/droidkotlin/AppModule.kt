@@ -1,4 +1,4 @@
-package com.amadiyawa.sanamob
+package com.amadiyawa.droidkotlin
 
 import com.amadiyawa.feature_base.data.retrofit.ApiResultAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory

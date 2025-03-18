@@ -1,4 +1,4 @@
-package com.amadiyawa.sanamob
+package com.amadiyawa.droidkotlin
 
 import org.junit.Test
 

@@ -1,5 +1,8 @@
-rootProject.name = "SanaMob"
-include(":app")
+rootProject.name = "DroidKotlin"
+include(
+    ":app",
+    ":feature_base"
+)
 
 pluginManagement {
     repositories {
@@ -30,4 +33,3 @@ dependencyResolutionManagement {
 // This feature is particularly useful in a multi-module project setup, where you often need to declare dependencies on other projects.
 // By enabling this feature, you can access other projects in your settings.gradle.kts file in a type-safe manner.
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-include(":feature_base")
