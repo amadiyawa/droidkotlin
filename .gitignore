@@ -34,3 +34,9 @@ google-services.json
 /app/release/baselineProfiles/0/app-release.dm
 /app/release/baselineProfiles/1/app-release.dm
 /app/release/output-metadata.json
+
+# Ignore all build directories
+**/build/
+
+# Explicitly ignore buildsrc/build directory
+buildsrc/build/
