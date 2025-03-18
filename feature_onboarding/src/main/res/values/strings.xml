@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Onboarding Titles -->
+    <string name="onboard_title_1">Welcome to PayGo</string>
+    <string name="onboard_title_2">Product Management</string>
+    <string name="onboard_title_3">Pay-As-You-Go Made Easy</string>
+    <string name="onboard_title_4">Cloud-Based Data Access</string>
+    <string name="onboard_title_5">Get Started with Paygo</string>
+
+    <!-- Onboarding Descriptions -->
+    <string name="onboard_description_1">Manage your products, services, and teams effortlessly with PayGo. Simplifying business management with Pay As You Go.</string>
+    <string name="onboard_description_2">Manage your inventory effortlessly. Use the app to add, edit, and categorize products, ensuring everything is at your fingertips when you need it.</string>
+    <string name="onboard_description_3">Offer flexible payment options that match your needs. Secure and efficient transactions.</string>
+    <string name="onboard_description_4">Your data is securely stored in the cloud, giving you decentralized access anytime, anywhere.</string>
+    <string name="onboard_description_5">Log in to access your account, or create a new one to start managing your business with PayGo.</string>
+
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string> <!--small error Previous not next-->
+</resources>
