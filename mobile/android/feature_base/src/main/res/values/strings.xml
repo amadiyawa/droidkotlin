@@ -1,7 +1,0 @@
-<resources>
-    <string name="data_not_found">Data not found</string>
-    <string name="show_less">Show less</string>
-    <string name="show_more">Show more</string>
-    <string name="empty_toolbar_title"> </string>
-    <string name="back">Back</string>
-</resources>
