@@ -37,7 +37,6 @@ The design principles and architectural choices applied here are perfectly suite
 
 ## Author
 
-
 <a href="https://x.com/amadiyawa">
   <img src="https://avatars.githubusercontent.com/u/31802381?v=4" alt="Follow me" width="100" height="100">
 </a>
