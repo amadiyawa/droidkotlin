@@ -22,6 +22,9 @@ misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
 
+# Kotlin
+.kotlin
+
 # Keystore files
 *.jks
 *.keystore
