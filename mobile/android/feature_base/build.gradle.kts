@@ -37,8 +37,8 @@ dependencies {
     api(platform(libs.firebaseBom))
     // Declare the dependency for the Firebase SDK for Google Analytics
     api(libs.firebaseAnalytics)
+    // Declare the dependency for the Firebase SDK for Firestore
     api(libs.firebaseFirestore)
-
 
     testImplementation(libs.bundles.test)
 

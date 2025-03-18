@@ -141,7 +141,7 @@ compose = [
 lifecycle = ["viewmodelKtx", "livedataKtx", "livedataRuntime", "androidx-lifecycle-runtime-ktx"]
 room = ["roomKtx", "roomRuntime"]
 test = ["testCoroutines", "kluent", "testRunner", "espresso", "mockk", "coreTesting", "junitJupiterApi",
-    "junitJupiterEngine", "konsist"]
+    "junitJupiterEngine", "konsist", "junit"]
 
 [plugins]
 # Search Gradle Plugins https://plugins.gradle.org/
