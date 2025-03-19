@@ -1,7 +1,7 @@
 package com.amadiyawa.feature_onboarding.data.util
 
 import com.amadiyawa.feature_onboarding.domain.model.Onboard
-import com.amadiyawa.paygo.onboarding.R
+import com.amadiyawa.onboarding.R
 
 /**
  * Its a internal (only visible in this module, like: private)

@@ -89,16 +89,16 @@ fun AppTextButton(
     onClick: () -> Unit,
     text: String,
     color: Color = MaterialTheme.colorScheme.primary,
-    style: TextButtonStyle = TextButtonStyle()
-    ) {
-    TextBodySmall(
+    textDecoration: TextDecoration = TextDecoration.None
+) {
+    Text(
         text = text,
-        modifier = modifier.clickable { onClick() },
+        modifier = modifier.clickable { onClick?.invoke() },
         color = color,
-        textAlign = style.textAlign,
-        textDecoration = style.textDecoration,
-        fontWeight = style.fontWeight,
-        fontSize = style.fontSize
+        fontWeight = FontWeight.SemiBold,
+        style = MaterialTheme.typography.bodyLarge.copy(
+            textDecoration = textDecoration
+        )
     )
 }
 

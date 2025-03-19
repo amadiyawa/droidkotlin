@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_onboarding.presentation
 
-import comß.amadiyawa.feature_onboarding.presentation.screen.onboardlist.OnboardViewModel
+import com.amadiyawa.feature_onboarding.presentation.screen.onboardlist.OnboardViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

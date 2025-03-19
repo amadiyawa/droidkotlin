@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.amadiyawa.paygo.onboarding"
+    namespace = "com.amadiyawa.onboarding"
 }
 
 dependencies {

@@ -76,7 +76,7 @@ android {
 
 dependencies {
     // Syntax utilizes Gradle TYPESAFE_PROJECT_ACCESSORS feature
-    implementation(projects.featureBase)
+    implementation(projects.featureOnboarding)
 }
 
 /**

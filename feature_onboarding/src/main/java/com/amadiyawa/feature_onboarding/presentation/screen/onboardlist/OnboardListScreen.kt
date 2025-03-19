@@ -30,7 +30,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.amadiyawa.feature_base.common.res.Dimen
@@ -42,8 +41,7 @@ import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimati
 import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyLarge
 import com.amadiyawa.feature_base.presentation.compose.composable.TextHeadlineLarge
 import com.amadiyawa.feature_onboarding.domain.model.Onboard
-import com.amadiyawa.paygo.onboarding.R
-import comß.amadiyawa.feature_onboarding.presentation.screen.onboardlist.OnboardViewModel
+import com.amadiyawa.onboarding.R
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -53,7 +51,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun OnboardListScreen() {
     val viewModel: OnboardViewModel = koinViewModel()
-    viewModel.onEnter() //initializing the onboarding Process
+    viewModel.onEnter()
 
     Scaffold(
         contentColor = MaterialTheme.colorScheme.onBackground,
@@ -242,7 +240,7 @@ private fun Onboard(
                     textAlign = TextAlign.Center
                 )
 
-                // Abit of Space between title and Description
+                // A bit of Space between title and Description
                 Spacer(modifier = Modifier.height(10.dp))
 
                 // Description

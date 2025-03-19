@@ -9,19 +9,21 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleMedium
+import com.amadiyawa.droidkotlin.presentation.navigation.AppNavHost
 import com.amadiyawa.feature_base.presentation.navigation.AppState
 import com.amadiyawa.feature_base.presentation.navigation.rememberAppState
 import com.amadiyawa.feature_base.presentation.theme.AppTheme
-import com.amadiyawa.feature_base.presentation.theme.accentColor
 
 /**
- * Entry point for the application.
+ * Composable function that serves as the entry point for the app.
  *
- * @param windowSizeClass The size class of the window.
- * @param appState The state of the application, defaulting to a remembered state based on the window size class.
+ * This function sets up the app's theme and layout, including the navigation host.
+ *
+ * @param windowSizeClass The window size class used to determine the layout configuration.
+ * @param appState The state of the app, including the navigation controller.
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -31,14 +33,19 @@ fun AppEntry(
 ) {
     AppTheme {
         Scaffold(
-            modifier = Modifier.semantics { testTagsAsResourceId = true }
+            modifier = Modifier.semantics { testTagsAsResourceId = true },
+            containerColor = Color.Transparent,
+            contentColor = MaterialTheme.colorScheme.onBackground
         ) {
             Row(
                 Modifier
                     .fillMaxSize()
                     .padding(it)
             ) {
-                TextTitleMedium(text = "Hello world!", color = MaterialTheme.accentColor.success)
+                AppNavHost(
+                    navHostController = appState.navController,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

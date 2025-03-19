@@ -1,4 +1,4 @@
-package comß.amadiyawa.feature_onboarding.presentation.screen.onboardlist
+package com.amadiyawa.feature_onboarding.presentation.screen.onboardlist
 
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
@@ -41,6 +41,8 @@ internal class OnboardViewModel(
                     is Result.Failure -> {
                         Action.OnboardListLoadFailure
                     }
+
+                    is Result.Exception -> Action.OnboardListLoadFailure
                 }
                 sendAction(action)
             }

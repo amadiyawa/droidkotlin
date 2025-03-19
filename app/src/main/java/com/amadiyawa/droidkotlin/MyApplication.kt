@@ -2,6 +2,7 @@ package com.amadiyawa.droidkotlin
 
 import android.app.Application
 import com.amadiyawa.feature_base.featureBaseModule
+import com.amadiyawa.feature_onboarding.featureOnboardingModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext
@@ -22,6 +23,7 @@ class MyApplication: Application() {
 
             modules(appModule)
             modules(featureBaseModule)
+            modules(featureOnboardingModule)
         }
     }
 
