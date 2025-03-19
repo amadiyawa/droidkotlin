@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Onboarding Titles -->
-    <string name="onboard_title_1">Welcome to PayGo</string>
-    <string name="onboard_title_2">Product Management</string>
-    <string name="onboard_title_3">Pay-As-You-Go Made Easy</string>
-    <string name="onboard_title_4">Cloud-Based Data Access</string>
-    <string name="onboard_title_5">Get Started with Paygo</string>
+    <string name="onboard_title_1">Welcome to DroidKotlin</string>
+    <string name="onboard_title_2">Seamless Navigation</string>
+    <string name="onboard_title_3">User Management Made Simple</string>
+    <string name="onboard_title_4">Built with Best Practices</string>
+    <string name="onboard_title_5">Start Building with DroidKotlin</string>
 
     <!-- Onboarding Descriptions -->
-    <string name="onboard_description_1">Manage your products, services, and teams effortlessly with PayGo. Simplifying business management with Pay As You Go.</string>
-    <string name="onboard_description_2">Manage your inventory effortlessly. Use the app to add, edit, and categorize products, ensuring everything is at your fingertips when you need it.</string>
-    <string name="onboard_description_3">Offer flexible payment options that match your needs. Secure and efficient transactions.</string>
-    <string name="onboard_description_4">Your data is securely stored in the cloud, giving you decentralized access anytime, anywhere.</string>
-    <string name="onboard_description_5">Log in to access your account, or create a new one to start managing your business with PayGo.</string>
+    <string name="onboard_description_1">Kickstart your Android development with DroidKotlin, a structured and scalable base for modern app development.</string>
+    <string name="onboard_description_2">Navigate between screens effortlessly with an intuitive and well-structured navigation system.</string>
+    <string name="onboard_description_3">Easily fetch, display, and manage user data with clean and efficient architecture.</string>
+    <string name="onboard_description_4">Follow modern Android development practices, including MVVM, Jetpack components, and Kotlin best practices.</string>
+    <string name="onboard_description_5">Get started by exploring the templates, navigation setup, and user management features to accelerate your app development.</string>
 
     <string name="skip">Skip</string>
     <string name="next">Next</string>
