@@ -91,10 +91,99 @@ Clone the repository to your local machine using the command below:
 git clone https://github.com/your-username/droidkotlin.git
 ```
 
+### 3. 🌿 Create a New Branch
+Create a new branch for your feature or fix:
+```sh
+git checkout -b feature/your-feature-name
+```
+✅ Branch Naming Conventions:
+- feature/your-feature-name – For adding new features
+- fix/your-fix-name – For fixing bugs
+- docs/your-doc-update – For improving documentation
+
+### 4. 🛠️ Set Up the Project
+Make sure your development environment is ready:
+- Install dependencies using Gradle
+- Build the project
+- Run the project locally
+
+### 5. ️ ✍️ Make Changes
+- Write clean, readable, and well-documented code.
+- Follow the project's coding style and naming conventions.
+- Keep changes focused on a single feature or fix to simplify code review.
+- Test your code thoroughly before committing.
+
+### 6. ️ 💾 Commit Your Changes
+Use meaningful and structured commit messages:
+```sh
+git commit -m "Add: new feature description"
+```
+✅ Commit Message Format:
+- Add: → For new features
+- Fix: → For bug fixes
+- Refactor: → For code improvements
+- Docs: → For documentation updates
+Example:
+```sh
+git commit -m "Fix: Resolve crash on startup"
+```
+
+### 7. ️ 🚀 Push to Your Fork
+Push your changes to your forked repository:
+```sh
+git push origin feature/your-feature-name
+```
+
+### 8. ️ 🔥 Create a Pull Request (PR)
+- Go to the repository on GitHub.
+- Click on "Compare & Pull Request."
+- Write a clear and descriptive PR title and description:
+✅ PR Title Example:
+Add: New onboarding screen
+✅ PR Description Template:
+- Push your changes to your forked repository:
+```markdown
+### Purpose:
+- Add a new onboarding screen for the app.
+
+### Testing:
+- Tested on Pixel 4a 5G, API 30
+
+### Side Effects:
+- None
+```
+
+### 9. ️ 🗣️ Respond to Feedback
+- Engage in the code review process.
+- Make changes if requested.
+- Be respectful and professional when discussing suggestions.
+
+### 10. ️ 🎉 Merge Process
+- Once approved, the maintainers will merge the PR into the main branch.
+- Celebrate your contribution! 🎉
+
+✅ Types of Contributions
+We welcome the following contributions:
+- 🐞 Bug Fixes – Found a bug? Let’s fix it!
+- 🚀 New Features – Got an idea? Let’s implement it!
+- 📝 Documentation – Help improve the project documentation.
+- 🎨 UI/UX Improvements – Help refine the user experience.
+- 🔍 Code Review – Review and suggest improvements to existing code.
+- 🔧 Refactoring – Help clean up the code and improve performance.
+
+🚨 Contribution Guidelines
+- Follow the Kotlin Coding Conventions.
+- Keep pull requests focused and concise.
+- For large changes, create an issue first to discuss the approach.
+- Keep commit messages structured and meaningful.
+- Be respectful and kind when providing feedback — we're building this together!
+
+❤️ Thank you for considering contributing to DroidKotlin!
+
 ## 👨‍💻 Author
 
 **Amadou Iyawa** – Passionate Software Developer specializing in Android and backend development.  
-With expertise in Kotlin, Java, Python, and PHP, Amadou focuses on building scalable and maintainable applications.  
+With expertise in Kotlin, Java, Python and JavaScript, Amadou focuses on building scalable and maintainable applications.  
 DroidKotlin is a reflection of his passion for clean architecture and efficient development.
 
 ---
