@@ -73,7 +73,10 @@ internal class OnboardViewModel(
         data object NextOnboard : Action {
             override fun reduce(state: UiState): UiState {
                 return if (state is UiState.Onboarding && state.currentOnboardIndex < state.onboardList.size - 1) {
-                    state.copy(currentOnboardIndex = state.currentOnboardIndex + 1)
+                    state.copy(
+                        currentOnboardIndex = state.currentOnboardIndex + 1,
+                        isNext = true
+                    )
                 } else {
                     UiState.OnboardingComplete
                 }
@@ -83,7 +86,10 @@ internal class OnboardViewModel(
         data object PreviousOnboard : Action {
             override fun reduce(state: UiState): UiState {
                 return if (state is UiState.Onboarding && state.currentOnboardIndex > 0) {
-                    state.copy(currentOnboardIndex = state.currentOnboardIndex - 1)
+                    state.copy(
+                        currentOnboardIndex = state.currentOnboardIndex - 1,
+                        isNext = false
+                    )
                 } else {
                     state // Return the current state if the condition isn't met
                 }
@@ -102,7 +108,8 @@ internal class OnboardViewModel(
         data object Loading : UiState
         data class Onboarding(
             val onboardList: List<Onboard>,
-            val currentOnboardIndex : Int = 0
+            val currentOnboardIndex : Int = 0,
+            val isNext: Boolean = true
         ) : UiState {
             val currentOnboard: Onboard
                 get() = onboardList[currentOnboardIndex]

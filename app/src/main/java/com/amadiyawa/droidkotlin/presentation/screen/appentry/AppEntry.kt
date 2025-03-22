@@ -34,8 +34,6 @@ fun AppEntry(
     AppTheme {
         Scaffold(
             modifier = Modifier.semantics { testTagsAsResourceId = true },
-            containerColor = Color.Transparent,
-            contentColor = MaterialTheme.colorScheme.onBackground
         ) {
             Row(
                 Modifier

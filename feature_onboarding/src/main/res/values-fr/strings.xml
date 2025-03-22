@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Titres de l'onboarding -->
-    <string name="onboard_title_1">Bienvenue sur DroidKotlin</string>
-    <string name="onboard_title_2">Navigation Intuitive</string>
-    <string name="onboard_title_3">Gestion des Utilisateurs Simplifiée</string>
-    <string name="onboard_title_4">Développement Moderne</string>
-    <string name="onboard_title_5">Commencez avec DroidKotlin</string>
+    <string name="onboard_title_1">Bienvenue dans DroidKotlin</string>
+    <string name="onboard_title_2">Développement rapide et efficace</string>
+    <string name="onboard_title_3">Connexion simplifiée à vos services</string>
+    <string name="onboard_title_4">Personnalisez votre interface facilement</string>
+    <string name="onboard_title_5">Prêt à coder ?</string>
 
     <!-- Descriptions de l'onboarding -->
     <string name="onboard_description_1">Lancez rapidement vos projets Android avec DroidKotlin, une base robuste et évolutive pour un développement moderne.</string>
-    <string name="onboard_description_2">Profitez d\'un système de navigation fluide et structuré pour une meilleure expérience utilisateur.</string>
-    <string name="onboard_description_3">Récupérez, affichez et gérez facilement les données des utilisateurs grâce à une architecture propre et efficace.</string>
-    <string name="onboard_description_4">Suivez les meilleures pratiques Android avec MVVM, les composants Jetpack et le langage Kotlin.</string>
-    <string name="onboard_description_5">Explorez les modèles, la navigation et la gestion des utilisateurs pour accélérer le développement de vos applications.</string>
+    <string name="onboard_description_2">Profitez d\'une architecture optimisée pour créer des applications performantes et évolutives.</string>
+    <string name="onboard_description_3">DroidKotlin est prêt à se connecter à vos API REST, gérer les données et les états efficacement.</string>
+    <string name="onboard_description_4">Utilisez des composants réutilisables pour personnaliser le design selon vos besoins.</string>
+    <string name="onboard_description_5">Vous êtes prêt à démarrer ! Lancez votre premier projet avec DroidKotlin et développez comme un pro.</string>
 
     <string name="skip">Passer</string>
     <string name="next">Suivant</string>
     <string name="previous">Précedent</string>
+    <string name="get_started">Commencez !</string>
 </resources>
