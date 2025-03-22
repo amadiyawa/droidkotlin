@@ -47,7 +47,93 @@ DroidKotlin is designed to:
 
 ---
 
-## Tech-Stack
+## 🛠️ Tech-Stack
+
+### 💻 100% Kotlin
+- **Kotlin** – Modern programming language with concise syntax and robust type safety.
+- **Kotlin Coroutines** – Perform asynchronous background operations without blocking the main thread.
+- **Kotlin Flow** – Handle data streams and state across app layers.
+- **Kotlin Serialization** – Parse JSON data directly into Kotlin objects.
+- 🌐 Networking
+    - **Retrofit** – Type-safe HTTP client for networking.
+    - **Gson** – Convert JSON responses to Kotlin objects.
+- 🚀 Jetpack
+    - **Compose** – Modern, declarative UI toolkit for building native interfaces.
+    - **Navigation** – Handle in-app navigation and deep linking.
+    - **Lifecycle** – Manage component lifecycles and state changes.
+    - **ViewModel** – Store and manage UI-related data in a lifecycle-aware way.
+    - **Room** – Store and query local data using SQLite with compile-time safety.
+    - **DataStore** – Store key-value pairs with coroutine support.
+- 📲 Dependency Injection
+    - **Koin** – Lightweight dependency injection framework designed for Kotlin.
+- 🖼️ Image Loading
+    - **Coil** – Image loading library with Kotlin coroutines support.
+- 🎬 Animation
+    - **Lottie** – Render complex vector animations from JSON files.
+
+---
+
+### 🏛️ Modern Architecture
+- **MVVM** – Model-View-ViewModel for separation of concerns.
+- **Clean Architecture** – Layers of abstraction to separate data, domain, and presentation.
+- **Single Activity Architecture** – All navigation handled within a single activity using Navigation Component.
+- **Android KTX** – Kotlin extensions for Jetpack and Android APIs.
+
+---
+
+### 🎨 UI
+- **Material Design 3** – Consistent UI components and design principles.
+- **Dark Theme** – Support for dark theme (Android 10+).
+- **Dynamic Theming** – Adapt UI colors based on the device wallpaper (Android 12+).
+- **Reactive UI** – State-driven UI rendering with Jetpack Compose.
+
+---
+
+### ✅ CI/CD
+- **GitHub Actions** – Automate build, test, and deployment pipelines.
+- **Automatic PR Verification** – Run tests and lint checks on pull requests.
+
+---
+
+### 🧪 Testing
+- **JUnit 5** – Unit testing framework.
+- **MockK** – Kotlin-specific mocking library for tests.
+- **Espresso** – UI testing framework (Work in Progress).
+
+---
+
+### 🛡️ Static Analysis Tools (Linters)
+- **Ktlint** – Enforce Kotlin coding style.
+- **Detekt** – Detect code complexity, code smells, and anti-patterns.
+- **Android Lint** – Identify Android-specific issues.
+
+---
+
+### ⚙️ Gradle
+- **Gradle Kotlin DSL** – Write build scripts in Kotlin.
+- **Gradle Plugins**
+    - **Android Gradle** – Standard Android Plugins.
+    - **Test Logger** – Format and display test logs.
+    - **SafeArgs** – Pass data between navigation destinations.
+    - **Android-JUnit5** – Enable JUnit5 testing in Android.
+- **Versions Catalog** – Centralized dependency management.
+- **Type-Safe Accessors** – Ensure type safety when accessing build properties.
+
+---
+
+### 🛡️ GitHub Automation
+- **Renovate** – Automatically update dependencies.
+- **Stale** – Close inactive issues and pull requests automatically.
+
+---
+
+### 🛠️ Other Tools
+- **Charles Proxy** – Inspect and debug network traffic during development.
+- **Timber** – Lightweight logger for debugging.
+
+---
+
+✅ This covers the full tech stack in DroidKotlin, highlighting each component's purpose and function. Let me know if you'd like to refine any part! 😎🔥
 
 ## Architecture
 
