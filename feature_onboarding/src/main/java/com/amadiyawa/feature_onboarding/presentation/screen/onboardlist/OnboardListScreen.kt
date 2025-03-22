@@ -222,7 +222,7 @@ private fun Onboard(
         Image(
             painter = painterResource(id = onboard.imageResId),
             contentDescription = null,
-            modifier = Modifier.height(200.dp)
+            modifier = Modifier.height(MaterialTheme.dimension.windowWidthCompactOneThird)
         )
 
         // Title

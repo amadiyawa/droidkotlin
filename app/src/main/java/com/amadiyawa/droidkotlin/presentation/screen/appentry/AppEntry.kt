@@ -3,13 +3,11 @@ package com.amadiyawa.droidkotlin.presentation.screen.appentry
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.amadiyawa.droidkotlin.presentation.navigation.AppNavHost
@@ -32,9 +30,7 @@ fun AppEntry(
     appState: AppState = rememberAppState(windowSizeClass = windowSizeClass)
 ) {
     AppTheme {
-        Scaffold(
-            modifier = Modifier.semantics { testTagsAsResourceId = true },
-        ) {
+        Scaffold(modifier = Modifier.semantics { testTagsAsResourceId = true }) {
             Row(
                 Modifier
                     .fillMaxSize()
