@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="users">Users</string>
+    <string name="empty_toolbar_title">\"\"</string>
+    <string name="back">Back</string>
+    <string name="location">Location</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="country">Country</string>
+    <string name="postcode">Postcode</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="date">Date</string>
+    <string name="years_old">years old</string>
+    <string name="registered">Registered</string>
+    <string name="seniority">seniority</string>
+    <string name="id_card">Id card</string>
+    <string name="name">Name</string>
+    <string name="value">Value</string>
+    <string name="contact">Contact</string>
+    <string name="email">Email\n</string>
+    <string name="phone">Phone</string>
+    <string name="cell">Cell</string>
+    <string name="street">Street</string>
+    <string name="timezone">Timezone</string>
+    <string name="coordinates">Coordinates</string>
+</resources>
