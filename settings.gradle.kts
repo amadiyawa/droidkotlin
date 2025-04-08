@@ -2,7 +2,8 @@ rootProject.name = "DroidKotlin"
 include(
     ":app",
     ":feature_base",
-    ":feature_onboarding"
+    ":feature_onboarding",
+    ":feature_user"
 )
 
 pluginManagement {

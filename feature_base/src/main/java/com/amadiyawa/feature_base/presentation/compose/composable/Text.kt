@@ -10,7 +10,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun TextHeadlineLarge(
@@ -87,7 +86,7 @@ fun TextTitleLarge(
 fun TextTitleMedium(
     text: String,
     modifier: Modifier = Modifier,
-    textAlign: TextAlign = TextAlign.Start, // Textalign is standart Start
+    textAlign: TextAlign = TextAlign.Start,
             fontWeight: FontWeight = FontWeight.Normal,
     color: Color = MaterialTheme.colorScheme.onSurface
 ) {
@@ -97,7 +96,7 @@ fun TextTitleMedium(
         style = MaterialTheme.typography.titleMedium,
         fontWeight = fontWeight,
         color = color,
-        textAlign = textAlign // textAlign can be used in UI
+        textAlign = textAlign
     )
 }
 
@@ -120,7 +119,7 @@ fun TextBodyLarge(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.onSurface,
-    textAlign: TextAlign = TextAlign.Start // Textalign is standart Start
+    textAlign: TextAlign = TextAlign.Start
 
 ) {
     Text(
@@ -128,7 +127,7 @@ fun TextBodyLarge(
         modifier = modifier,
         style = MaterialTheme.typography.bodyLarge,
         color = color,
-        textAlign = textAlign // textAlign can be used in UI
+        textAlign = textAlign
 
     )
 }
@@ -169,6 +168,42 @@ fun TextLabelLarge(
             .clickable { onClick() },
         color = color,
         style = MaterialTheme.typography.labelLarge,
+        fontWeight = fontWeight
+    )
+}
+
+@Composable
+fun TextLabelMedium(
+    text: String,
+    color: Color = MaterialTheme.colorScheme.onSurface,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    fontWeight: FontWeight = FontWeight.Normal,
+) {
+    Text(
+        text = text,
+        modifier = modifier
+            .clickable { onClick() },
+        color = color,
+        style = MaterialTheme.typography.labelMedium,
+        fontWeight = fontWeight
+    )
+}
+
+@Composable
+fun TextLabelSmall(
+    text: String,
+    color: Color = MaterialTheme.colorScheme.onSurface,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    fontWeight: FontWeight = FontWeight.Normal,
+) {
+    Text(
+        text = text,
+        modifier = modifier
+            .clickable { onClick() },
+        color = color,
+        style = MaterialTheme.typography.labelSmall,
         fontWeight = fontWeight
     )
 }

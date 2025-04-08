@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -58,15 +57,15 @@ import kotlin.math.roundToInt
  * including handling the UI state and displaying the appropriate content.
  */
 @Composable
-fun OnboardListScreen() {
+fun OnboardListScreen(onFinished: () -> Unit) {
     val viewModel: OnboardViewModel = koinViewModel()
     viewModel.onEnter()
 
     Scaffold(
-        contentColor = MaterialTheme.colorScheme.onBackground,
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+        contentColor = MaterialTheme.colorScheme.onBackground
     ) { paddingValues ->
         SetupContent(
+            onFinished = onFinished,
             paddingValues = paddingValues,
             viewModel = viewModel,
         )
@@ -84,6 +83,7 @@ fun OnboardListScreen() {
  */
 @Composable
 private fun SetupContent(
+    onFinished: () -> Unit,
     paddingValues: PaddingValues,
     viewModel: OnboardViewModel
 ) {
@@ -94,6 +94,7 @@ private fun SetupContent(
         .padding(paddingValues)
     ){
         HandleUiState(
+            onFinished = onFinished,
             uiState = uiState,
             viewModel = viewModel
         )
@@ -111,6 +112,7 @@ private fun SetupContent(
  */
 @Composable
 private fun HandleUiState(
+    onFinished: () -> Unit,
     uiState: OnboardViewModel.UiState,
     viewModel: OnboardViewModel
 ) {
@@ -131,7 +133,9 @@ private fun HandleUiState(
                 )
             }
 
-            OnboardViewModel.UiState.OnboardingComplete -> TODO()
+            OnboardViewModel.UiState.OnboardingComplete -> {
+                onFinished()
+            }
         }
     }
 }

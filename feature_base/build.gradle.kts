@@ -31,6 +31,7 @@ dependencies {
     api(libs.bundles.room)
     api(libs.hilt)
     api(libs.datastorePreferences)
+    api(libs.systemUiController)
     kapt(libs.hiltCompiler)
 
     // Import the Firebase BoM
