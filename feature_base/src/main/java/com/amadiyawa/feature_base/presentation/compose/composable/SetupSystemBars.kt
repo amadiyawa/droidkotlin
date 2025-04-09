@@ -9,14 +9,14 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
  * Configures the system bars' appearance for the application.
  *
  * This function sets the color of the system bars (status bar and navigation bar)
- * to match the application's background color, ensuring a cohesive visual experience.
+ * to match the application's surface color, ensuring a cohesive visual experience.
  * It uses the [rememberSystemUiController] to control the system UI and applies
  * the color using a [SideEffect].
  */
 @Composable
 fun SetupSystemBars() {
     val systemUiController = rememberSystemUiController()
-    val background = MaterialTheme.colorScheme.background
+    val surface = MaterialTheme.colorScheme.surface
 
-    SideEffect { systemUiController.setSystemBarsColor(color = background) }
+    SideEffect { systemUiController.setSystemBarsColor(color = surface) }
 }

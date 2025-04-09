@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.amadiyawa.feature_base.common.res.Dimen
-import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleLarge
 import com.amadiyawa.paygo.base.R
 
 @OptIn(ExperimentalMaterial3Api::class)

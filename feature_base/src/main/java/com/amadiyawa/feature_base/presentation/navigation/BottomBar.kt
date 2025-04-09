@@ -1,5 +1,6 @@
 package com.amadiyawa.feature_base.presentation.navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -8,9 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.amadiyawa.feature_base.presentation.compose.composable.barItemColors
+import com.amadiyawa.feature_base.presentation.theme.dimension
 
 /**
  * Composable function that creates a custom bottom navigation bar.
@@ -43,18 +46,21 @@ fun CustomBottomBar(
             val title = stringResource(id = destination.title)
             NavigationBarItem(
                 selected = selected,
-                onClick = {
-                    if (!selected) {
-                        onNavigate(destination)
-                    }
-                },
+                onClick = { if (!selected) { onNavigate(destination) } },
                 icon = {
                     Icon(
                         imageVector = if (selected) destination.selectedIcon else destination.unselectedIcon,
                         contentDescription = title
                     )
                 },
-                label = { Text(text = title) },
+                label = {
+                    Text(
+                        modifier = Modifier.padding(top = MaterialTheme.dimension.gridHalf),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+                        text = title
+                    )
+                },
                 alwaysShowLabel = true,
                 colors = barItemColors()
             )
