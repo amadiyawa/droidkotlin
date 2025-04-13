@@ -25,6 +25,7 @@ import com.amadiyawa.feature_base.common.res.Dimen
 data class TextFieldText(
     val value: String,
     val label: String,
+    val placeholder: String = "",
     val errorMessage: String? = null
 )
 
@@ -67,6 +68,7 @@ fun DefaultTextField(
                 )
             },
             value = text.value,
+            placeholder = { Text(text.placeholder) },
             onValueChange = onValueChange,
             keyboardOptions = config.keyboardOptions,
             keyboardActions = config.keyboardActions,

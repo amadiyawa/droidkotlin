@@ -19,11 +19,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -34,10 +34,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.presentation.screen.welcome.AuthFooter
+import com.amadiyawa.feature_auth.presentation.state.AuthStatus
 import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.feature_base.presentation.compose.composable.AppTextButton
 import com.amadiyawa.feature_base.presentation.compose.composable.DefaultTextField
 import com.amadiyawa.feature_base.presentation.compose.composable.FilledButton
+import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation
 import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyMedium
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldConfig
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldText
@@ -46,10 +48,6 @@ import com.amadiyawa.feature_base.presentation.compose.composable.Toolbar
 import com.amadiyawa.feature_base.presentation.compose.composable.TrailingIconConfig
 import com.amadiyawa.feature_base.presentation.theme.dimension
 import org.koin.androidx.compose.koinViewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
-import com.amadiyawa.feature_auth.presentation.state.AuthStatus
-import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation
 
 @Composable
 internal fun SignInScreen(
@@ -163,10 +161,13 @@ private fun SignInContent(
     ) {
         SignInHeader()
 
+        Spacer(modifier = Modifier.weight(1f))
+
         DefaultTextField(
             text = TextFieldText(
                 value = form.value.identifier.value,
                 label = stringResource(R.string.identifier),
+                placeholder = stringResource(R.string.identifier_placeholder),
                 errorMessage = if (!form.value.identifier.validation.isValid) form.value.identifier.validation.errorMessage else null,
             ),
             onValueChange = { viewModel.onIdentifierChanged(it) },
@@ -189,6 +190,7 @@ private fun SignInContent(
             text = TextFieldText(
                 label = stringResource(R.string.password),
                 value = form.value.password.value,
+                placeholder = stringResource(R.string.password_placeholder),
                 errorMessage = if (!form.value.password.validation.isValid) form.value.password.validation.errorMessage else null,
             ),
             onValueChange = { viewModel.onPasswordChanged(it) },
