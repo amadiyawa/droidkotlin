@@ -4,4 +4,15 @@
     <string name="show_more">Show more</string>
     <string name="empty_toolbar_title"> </string>
     <string name="back">Back</string>
+
+    <string name="invalid_identifier">Invalid identifier</string>
+    <string name="error_password_length">The password must contain at least %d characters.</string>
+    <string name="add_uppercase">Add at least an uppercase letter.</string>
+    <string name="add_lowercase">Add at least a lowercase letter.</string>
+    <string name="add_digit">Add at least a digit.</string>
+    <string name="add_special_character">Add at least a special character.</string>
+    <string name="error_password_space">The password must not contain space.</string>
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="clear_text">Clear text</string>
 </resources>

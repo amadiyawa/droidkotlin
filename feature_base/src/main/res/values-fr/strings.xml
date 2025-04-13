@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="data_not_found">Données non trouvées</string>
+    <string name="show_less">Montrer moins</string>
+    <string name="show_more">Montrer plus</string>
+    <string name="empty_toolbar_title"> </string>
+    <string name="back">Retour</string>
+
+    <string name="invalid_identifier">Identifiant invalide</string>
+    <string name="error_password_length">Le mot de passe doit contenir au moins %d caractères.</string>
+    <string name="add_uppercase">Ajouter au moins une majuscule.</string>
+    <string name="add_lowercase">Ajouter au moins une minuscule.</string>
+    <string name="add_digit">Ajouter au moins un chiffre.</string>
+    <string name="add_special_character">Ajouter au moins un caractère spécial.</string>
+    <string name="error_password_space">Le mot de passe ne doit pas contenir d\'espace.</string>
+    <string name="hide_password">Masquer le mot de passe</string>
+    <string name="show_password">Afficher le mot de passe</string>
+    <string name="clear_text">Effacer le texte</string>
+</resources>

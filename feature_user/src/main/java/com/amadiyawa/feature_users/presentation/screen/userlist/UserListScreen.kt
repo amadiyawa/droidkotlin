@@ -27,7 +27,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -44,7 +43,6 @@ import com.amadiyawa.feature_users.domain.model.User
 import com.amadiyawa.feature_users.presentation.screen.compose.composable.FloatingActionButton
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserListScreen(
     onUserClick: (String) -> Unit,
@@ -75,7 +73,7 @@ fun UserListScreen(
 
 @Composable
 private fun SetUpToolbar() {
-    Toolbar(centered = false, title = "Random users", null)
+    Toolbar(centered = false, title = "Random users")
 }
 
 @Composable

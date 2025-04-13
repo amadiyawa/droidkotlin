@@ -32,7 +32,7 @@ object Dimen {
 
     // Image dimensions
     object Image {
-        val medium = 100.dp
+        val medium = 96.dp
         val large = 130.dp
         val extraLarge = 150.dp
     }

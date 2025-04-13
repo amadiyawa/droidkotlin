@@ -4,8 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,7 +25,7 @@ import com.amadiyawa.feature_base.common.res.Dimen
 data class TextFieldText(
     val value: String,
     val label: String,
-    val errorMessage: String = ""
+    val errorMessage: String? = null
 )
 
 data class TextFieldConfig(
@@ -38,6 +38,7 @@ data class TextFieldConfig(
 
 @Composable
 fun DefaultTextField(
+    modifier: Modifier = Modifier,
     text: TextFieldText,
     onValueChange: (String) -> Unit,
     onClearText: () -> Unit,
@@ -45,21 +46,19 @@ fun DefaultTextField(
     config: TextFieldConfig = TextFieldConfig()
 ) {
     config.trailingIconConfig.text = text.value
-    Column(
-        verticalArrangement = Arrangement.spacedBy(Dimen.Spacing.medium)
-    ) {
+    Column(verticalArrangement = Arrangement.spacedBy(Dimen.Spacing.medium)) {
         TextLabelLarge(text = text.label)
 
         TextField(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
-                .defaultMinSize(minHeight = config.height)
+                .requiredHeight(config.height)
                 .border(
                     width = Dimen.Spacing.extraSmall,
                     color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(Dimen.Size.extraSmall)
+                    shape = RoundedCornerShape(Dimen.Size.small)
                 ),
-            shape = RoundedCornerShape(Dimen.Size.extraSmall),
+            shape = RoundedCornerShape(Dimen.Size.small),
             trailingIcon = {
                 GetTrailingIcon(
                     config = config.trailingIconConfig,
@@ -75,12 +74,14 @@ fun DefaultTextField(
             colors = getTextFieldColors()
         )
 
-        AnimatedVisibility(text.errorMessage.isNotEmpty()) {
-            Text(
-                text = text.errorMessage,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodySmall
-            )
+        AnimatedVisibility(text.errorMessage != null) {
+            text.errorMessage?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_onboarding.data.repository
 
-import com.amadiyawa.feature_base.domain.result.Result
+import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_onboarding.data.util.loadOnboardList
 import com.amadiyawa.feature_onboarding.domain.model.Onboard
 import com.amadiyawa.feature_onboarding.domain.repository.OnboardRepository
@@ -11,9 +11,9 @@ import com.amadiyawa.feature_onboarding.domain.repository.OnboardRepository
  *  Class in domain/model an its Interface OnboardRepository
  */
 internal class OnboardRepositoryImpl : OnboardRepository {
-    override suspend fun getOnboardList(): Result<List<Onboard>> {
+    override suspend fun getOnboardList(): OperationResult<List<Onboard>> {
 
         // The Result.Success is used to return the Data
-        return Result.Success(loadOnboardList())
+        return OperationResult.Success(loadOnboardList())
     }
 }

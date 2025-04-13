@@ -1,13 +1,12 @@
 package com.amadiyawa.feature_base.presentation.compose.composable
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -17,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.presentation.theme.dimension
 import com.amadiyawa.paygo.base.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,11 +24,12 @@ import com.amadiyawa.paygo.base.R
 fun Toolbar(
     centered: Boolean,
     title: String = stringResource(id = R.string.empty_toolbar_title),
-    onBackClick: (() -> Unit)?,
+    onBackClick: (() -> Unit) = {},
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
 ){
     if (centered) {
         CenterAlignedTopAppBar(
+            modifier = Modifier.padding(horizontal = MaterialTheme.dimension.gridTwo),
             title = {
                 TextTitleLarge(
                     text = title,
@@ -40,11 +41,17 @@ fun Toolbar(
                 containerColor = backgroundColor
             ),
             navigationIcon = {
-                IconButton(onClick = onBackClick!!) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.back),
-                        tint = MaterialTheme.colorScheme.onSurface
+                Row(modifier = Modifier.padding(horizontal = MaterialTheme.dimension.gridTwo)) {
+                    CircularButton(
+                        circularButtonParams = CircularButtonParams(
+                            onClick = onBackClick,
+                            enabled = true,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            description = stringResource(id = R.string.back),
+                        ),
+                        size = MaterialTheme.dimension.gridFour,
+                        color = MaterialTheme.colorScheme.surface,
+                        onColor = MaterialTheme.colorScheme.primary
                     )
                 }
             },
@@ -61,9 +68,7 @@ fun Toolbar(
             actions = {
 
             },
-            colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = backgroundColor
-            ),
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
             windowInsets = WindowInsets(0, 0, 0, 0)
         )
     }

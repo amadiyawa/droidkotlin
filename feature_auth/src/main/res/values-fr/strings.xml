@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_welcome">Bienvenue 🚀</string>
+    <string name="auth_welcome_description">Un kit de démarrage Android moderne, modulaire et extensible. Conçu pour accélérer le développement d\'applications.</string>
+    <string name="continue_with">Ou continuez avec</string>
+
+    <string name="register">S\'inscrire</string>
+    <string name="email">Email</string>
+
+    <string name="confirm_password">Confirmer le mot de passe</string>
+
+    <string name="register_button">S\'inscrire</string>
+    <string name="error_invalid_email">Email invalide</string>
+    <string name="error_empty_password">Le mot de passe ne peut pas être vide</string>
+
+    <string name="welcome_back">Content de vous revoir !</string>
+    <string name="welcome_message">Connectez-vous pour continuer</string>
+    <string name="identifier">Identifiant</string>
+    <string name="identifier_placeholder">Email, téléphone ou pseudo</string>
+    <string name="invalid_identifier">Identifiant invalide</string>
+    <string name="password">Mot de passe</string>
+    <string name="password_placeholder">Entrez votre mot de passe</string>
+    <string name="forgot_password">Mot de passe oublié ?</string>
+    <string name="login">Connexion</string>
+</resources>

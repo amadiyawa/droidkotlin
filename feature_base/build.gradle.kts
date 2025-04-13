@@ -32,6 +32,7 @@ dependencies {
     api(libs.hilt)
     api(libs.datastorePreferences)
     api(libs.systemUiController)
+    api(libs.libphonenumber)
     kapt(libs.hiltCompiler)
 
     // Import the Firebase BoM

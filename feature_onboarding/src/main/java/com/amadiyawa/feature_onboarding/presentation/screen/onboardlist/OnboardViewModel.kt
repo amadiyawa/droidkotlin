@@ -6,7 +6,7 @@ import com.amadiyawa.feature_base.presentation.viewmodel.BaseAction
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseState
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseViewModel
 import com.amadiyawa.feature_onboarding.domain.usecase.GetOnboardListUseCase
-import com.amadiyawa.feature_base.domain.result.Result
+import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_onboarding.domain.model.Onboard
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -31,18 +31,18 @@ internal class OnboardViewModel(
             getOnboardListUseCase().also { result ->
                 Timber.d("getQuestionListUseCase result: $result")
                 val action = when (result) {
-                    is Result.Success -> {
-                        if (result.value.isEmpty()) {
+                    is OperationResult.Success -> {
+                        if (result.data.isEmpty()) {
                             Action.OnboardListLoadFailure
                         } else {
-                            Action.OnboardListLoadSuccess(result.value)
+                            Action.OnboardListLoadSuccess(result.data)
                         }
                     }
-                    is Result.Failure -> {
+                    is OperationResult.Failure -> {
                         Action.OnboardListLoadFailure
                     }
 
-                    is Result.Exception -> Action.OnboardListLoadFailure
+                    is OperationResult.Error -> Action.OnboardListLoadFailure
                 }
                 sendAction(action)
             }

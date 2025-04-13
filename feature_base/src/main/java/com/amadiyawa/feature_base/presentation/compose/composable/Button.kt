@@ -3,6 +3,8 @@ package com.amadiyawa.feature_base.presentation.compose.composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -64,16 +67,16 @@ fun AppOutlinedButton(
     onClick: () -> Unit,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
+        contentColor = MaterialTheme.colorScheme.onBackground,
         disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
-        disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f)
+    disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f)
     )
 ) {
     OutlinedButton(
         modifier = modifier
             .border(
                 width = Dimen.Spacing.extraSmall,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = RoundedCornerShape(Dimen.Size.medium)
             ),
         onClick = { onClick() },
@@ -148,13 +151,33 @@ fun CircularButton(
         onClick = circularButtonParams.onClick,
         enabled = circularButtonParams.enabled,
         modifier = modifier
-            .size(size)
+            .requiredSize(size)
             .background(color = color, shape = CircleShape)
     ) {
         Icon(
             imageVector = circularButtonParams.imageVector,
             contentDescription = circularButtonParams.description,
             tint = onColor
+        )
+    }
+}
+
+@Composable
+fun SocialButton(
+    modifier: Modifier = Modifier,
+    painter: Painter,
+    description: String = "",
+    onClick: () -> Unit,
+    size: Dp = MaterialTheme.dimension.gridSix,
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier.size(size)
+    ) {
+        Icon(
+            painter = painter,
+            contentDescription = description,
+            tint = Color.Unspecified
         )
     }
 }

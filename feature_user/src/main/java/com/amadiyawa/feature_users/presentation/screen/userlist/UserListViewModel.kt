@@ -3,7 +3,7 @@ package com.amadiyawa.feature_users.presentation.screen.userlist
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.amadiyawa.feature_base.domain.result.Result
+import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseAction
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseState
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseViewModel
@@ -40,22 +40,22 @@ internal class UserListViewModel(
         job = viewModelScope.launch {
             getUserListUseCase(currentPage, 10).also { result ->
                 val action = when (result) {
-                    is Result.Success -> {
-                        if (result.value.isEmpty()) {
+                    is OperationResult.Success -> {
+                        if (result.data.isEmpty()) {
                             Action.UserListLoadFailure
                         } else {
-                            Timber.tag("UserListViewModel").d("getUserList: %s", result.value)
-                            Action.UserListLoadSuccess(result.value)
+                            Timber.tag("UserListViewModel").d("getUserList: %s", result.data)
+                            Action.UserListLoadSuccess(result.data)
                         }
                     }
-                    is Result.Failure -> {
+                    is OperationResult.Failure -> {
                         Action.UserListLoadFailure
                     }
 
-                    is Result.Exception -> TODO()
+                    is OperationResult.Error -> TODO()
                 }
                 sendAction(action)
-                if (result is Result.Success) {
+                if (result is OperationResult.Success) {
                     currentPage++
                 }
             }

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
@@ -327,7 +328,7 @@ private fun OnboardFooter(
                     )
                 } else {
                     FilledButton(
-                        modifier = Modifier.heightIn(MaterialTheme.dimension.gridSix),
+                        modifier = Modifier.requiredHeight(MaterialTheme.dimension.gridSix),
                         onClick = { viewModel.skipOnboarding() },
                         text = stringResource(id = R.string.get_started)
                     )

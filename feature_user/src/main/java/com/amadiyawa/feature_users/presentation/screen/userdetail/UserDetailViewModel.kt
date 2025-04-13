@@ -2,7 +2,7 @@ package com.amadiyawa.feature_users.presentation.screen.userdetail
 
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
-import com.amadiyawa.feature_base.domain.result.Result
+import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseAction
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseState
 import com.amadiyawa.feature_base.presentation.viewmodel.BaseViewModel
@@ -25,11 +25,11 @@ internal class UserDetailViewModel(
         viewModelScope.launch {
             getUserDetailUseCase(uuid).also { result ->
                 val action = when (result) {
-                    is Result.Success -> {
-                        Action.UserDetailSuccess(result.value)
+                    is OperationResult.Success -> {
+                        Action.UserDetailSuccess(result.data)
                     }
-                    is Result.Failure -> Action.UserDetailFailure
-                    is Result.Exception -> TODO()
+                    is OperationResult.Failure -> Action.UserDetailFailure
+                    is OperationResult.Error -> TODO()
                 }
                 sendAction(action)
             }

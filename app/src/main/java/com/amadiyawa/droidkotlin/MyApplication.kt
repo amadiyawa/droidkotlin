@@ -1,6 +1,7 @@
 package com.amadiyawa.droidkotlin
 
 import android.app.Application
+import com.amadiyawa.feature_auth.featureAuthModule
 import com.amadiyawa.feature_base.featureBaseModule
 import com.amadiyawa.feature_onboarding.featureOnboardingModule
 import com.amadiyawa.feature_users.featureUserModule
@@ -31,6 +32,7 @@ class MyApplication: Application() {
             modules(appModule)
             modules(featureBaseModule)
             modules(featureOnboardingModule)
+            modules(featureAuthModule)
             modules(featureUserModule)
         }
     }

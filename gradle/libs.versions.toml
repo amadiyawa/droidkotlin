@@ -43,6 +43,7 @@ googleServices = "4.4.2"
 firebaseBom = "33.11.0"
 datastorePreferences = "1.1.4"
 systemUiController = "0.28.0"
+libphonenumber = "8.2.0"
 
 spotless = "6.25.0"
 
@@ -108,6 +109,7 @@ firebaseAnalytics = { group = "com.google.firebase", name = "firebase-analytics"
 firebaseFirestore = { group = "com.google.firebase", name = "firebase-firestore" }
 datastorePreferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
 systemUiController = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "systemUiController" }
+libphonenumber = { group = "com.googlecode.libphonenumber", name = "libphonenumber", version.ref = "libphonenumber" }
 
 konsist = "com.lemonappdev:konsist:0.16.0"
 

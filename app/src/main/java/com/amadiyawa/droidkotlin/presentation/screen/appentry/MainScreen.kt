@@ -10,6 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import com.amadiyawa.droidkotlin.presentation.navigation.MainScaffoldedApp
+import com.amadiyawa.feature_auth.presentation.navigation.ForgotPasswordNavigation
+import com.amadiyawa.feature_auth.presentation.navigation.OtpVerificationNavigation
+import com.amadiyawa.feature_auth.presentation.navigation.SignInNavigation
+import com.amadiyawa.feature_auth.presentation.navigation.SignUpNavigation
+import com.amadiyawa.feature_auth.presentation.navigation.WelcomeNavigation
+import com.amadiyawa.feature_auth.presentation.navigation.authGraph
 import com.amadiyawa.feature_base.common.util.getMainStartDestination
 import com.amadiyawa.feature_base.presentation.compose.composable.SetupSystemBars
 import com.amadiyawa.feature_base.presentation.navigation.AppNavGraphProvider
@@ -40,6 +46,7 @@ fun MainScreen(
     val graphProviders = getKoin().getAll<AppNavGraphProvider>()
     val startDestination = rememberSaveable { mutableStateOf(OnboardListNavigation.route) }
     val mainAppGraphRoute = "main_container"
+    val authGraphRoute = "auth"
 
     AppTheme {
         SetupSystemBars()
@@ -52,12 +59,33 @@ fun MainScreen(
             ) {
                 // ✅ 1. Onboarding
                 onboardListGraph(onFinished = {
-                    navController.navigate(mainAppGraphRoute) {
+                    navController.navigate(authGraphRoute) {
                         popUpTo(0) { inclusive = true }
                     }
                 })
 
-                // ✅ 2. Main app graph
+                // ✅ 2. Auth
+                authGraph(
+                    onSignIn = { navController.navigate(SignInNavigation.route) },
+                    onNavigateToSignUp = { navController.navigate(SignUpNavigation.route) },
+                    onNavigateToForgotPassword = { navController.navigate(ForgotPasswordNavigation.route) },
+                    onSignUpSuccess = { recipient ->
+                        navController.navigate(OtpVerificationNavigation.createRoute(recipient))
+                    },
+                    onOtpValidated = {
+                        navController.navigate(mainAppGraphRoute) {
+                            popUpTo("auth") { inclusive = true }
+                        }
+                    },
+                    onOtpFailed = { navController.popBackStack() },
+                    onResetPasswordSuccess = {
+                        navController.navigate(SignInNavigation.route) {
+                            popUpTo(WelcomeNavigation.destination) { inclusive = false }
+                        }
+                    }
+                )
+
+                // ✅ 3. Main app graph
                 navigation(
                     startDestination = getMainStartDestination(graphProviders),
                     route = mainAppGraphRoute

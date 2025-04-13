@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_onboarding.domain.usecase
 
-import com.amadiyawa.feature_base.domain.result.Result
+import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_onboarding.domain.model.Onboard
 import com.amadiyawa.feature_onboarding.domain.repository.OnboardRepository
 
@@ -14,7 +14,7 @@ import com.amadiyawa.feature_onboarding.domain.repository.OnboardRepository
  * @property onboardRepository The repository used to fetch the onboard list.
  */
 internal class GetOnboardListUseCase(private val onboardRepository: OnboardRepository) {
-    suspend operator fun invoke(): Result<List<Onboard>> {
+    suspend operator fun invoke(): OperationResult<List<Onboard>> {
         return onboardRepository.getOnboardList()
     }
 }

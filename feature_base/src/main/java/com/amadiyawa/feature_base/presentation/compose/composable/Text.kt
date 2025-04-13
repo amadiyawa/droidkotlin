@@ -35,7 +35,7 @@ fun TextHeadlineMedium(
     modifier: Modifier = Modifier,
     fontWeight: FontWeight = FontWeight.Normal,
     color: Color = MaterialTheme.colorScheme.onSurface,
-    textAlign: TextAlign = TextAlign.Start
+    textAlign: TextAlign = TextAlign.Unspecified
 ) {
     Text(
         text = text,
@@ -119,16 +119,42 @@ fun TextBodyLarge(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.onSurface,
-    textAlign: TextAlign = TextAlign.Start
-
+    textAlign: TextAlign = TextAlign.Unspecified,
+    textDecoration: TextDecoration = TextDecoration.None,
+    fontWeight: FontWeight = FontWeight.Normal,
+    fontSize: TextUnit = TextUnit.Unspecified,
 ) {
     Text(
         text = text,
         modifier = modifier,
         style = MaterialTheme.typography.bodyLarge,
         color = color,
-        textAlign = textAlign
+        textAlign = textAlign,
+        textDecoration = textDecoration,
+        fontWeight = fontWeight,
+        fontSize = fontSize,
+    )
+}
 
+@Composable
+fun TextBodyMedium(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.onSurface,
+    textAlign: TextAlign = TextAlign.Start,
+    textDecoration: TextDecoration = TextDecoration.None,
+    fontWeight: FontWeight = FontWeight.Normal,
+    fontSize: TextUnit = TextUnit.Unspecified,
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        style = MaterialTheme.typography.bodyMedium,
+        color = color,
+        textAlign = textAlign,
+        textDecoration = textDecoration,
+        fontWeight = fontWeight,
+        fontSize = fontSize,
     )
 }
 
