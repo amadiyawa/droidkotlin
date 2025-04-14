@@ -3,7 +3,7 @@ package com.amadiyawa.feature_auth.presentation.screen.signin
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import com.amadiyawa.feature_auth.domain.model.SignInForm
-import com.amadiyawa.feature_auth.domain.model.SignInRequest
+import com.amadiyawa.feature_auth.data.datasource.api.model.SignInRequest
 import com.amadiyawa.feature_auth.domain.usecase.SignInUseCase
 import com.amadiyawa.feature_auth.presentation.state.AuthStatus
 import com.amadiyawa.feature_base.domain.model.ValidatedField

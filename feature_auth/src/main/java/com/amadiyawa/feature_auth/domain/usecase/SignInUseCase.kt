@@ -1,7 +1,7 @@
 package com.amadiyawa.feature_auth.domain.usecase
 
 import com.amadiyawa.feature_auth.domain.model.SignIn
-import com.amadiyawa.feature_auth.domain.model.SignInRequest
+import com.amadiyawa.feature_auth.data.datasource.api.model.SignInRequest
 import com.amadiyawa.feature_auth.domain.repository.AuthRepository
 import com.amadiyawa.feature_base.domain.result.OperationResult
 
