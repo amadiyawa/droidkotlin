@@ -1,9 +1,11 @@
 package com.amadiyawa.feature_auth.domain.model
 
-data class SignUpRequest(
+data class SignUp(
+    val id: String,
     val username: String,
     val email: String,
-    val password: String,
+    val phone: String?,
     val fullName: String?,
-    val phone: String?
+    val createdAt: String,
+    val updatedAt: String
 )
