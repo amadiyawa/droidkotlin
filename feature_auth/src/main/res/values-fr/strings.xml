@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auth_welcome">Bienvenue 🚀</string>
-    <string name="auth_welcome_description">Un kit de démarrage Android moderne, modulaire et extensible. Conçu pour accélérer le développement d\'applications.</string>
+    <string name="auth_welcome_title">Bienvenue sur DroidKotlin</string>
+    <string name="auth_welcome_description">Lancez votre développement Android avec les bons outils et des pratiques modernes.</string>
     <string name="continue_with">Ou continuez avec</string>
 
     <string name="register">S\'inscrire</string>
@@ -22,4 +22,24 @@
     <string name="password_placeholder">Entrez votre mot de passe</string>
     <string name="forgot_password">Mot de passe oublié ?</string>
     <string name="login">Connexion</string>
+
+    <string name="signin_description">Accédez à votre tableau de bord DroidKotlin et continuez à créer des applications incroyables.</string>
+
+    <string name="signup_title">Créer votre compte</string>
+    <string name="signup_description">Rejoignez DroidKotlin et commencez à créer des apps Android évolutives en un rien de temps.</string>
+    <string name="fullname">Nom complet</string>
+    <string name="fullname_placeholder">Amadou Iyawa</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="username_placeholder">amadiyawa</string>
+    <string name="email_placeholder">amadiyawa@yahoo.com</string>
+    <string name="phone">Numéro de téléphone</string>
+    <string name="phone_placeholder">699182482</string>
+    <string name="confirm_password_placeholder">Confirmez votre mot de passe</string>
+
+    <string name="otp_title">Vérifiez vos %s</string>
+    <string name="otp_description_email">Veuillez entrer le code que nous avons envoyé à votre adresse e-mail %s.</string>
+    <string name="otp_description_phone">Veuillez entrer le code que nous avons envoyé à votre numéro de téléphone %s.</string>
+    <string name="verify">Vérifier</string>
+    <string name="resend">Renvoyer</string>
+    <string name="resend_timer_separator"> dans </string>
 </resources>

@@ -5,12 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SignUpApiModel(
-    @SerialName("id") val id: String,
-    @SerialName("username") val username: String,
-    @SerialName("email") val email: String,
-    @SerialName("phone") val phone: String? = null,
-    @SerialName("full_name") val fullName: String? = null,
-    @SerialName("created_at") val createdAt: String,
-    @SerialName("updated_at") val updatedAt: String
+    @SerialName("verificationId") val verificationId: String,
+    @SerialName("recipient") val recipient: String,
+    @SerialName("expiresIn") val expiresIn: Int
 )
 

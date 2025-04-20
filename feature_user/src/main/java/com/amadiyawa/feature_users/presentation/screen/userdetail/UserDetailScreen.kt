@@ -58,7 +58,7 @@ fun UserDetailScreen(
     onBackClick: () -> Unit,
     uuid: String
 ) {
-    val viewModel: UserDetailViewModel = koinViewModel()
+    val viewModel: UserDetailViewModelOld = koinViewModel()
     viewModel.onEnter(uuid)
 
     Scaffold(
@@ -79,10 +79,10 @@ private fun SetUpToolbar(onBackClick: () -> Unit) {
 
 @Composable
 private fun SetupContent(
-    viewModel: UserDetailViewModel,
+    viewModel: UserDetailViewModelOld,
     paddingValues: PaddingValues,
 ) {
-    val uiState: UserDetailViewModel.UiState by viewModel.uiStateFlow.collectAsStateWithLifecycle()
+    val uiState: UserDetailViewModelOld.UiState by viewModel.uiStateFlow.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -95,19 +95,19 @@ private fun SetupContent(
 
 @Composable
 private fun HandleUiState(
-    uiState: UserDetailViewModel.UiState,
+    uiState: UserDetailViewModelOld.UiState,
 ) {
     uiState.let {
         when (it) {
-            UserDetailViewModel.UiState.Error -> {
+            UserDetailViewModelOld.UiState.Error -> {
                 DataNotFoundAnim()
             }
-            UserDetailViewModel.UiState.Loading -> {
+            UserDetailViewModelOld.UiState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     LoadingAnimation(visible = true)
                 }
             }
-            is UserDetailViewModel.UiState.Content -> {
+            is UserDetailViewModelOld.UiState.Content -> {
                 val user = it.user
                 UserDetail(user = user)
             }

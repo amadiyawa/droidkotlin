@@ -4,24 +4,24 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.amadiyawa.feature_base.domain.result.OperationResult
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseAction
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseState
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseViewModel
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.OldBaseAction
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseState
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.OldBaseViewModel
 import com.amadiyawa.feature_users.domain.model.User
 import com.amadiyawa.feature_users.domain.usecase.GetUserListUseCase
-import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModel.Action
-import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModel.UiState
-import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModel.UiState.Content
-import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModel.UiState.Error
-import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModel.UiState.Loading
+import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModelOld.ActionOld
+import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModelOld.UiState
+import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModelOld.UiState.Content
+import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModelOld.UiState.Error
+import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModelOld.UiState.Loading
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-internal class UserListViewModel(
+internal class UserListViewModelOld(
     private val savedStateHandle: SavedStateHandle,
     private val getUserListUseCase: GetUserListUseCase,
-) : BaseViewModel<UiState, Action>(Loading) {
+) : OldBaseViewModel<UiState, ActionOld>(Loading) {
 
     private var currentPage = 1
 
@@ -42,14 +42,14 @@ internal class UserListViewModel(
                 val action = when (result) {
                     is OperationResult.Success -> {
                         if (result.data.isEmpty()) {
-                            Action.UserListLoadFailure
+                            ActionOld.UserListLoadFailure
                         } else {
                             Timber.tag("UserListViewModel").d("getUserList: %s", result.data)
-                            Action.UserListLoadSuccess(result.data)
+                            ActionOld.UserListLoadSuccess(result.data)
                         }
                     }
                     is OperationResult.Failure -> {
-                        Action.UserListLoadFailure
+                        ActionOld.UserListLoadFailure
                     }
 
                     is OperationResult.Error -> TODO()
@@ -62,8 +62,8 @@ internal class UserListViewModel(
         }
     }
 
-    internal sealed interface Action : BaseAction<UiState> {
-        data class UserListLoadSuccess(private val newUsers: List<User>) : Action {
+    internal sealed interface ActionOld : OldBaseAction<UiState> {
+        data class UserListLoadSuccess(private val newUsers: List<User>) : ActionOld {
             override fun reduce(state: UiState): UiState {
                 return if (state is Content) {
                     // If the current state is Content, append the new users to the existing list
@@ -75,7 +75,7 @@ internal class UserListViewModel(
             }
         }
 
-        data object UserListLoadFailure : Action {
+        data object UserListLoadFailure : ActionOld {
             override fun reduce(state: UiState) = Error
         }
     }

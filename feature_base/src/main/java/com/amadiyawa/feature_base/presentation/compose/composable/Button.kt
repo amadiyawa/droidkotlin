@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.feature_base.presentation.theme.dimension
+import kotlin.invoke
 
 data class TextButtonStyle(
     val textAlign: TextAlign = TextAlign.Start,
@@ -95,6 +96,7 @@ fun AppOutlinedButton(
  * @param text The text to be displayed on the button.
  * @param color The color of the text. Defaults to the primary color in the MaterialTheme.
  * @param textDecoration The text decoration to be applied to the text. Defaults to none.
+ * @param enabled Indicates whether the button is enabled. Defaults to true.
  */
 @Composable
 fun AppTextButton(
@@ -102,12 +104,17 @@ fun AppTextButton(
     onClick: () -> Unit,
     text: String,
     color: Color = MaterialTheme.colorScheme.primary,
-    textDecoration: TextDecoration = TextDecoration.None
+    textDecoration: TextDecoration = TextDecoration.None,
+    enabled: Boolean = true
 ) {
     Text(
         text = text,
-        modifier = modifier.clickable { onClick.invoke() },
-        color = color,
+        modifier = if (enabled) {
+            modifier.clickable { onClick.invoke() }
+        } else {
+            modifier
+        },
+        color = if (enabled) color else MaterialTheme.colorScheme.onSurfaceVariant,
         style = MaterialTheme.typography.bodyLarge.copy(
             textDecoration = textDecoration
         )

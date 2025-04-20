@@ -1,35 +1,48 @@
 package com.amadiyawa.feature_base.domain.usecase
 
 import android.content.Context
-import com.amadiyawa.feature_base.common.util.PhoneNumberValidator
 import com.amadiyawa.feature_base.domain.model.FieldValidationResult
-import com.amadiyawa.feature_base.domain.validation.ValidationPatterns
 import com.amadiyawa.paygo.base.R
 
 /**
- * Use case for validating user identifiers such as email, username, or phone number.
+ * Use case for validating an identifier.
  *
- * This class provides a method to validate an input string against predefined patterns
- * for email, username, or phone number. If the input does not match any of these patterns,
- * it returns a validation failure with an appropriate error message.
+ * This class provides functionality to validate an input string as an identifier.
+ * It supports validation for email, username, and phone number using the respective
+ * validation use cases. If the input does not match any valid identifier format,
+ * an error message is returned.
  *
- * @property context The Android context used to retrieve localized error messages.
+ * @property validateEmail Use case for validating email addresses.
+ * @property validateUsername Use case for validating usernames.
+ * @property validatePhone Use case for validating phone numbers.
+ * @property context Android context used to retrieve localized error messages.
  */
-class ValidateIdentifierUseCase(private val context: Context) {
+class ValidateIdentifierUseCase(
+    private val validateEmail: ValidateEmailUseCase,
+    private val validateUsername: ValidateUsernameUseCase,
+    private val validatePhone: ValidatePhoneUseCase,
+    private val context: Context
+) {
 
     /**
-     * Executes the validation logic for the given input.
+     * Executes the identifier validation process.
      *
-     * @param input The identifier to validate (e.g., email, username, or phone number).
-     * @return A [FieldValidationResult] indicating whether the input is valid.
-     *         If invalid, it includes an error message.
+     * This method validates the given input string against multiple identifier formats
+     * (email, username, and phone number). It returns a `FieldValidationResult` indicating
+     * whether the input is valid or not. If the input is invalid, an error message is included.
+     *
+     * @param input The input string to be validated.
+     * @return A `FieldValidationResult` object containing the validation result and an optional error message.
      */
     fun execute(input: String): FieldValidationResult {
         return when {
-            input.matches(ValidationPatterns.EMAIL) -> FieldValidationResult(true)
-            input.matches(ValidationPatterns.USERNAME) -> FieldValidationResult(true)
-            PhoneNumberValidator.isValid(input) -> FieldValidationResult(true)
-            else -> FieldValidationResult(false, context.getString(R.string.invalid_identifier))
+            validateEmail.execute(input).isValid -> FieldValidationResult(true)
+            validateUsername.execute(input).isValid -> FieldValidationResult(true)
+            validatePhone.execute(input).isValid -> FieldValidationResult(true)
+            else -> FieldValidationResult(
+                isValid = false,
+                errorMessage = context.getString(R.string.invalid_identifier)
+            )
         }
     }
 }

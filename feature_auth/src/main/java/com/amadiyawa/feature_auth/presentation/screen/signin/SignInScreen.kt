@@ -30,20 +30,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.presentation.screen.welcome.AuthFooter
 import com.amadiyawa.feature_auth.presentation.state.AuthStatus
 import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.feature_base.presentation.compose.composable.AppTextButton
+import com.amadiyawa.feature_base.presentation.compose.composable.AuthHeader
 import com.amadiyawa.feature_base.presentation.compose.composable.DefaultTextField
 import com.amadiyawa.feature_base.presentation.compose.composable.FilledButton
 import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation
-import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyMedium
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldConfig
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldText
-import com.amadiyawa.feature_base.presentation.compose.composable.TextHeadlineSmall
 import com.amadiyawa.feature_base.presentation.compose.composable.Toolbar
 import com.amadiyawa.feature_base.presentation.compose.composable.TrailingIconConfig
 import com.amadiyawa.feature_base.presentation.theme.dimension
@@ -51,7 +49,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun SignInScreen(
-    viewModel: SignInViewModel = koinViewModel(),
+    viewModel: SignInViewModelOld = koinViewModel(),
     onSignInSuccess: () -> Unit,
     onForgotPassword: () -> Unit,
 ) {
@@ -77,12 +75,12 @@ internal fun SignInScreen(
 
 @Composable
 private fun SetupContent(
-    viewModel: SignInViewModel,
+    viewModel: SignInViewModelOld,
     onSignInSuccess: () -> Unit,
     onForgotPassword: () -> Unit,
     paddingValues: PaddingValues
 ) {
-    val uiState: SignInViewModel.UiState = viewModel.uiStateFlow.collectAsStateWithLifecycle().value
+    val uiState: SignInViewModelOld.UiState = viewModel.uiStateFlow.collectAsStateWithLifecycle().value
 
     val context = LocalContext.current
 
@@ -99,20 +97,22 @@ private fun SetupContent(
         ) {
             uiState.let {
                 when (it) {
-                    is SignInViewModel.UiState.Loading -> {
+                    is SignInViewModelOld.UiState.Loading -> {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             LoadingAnimation(visible = true)
                         }
                     }
-                    is SignInViewModel.UiState.Form -> {
-                        when ((uiState as SignInViewModel.UiState.Form).status) {
+                    is SignInViewModelOld.UiState.Form -> {
+                        when ((uiState as SignInViewModelOld.UiState.Form).status) {
                             is AuthStatus.Authenticated -> {
                                 onSignInSuccess()
                             }
 
                             is AuthStatus.Invalid -> {
-                                val msg = (uiState as AuthStatus.Invalid).message ?: "Invalid credentials"
-                                Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                                if (uiState.status is AuthStatus.Invalid) {
+                                    val msg = uiState.status.message ?: "Invalid credentials"
+                                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                                }
                             }
 
                             is AuthStatus.Error -> {
@@ -136,7 +136,7 @@ private fun SetupContent(
 
 @Composable
 private fun SignInContent(
-    viewModel: SignInViewModel,
+    viewModel: SignInViewModelOld,
     onSignInSuccess: () -> Unit = {},
     onForgotPassword: () -> Unit = {},
 ) {
@@ -159,7 +159,10 @@ private fun SignInContent(
         ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SignInHeader()
+        AuthHeader(
+            title = stringResource(id = R.string.welcome_back),
+            description = stringResource(id = R.string.signin_description)
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -233,21 +236,5 @@ private fun SignInContent(
         Spacer(modifier = Modifier.weight(1f))
 
         AuthFooter()
-    }
-}
-
-@Composable
-private fun SignInHeader() {
-    Column(
-        modifier = Modifier
-            .padding(top = MaterialTheme.dimension.gridFour)
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimension.gridTwo)
-    ) {
-        TextHeadlineSmall(text = stringResource(id = R.string.welcome_back))
-        TextBodyMedium(
-            text = stringResource(id = R.string.welcome_message),
-            textAlign = TextAlign.Center
-        )
     }
 }

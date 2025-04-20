@@ -1,23 +1,26 @@
 package com.amadiyawa.feature_auth.presentation.navigation
 
+import android.net.Uri
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.presentation.screen.forgotpassword.ForgotPasswordScreen
 import com.amadiyawa.feature_auth.presentation.screen.otpverification.OtpVerificationScreen
 import com.amadiyawa.feature_auth.presentation.screen.resetpassword.ResetPasswordScreen
 import com.amadiyawa.feature_auth.presentation.screen.signin.SignInScreen
 import com.amadiyawa.feature_auth.presentation.screen.signup.SignUpScreen
 import com.amadiyawa.feature_auth.presentation.screen.welcome.WelcomeScreen
+import kotlinx.serialization.json.Json
 
 fun NavGraphBuilder.authGraph(
     onSignIn: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     onNavigateToForgotPassword: () -> Unit,
-    onSignUpSuccess: (recipient: String) -> Unit,
+    onSignUpSuccess: (signUp: SignUp) -> Unit,
     onOtpValidated: () -> Unit,
     onOtpFailed: () -> Unit,
     onResetPasswordSuccess: () -> Unit
@@ -48,14 +51,20 @@ fun NavGraphBuilder.authGraph(
 
         composable(
             route = OtpVerificationNavigation.route,
-            arguments = listOf(navArgument("recipient") { type = NavType.StringType })
+            arguments = listOf(navArgument("signUpJson") { type = NavType.StringType })
         ) { backStackEntry ->
-            val recipient = backStackEntry.arguments?.getString("recipient")
-            OtpVerificationScreen(
-                recipient = recipient ?: "",
-                onOtpValidated = onOtpValidated,
-                onCancel = onOtpFailed
-            )
+            val json = backStackEntry.arguments?.getString("signUpJson")
+            val signUp = json?.let { Json.decodeFromString<SignUp>(Uri.decode(it)) }
+
+            if (signUp != null) {
+                OtpVerificationScreen(
+                    signUp = signUp,
+                    onOtpValidated = onOtpValidated,
+                    onCancel = onOtpFailed
+                )
+            } else {
+                // Handle null case: maybe navigate back or show error
+            }
         }
 
         composable(ForgotPasswordNavigation.route) {
@@ -79,8 +88,11 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         onSignIn = { navController.navigate(SignInNavigation.route) },
         onNavigateToSignUp = { navController.navigate(SignUpNavigation.route) },
         onNavigateToForgotPassword = { navController.navigate(ForgotPasswordNavigation.route) },
-        onSignUpSuccess = { recipient ->
-            navController.navigate(OtpVerificationNavigation.createRoute(recipient))
+        onSignUpSuccess = { signUp: SignUp ->
+            navController.navigate(OtpVerificationNavigation.createRoute(signUp)) {
+                popUpTo(SignUpNavigation.route) { inclusive = true }
+                launchSingleTop = true
+            }
         },
         onOtpValidated = {
             navController.navigate("main") {

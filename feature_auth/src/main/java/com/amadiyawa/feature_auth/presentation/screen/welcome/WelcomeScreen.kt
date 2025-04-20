@@ -18,15 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.feature_base.presentation.compose.composable.AppOutlinedButton
+import com.amadiyawa.feature_base.presentation.compose.composable.AuthHeader
 import com.amadiyawa.feature_base.presentation.compose.composable.FilledButton
 import com.amadiyawa.feature_base.presentation.compose.composable.SocialButton
-import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyLarge
 import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyMedium
-import com.amadiyawa.feature_base.presentation.compose.composable.TextHeadlineMedium
 import com.amadiyawa.feature_base.presentation.theme.dimension
 
 @Composable
@@ -58,7 +56,7 @@ private fun SetupContent(
             .padding(paddingValues)
             .padding(horizontal = MaterialTheme.dimension.gridTwo)
     ) {
-        AuthHeader()
+        AuthWelcomeHeader()
 
         Column(
             modifier = Modifier
@@ -81,7 +79,7 @@ private fun SetupContent(
 }
 
 @Composable
-private fun AuthHeader() {
+private fun AuthWelcomeHeader() {
     Column(
         modifier = Modifier
             .padding(top = MaterialTheme.dimension.gridFour)
@@ -98,10 +96,10 @@ private fun AuthHeader() {
             contentDescription = null,
             tint = Color.Unspecified
         )
-        TextHeadlineMedium(text = stringResource(id = R.string.auth_welcome))
-        TextBodyLarge(
-            text = stringResource(id = R.string.auth_welcome_description),
-            textAlign = TextAlign.Center
+        AuthHeader(
+            title = stringResource(id = R.string.auth_welcome_title),
+            description = stringResource(id = R.string.auth_welcome_description),
+            centerContent = true
         )
     }
 }

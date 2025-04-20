@@ -8,8 +8,8 @@ import com.amadiyawa.feature_base.presentation.navigation.DynamicDestinationRegi
 import com.amadiyawa.feature_users.presentation.navigation.UserDestination
 import com.amadiyawa.feature_users.presentation.navigation.UserListNavigation
 import com.amadiyawa.feature_users.presentation.navigation.userGraph
-import com.amadiyawa.feature_users.presentation.screen.userdetail.UserDetailViewModel
-import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModel
+import com.amadiyawa.feature_users.presentation.screen.userdetail.UserDetailViewModelOld
+import com.amadiyawa.feature_users.presentation.screen.userlist.UserListViewModelOld
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -21,9 +21,9 @@ import org.koin.dsl.module
  * `DynamicDestinationRegistry` and defines the navigation graph for the User feature.
  */
 internal val presentationModule = module {
-    viewModelOf(::UserListViewModel)
+    viewModelOf(::UserListViewModelOld)
 
-    viewModelOf(::UserDetailViewModel)
+    viewModelOf(::UserDetailViewModelOld)
 
     single { imageLoader(get()) }
 

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auth_welcome">Welcome 🚀</string>
-    <string name="auth_welcome_description">A modern Android starter kit, modular and extensible. Designed to speed up application development.</string>
+    <string name="auth_welcome_title">Welcome to DroidKotlin</string>
+    <string name="auth_welcome_description">Kickstart your Android development with the right tools and modern practices.</string>
     <string name="continue_with">Or continue with</string>
 
     <string name="register">Register</string>
     <string name="email">Email</string>
-
-    <string name="confirm_password">Confirm Password</string>
 
     <string name="register_button">Register</string>
     <string name="error_invalid_email">Invalid email address</string>
@@ -21,4 +19,25 @@
     <string name="password_placeholder">Enter your password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="login">Login</string>
+
+    <string name="signin_description">Access your DroidKotlin dashboard and keep building amazing apps.</string>
+
+    <string name="signup_title">Create your account</string>
+    <string name="signup_description">Join DroidKotlin and start building scalable Android apps in seconds.</string>
+    <string name="fullname">Full name</string>
+    <string name="fullname_placeholder">Amadou Iyawa</string>
+    <string name="username">Username</string>
+    <string name="username_placeholder">amadiyawa</string>
+    <string name="email_placeholder">amadiyawa@yahoo.com</string>
+    <string name="phone">Phone number</string>
+    <string name="phone_placeholder">699182482</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password_placeholder">Confirm your password</string>
+
+    <string name="otp_title">Verify your %s</string>
+    <string name="otp_description_email">Please enter the code we sent to your email address %s.</string>
+    <string name="otp_description_phone">Please enter the code we sent to your phone number %s.</string>
+    <string name="verify">Verify</string>
+    <string name="resend">Resend</string>
+    <string name="resend_timer_separator"> in </string>
 </resources>

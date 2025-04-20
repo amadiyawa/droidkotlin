@@ -2,9 +2,9 @@ package com.amadiyawa.feature_onboarding.presentation.screen.onboardlist
 
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseAction
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseState
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseViewModel
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.OldBaseAction
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseState
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.OldBaseViewModel
 import com.amadiyawa.feature_onboarding.domain.usecase.GetOnboardListUseCase
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_onboarding.domain.model.Onboard
@@ -12,9 +12,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-internal class OnboardViewModel(
+internal class OnboardViewModelOld(
     private val getOnboardListUseCase: GetOnboardListUseCase
-) : BaseViewModel<OnboardViewModel.UiState, OnboardViewModel.Action>(UiState.Loading) {
+) : OldBaseViewModel<OnboardViewModelOld.UiState, OnboardViewModelOld.ActionOld>(UiState.Loading) {
     private var job: Job? = null
 
     fun onEnter() {
@@ -33,16 +33,16 @@ internal class OnboardViewModel(
                 val action = when (result) {
                     is OperationResult.Success -> {
                         if (result.data.isEmpty()) {
-                            Action.OnboardListLoadFailure
+                            ActionOld.OnboardListLoadFailure
                         } else {
-                            Action.OnboardListLoadSuccess(result.data)
+                            ActionOld.OnboardListLoadSuccess(result.data)
                         }
                     }
                     is OperationResult.Failure -> {
-                        Action.OnboardListLoadFailure
+                        ActionOld.OnboardListLoadFailure
                     }
 
-                    is OperationResult.Error -> Action.OnboardListLoadFailure
+                    is OperationResult.Error -> ActionOld.OnboardListLoadFailure
                 }
                 sendAction(action)
             }
@@ -50,27 +50,27 @@ internal class OnboardViewModel(
     }
 
     fun nextOnboard() {
-        sendAction(Action.NextOnboard)
+        sendAction(ActionOld.NextOnboard)
     }
 
     fun previousOnboard() {
-        sendAction(Action.PreviousOnboard)
+        sendAction(ActionOld.PreviousOnboard)
     }
 
     fun skipOnboarding() {
-        sendAction(Action.SkipOnboarding)
+        sendAction(ActionOld.SkipOnboarding)
     }
 
-    internal sealed interface Action : BaseAction<UiState> {
-        data class OnboardListLoadSuccess(private val onboardList: List<Onboard>) : Action {
+    internal sealed interface ActionOld : OldBaseAction<UiState> {
+        data class OnboardListLoadSuccess(private val onboardList: List<Onboard>) : ActionOld {
             override fun reduce(state: UiState) = UiState.Onboarding(onboardList)
         }
 
-        data object OnboardListLoadFailure : Action {
+        data object OnboardListLoadFailure : ActionOld {
             override fun reduce(state: UiState) = UiState.Error
         }
 
-        data object NextOnboard : Action {
+        data object NextOnboard : ActionOld {
             override fun reduce(state: UiState): UiState {
                 return if (state is UiState.Onboarding && state.currentOnboardIndex < state.onboardList.size - 1) {
                     state.copy(
@@ -83,7 +83,7 @@ internal class OnboardViewModel(
             }
         }
 
-        data object PreviousOnboard : Action {
+        data object PreviousOnboard : ActionOld {
             override fun reduce(state: UiState): UiState {
                 return if (state is UiState.Onboarding && state.currentOnboardIndex > 0) {
                     state.copy(
@@ -96,7 +96,7 @@ internal class OnboardViewModel(
             }
         }
 
-        data object SkipOnboarding : Action {
+        data object SkipOnboarding : ActionOld {
             override fun reduce(state: UiState): UiState {
                 return UiState.OnboardingComplete
             }

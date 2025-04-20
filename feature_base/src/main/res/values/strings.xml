@@ -15,4 +15,27 @@
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
     <string name="clear_text">Clear text</string>
+
+    <string name="full_name">Full name</string>
+    <string name="invalid_full_name">Full name must contain only letters, dashes or spaces (2 to 50 characters)</string>
+    <string name="username">Username</string>
+    <string name="invalid_username">Invalid username (3–20 chars, . - _ allowed)</string>
+    <string name="email">Email</string>
+    <string name="invalid_email">Invalid email address. Example: name@example.com</string>
+    <string name="phone">Phone number</string>
+    <string name="invalid_phone">Invalid phone number. Expected format: +2376XXXXXXXX</string>
+    <string name="passwords_do_not_match">Passwords do not match.</string>
+    <string name="terms_not_accepted">You must accept the terms and conditions.</string>
+
+    <string name="tos_pre_text">By signing up, you agree to our </string>
+    <string name="tos_terms">Terms of Service</string>
+    <string name="tos_separator"> and </string>
+    <string name="tos_privacy">Privacy Policy</string>
+    <string name="tos_post_text">.</string>
+
+    <!-- OTP Validation Strings -->
+    <string name="invalid_otp_digit">Each field must contain exactly one digit.</string>
+    <string name="invalid_otp_format">The OTP code must contain exactly 6 digits.</string>
+    <string name="otp_code_mismatch">The code you entered does not match.</string>
+
 </resources>

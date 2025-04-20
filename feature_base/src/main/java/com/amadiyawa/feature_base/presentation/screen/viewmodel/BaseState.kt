@@ -1,4 +1,4 @@
-package com.amadiyawa.feature_base.presentation.viewmodel
+package com.amadiyawa.feature_base.presentation.screen.viewmodel
 
 /**
  * The BaseState interface is a marker interface used to tag classes that represent a state in your application.

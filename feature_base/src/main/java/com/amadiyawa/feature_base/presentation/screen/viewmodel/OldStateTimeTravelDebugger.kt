@@ -1,14 +1,14 @@
-package com.amadiyawa.feature_base.presentation.viewmodel
+package com.amadiyawa.feature_base.presentation.screen.viewmodel
 
 import timber.log.Timber
 import kotlin.reflect.full.memberProperties
 
-class StateTimeTravelDebugger(private val viewClassName: String) {
+class OldStateTimeTravelDebugger(private val viewClassName: String) {
 
     private val stateTimeline = mutableListOf<StateTransition>()
-    private var lastViewAction: BaseAction<*>? = null
+    private var lastViewAction: OldBaseAction<*>? = null
 
-    fun addAction(viewAction: BaseAction<*>) {
+    fun addAction(viewAction: OldBaseAction<*>) {
         lastViewAction = viewAction
     }
 
@@ -81,7 +81,7 @@ class StateTimeTravelDebugger(private val viewClassName: String) {
 
     private data class StateTransition(
         val oldState: BaseState,
-        val action: BaseAction<*>,
+        val action: OldBaseAction<*>,
         val newState: BaseState,
     )
 }

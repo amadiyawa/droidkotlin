@@ -47,7 +47,7 @@ import org.koin.androidx.compose.koinViewModel
 fun UserListScreen(
     onUserClick: (String) -> Unit,
 ) {
-    val viewModel: UserListViewModel = koinViewModel()
+    val viewModel: UserListViewModelOld = koinViewModel()
     viewModel.onEnter()
     val listState = rememberLazyListState()
 
@@ -79,11 +79,11 @@ private fun SetUpToolbar() {
 @Composable
 private fun SetupContent(
     paddingValues: PaddingValues,
-    viewModel: UserListViewModel,
+    viewModel: UserListViewModelOld,
     listState: LazyListState,
     onUserClick: (String) -> Unit
 ) {
-    val uiState: UserListViewModel.UiState by viewModel.uiStateFlow.collectAsStateWithLifecycle()
+    val uiState: UserListViewModelOld.UiState by viewModel.uiStateFlow.collectAsStateWithLifecycle()
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -100,22 +100,22 @@ private fun SetupContent(
 
 @Composable
 private fun HandleUiState(
-    uiState: UserListViewModel.UiState,
+    uiState: UserListViewModelOld.UiState,
     listState: LazyListState,
     onUserClick: (String) -> Unit,
-    viewModel: UserListViewModel
+    viewModel: UserListViewModelOld
 ) {
     uiState.let {
         when (it) {
-            UserListViewModel.UiState.Error -> {
+            UserListViewModelOld.UiState.Error -> {
                 DataNotFoundAnim()
             }
-            UserListViewModel.UiState.Loading -> {
+            UserListViewModelOld.UiState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     LoadingAnimation(visible = true)
                 }
             }
-            is UserListViewModel.UiState.Content -> {
+            is UserListViewModelOld.UiState.Content -> {
                 val users = it.users
                 LazyColumn(
                     modifier = Modifier

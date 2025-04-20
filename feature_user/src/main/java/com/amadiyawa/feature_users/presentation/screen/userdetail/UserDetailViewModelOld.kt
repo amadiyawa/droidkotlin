@@ -3,19 +3,19 @@ package com.amadiyawa.feature_users.presentation.screen.userdetail
 import androidx.compose.runtime.Immutable
 import androidx.lifecycle.viewModelScope
 import com.amadiyawa.feature_base.domain.result.OperationResult
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseAction
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseState
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseViewModel
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.OldBaseAction
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseState
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.OldBaseViewModel
 import com.amadiyawa.feature_users.domain.model.User
 import com.amadiyawa.feature_users.domain.usecase.GetUserUseCase
-import com.amadiyawa.feature_users.presentation.screen.userdetail.UserDetailViewModel.Action
-import com.amadiyawa.feature_users.presentation.screen.userdetail.UserDetailViewModel.UiState
-import com.amadiyawa.feature_users.presentation.screen.userdetail.UserDetailViewModel.UiState.Content
+import com.amadiyawa.feature_users.presentation.screen.userdetail.UserDetailViewModelOld.ActionOld
+import com.amadiyawa.feature_users.presentation.screen.userdetail.UserDetailViewModelOld.UiState
+import com.amadiyawa.feature_users.presentation.screen.userdetail.UserDetailViewModelOld.UiState.Content
 import kotlinx.coroutines.launch
 
-internal class UserDetailViewModel(
+internal class UserDetailViewModelOld(
     private val getUserDetailUseCase: GetUserUseCase,
-) : BaseViewModel<UiState, Action>(UiState.Loading) {
+) : OldBaseViewModel<UiState, ActionOld>(UiState.Loading) {
 
     fun onEnter(uuid: String) {
         getUserByUuid(uuid)
@@ -26,9 +26,9 @@ internal class UserDetailViewModel(
             getUserDetailUseCase(uuid).also { result ->
                 val action = when (result) {
                     is OperationResult.Success -> {
-                        Action.UserDetailSuccess(result.data)
+                        ActionOld.UserDetailSuccess(result.data)
                     }
-                    is OperationResult.Failure -> Action.UserDetailFailure
+                    is OperationResult.Failure -> ActionOld.UserDetailFailure
                     is OperationResult.Error -> TODO()
                 }
                 sendAction(action)
@@ -36,12 +36,12 @@ internal class UserDetailViewModel(
         }
     }
 
-    internal sealed interface Action : BaseAction<UiState> {
-        class UserDetailSuccess(private val user: User) : Action {
+    internal sealed interface ActionOld : OldBaseAction<UiState> {
+        class UserDetailSuccess(private val user: User) : ActionOld {
             override fun reduce(state: UiState) = Content(user)
         }
 
-        data object UserDetailFailure : Action {
+        data object UserDetailFailure : ActionOld {
             override fun reduce(state: UiState) = UiState.Error
         }
     }

@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
@@ -59,7 +58,7 @@ import kotlin.math.roundToInt
  */
 @Composable
 fun OnboardListScreen(onFinished: () -> Unit) {
-    val viewModel: OnboardViewModel = koinViewModel()
+    val viewModel: OnboardViewModelOld = koinViewModel()
     viewModel.onEnter()
 
     Scaffold(
@@ -86,9 +85,9 @@ fun OnboardListScreen(onFinished: () -> Unit) {
 private fun SetupContent(
     onFinished: () -> Unit,
     paddingValues: PaddingValues,
-    viewModel: OnboardViewModel
+    viewModel: OnboardViewModelOld
 ) {
-    val uiState: OnboardViewModel.UiState = viewModel.uiStateFlow.collectAsStateWithLifecycle().value
+    val uiState: OnboardViewModelOld.UiState = viewModel.uiStateFlow.collectAsStateWithLifecycle().value
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -114,27 +113,27 @@ private fun SetupContent(
 @Composable
 private fun HandleUiState(
     onFinished: () -> Unit,
-    uiState: OnboardViewModel.UiState,
-    viewModel: OnboardViewModel
+    uiState: OnboardViewModelOld.UiState,
+    viewModel: OnboardViewModelOld
 ) {
     uiState.let {
         when (it) {
-            OnboardViewModel.UiState.Error -> {
+            OnboardViewModelOld.UiState.Error -> {
                 DataNotFoundAnim()
             }
-            OnboardViewModel.UiState.Loading -> {
+            OnboardViewModelOld.UiState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     LoadingAnimation(visible = true)
                 }
             }
-            is OnboardViewModel.UiState.Onboarding -> {
+            is OnboardViewModelOld.UiState.Onboarding -> {
                 Onboarding(
                     onboarding = it,
                     viewModel = viewModel
                 )
             }
 
-            OnboardViewModel.UiState.OnboardingComplete -> {
+            OnboardViewModelOld.UiState.OnboardingComplete -> {
                 onFinished()
             }
         }
@@ -144,8 +143,8 @@ private fun HandleUiState(
 @Composable
 private fun Onboarding(
     modifier: Modifier = Modifier,
-    onboarding: OnboardViewModel.UiState.Onboarding,
-    viewModel: OnboardViewModel
+    onboarding: OnboardViewModelOld.UiState.Onboarding,
+    viewModel: OnboardViewModelOld
 ) {
     Box(
         modifier = modifier
@@ -198,7 +197,7 @@ private fun Onboarding(
 @Composable
 private fun Onboard(
     modifier: Modifier = Modifier,
-    onboarding: OnboardViewModel.UiState.Onboarding
+    onboarding: OnboardViewModelOld.UiState.Onboarding
 ) {
     val onboard = onboarding.currentOnboard
     val offsetX = remember { Animatable(0f) }
@@ -256,7 +255,7 @@ private fun Onboard(
 @Composable
 private fun OnboardHeader(
     modifier: Modifier = Modifier,
-    onboarding: OnboardViewModel.UiState.Onboarding
+    onboarding: OnboardViewModelOld.UiState.Onboarding
 ) {
     val onboard = onboarding.currentOnboard
     Row(
@@ -281,8 +280,8 @@ private fun OnboardHeader(
 @Composable
 private fun OnboardFooter(
     modifier: Modifier = Modifier,
-    onboarding: OnboardViewModel.UiState.Onboarding,
-    viewModel: OnboardViewModel
+    onboarding: OnboardViewModelOld.UiState.Onboarding,
+    viewModel: OnboardViewModelOld
 ) {
     val onboard = onboarding.currentOnboard
     val backButtonColor by animateColorAsState(

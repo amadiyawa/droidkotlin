@@ -11,9 +11,9 @@ import com.amadiyawa.feature_base.domain.model.ValidatedForm
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_base.domain.usecase.ValidateIdentifierUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidatePasswordUseCase
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseAction
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseState
-import com.amadiyawa.feature_base.presentation.viewmodel.BaseViewModel
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.OldBaseAction
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseState
+import com.amadiyawa.feature_base.presentation.screen.viewmodel.OldBaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,11 +23,11 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-internal class SignInViewModel(
+internal class SignInViewModelOld(
     private val validateIdentifierUseCase: ValidateIdentifierUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val signInUseCase: SignInUseCase
-) : BaseViewModel<SignInViewModel.UiState, SignInViewModel.Action>(UiState.Loading) {
+) : OldBaseViewModel<SignInViewModelOld.UiState, SignInViewModelOld.ActionOld>(UiState.Loading) {
 
     private val _form = MutableStateFlow(SignInForm())
     val form: StateFlow<SignInForm> = _form
@@ -42,7 +42,7 @@ internal class SignInViewModel(
     private var signInJob: Job? = null
 
     fun onEnter() {
-        sendAction(Action.FormLoadSuccess)
+        sendAction(ActionOld.FormLoadSuccess)
     }
 
     fun onIdentifierChanged(input: String) {
@@ -107,21 +107,21 @@ internal class SignInViewModel(
             _isSubmitting.value = false
 
             val action = when (result) {
-                is OperationResult.Success -> Action.SignIn(AuthStatus.Authenticated)
-                is OperationResult.Failure -> Action.SignIn(AuthStatus.Invalid(result.message))
-                is OperationResult.Error   -> Action.SignIn(AuthStatus.Error(result.throwable))
+                is OperationResult.Success -> ActionOld.SignIn(AuthStatus.Authenticated)
+                is OperationResult.Failure -> ActionOld.SignIn(AuthStatus.Invalid(result.message))
+                is OperationResult.Error   -> ActionOld.SignIn(AuthStatus.Error(result.throwable))
             }
 
             sendAction(action)
         }
     }
 
-    internal sealed interface Action : BaseAction<UiState> {
-        data object FormLoadSuccess : Action {
+    internal sealed interface ActionOld : OldBaseAction<UiState> {
+        data object FormLoadSuccess : ActionOld {
             override fun reduce(state: UiState) = UiState.Form(AuthStatus.Idle)
         }
 
-        data class SignIn(val status: AuthStatus) : Action {
+        data class SignIn(val status: AuthStatus) : ActionOld {
             override fun reduce(state: UiState): UiState {
                 return when {
                     state is UiState.Form -> state.copy(status = status)

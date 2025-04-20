@@ -1,4 +1,4 @@
-package com.amadiyawa.feature_base.presentation.viewmodel
+package com.amadiyawa.feature_base.presentation.screen.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,16 +7,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
-abstract class BaseViewModel<State : BaseState, Action : BaseAction<State>>(initialState: State) :
+abstract class OldBaseViewModel<State : BaseState, Action : OldBaseAction<State>>(initialState: State) :
     ViewModel() {
 
     private val _uiStateFlow = MutableStateFlow(initialState)
     val uiStateFlow = _uiStateFlow.asStateFlow()
 
-    private var stateTimeTravelDebugger: StateTimeTravelDebugger? = null
+    private var oldStateTimeTravelDebugger: OldStateTimeTravelDebugger? = null
 
     init {
-        stateTimeTravelDebugger = StateTimeTravelDebugger(this::class.java.simpleName)
+        oldStateTimeTravelDebugger = OldStateTimeTravelDebugger(this::class.java.simpleName)
     }
 
     private var state by Delegates.observable(initialState) { _, old, new ->
@@ -25,7 +25,7 @@ abstract class BaseViewModel<State : BaseState, Action : BaseAction<State>>(init
                 _uiStateFlow.value = new
             }
 
-            stateTimeTravelDebugger?.apply {
+            oldStateTimeTravelDebugger?.apply {
                 addStateTransition(old, new)
                 logLast()
             }
@@ -33,7 +33,7 @@ abstract class BaseViewModel<State : BaseState, Action : BaseAction<State>>(init
     }
 
     protected fun sendAction(action: Action) {
-        stateTimeTravelDebugger?.addAction(action)
+        oldStateTimeTravelDebugger?.addAction(action)
         state = action.reduce(state)
     }
 }

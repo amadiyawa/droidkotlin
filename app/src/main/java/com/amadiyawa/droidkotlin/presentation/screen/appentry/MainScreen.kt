@@ -45,7 +45,7 @@ fun MainScreen(
     val navController = appState.navController
     val graphProviders = getKoin().getAll<AppNavGraphProvider>()
     val startDestination = rememberSaveable { mutableStateOf(OnboardListNavigation.route) }
-    val mainAppGraphRoute = "main_container"
+    val mainAppGraphRoute = "main"
     val authGraphRoute = "auth"
 
     AppTheme {
@@ -65,25 +65,7 @@ fun MainScreen(
                 })
 
                 // ✅ 2. Auth
-                authGraph(
-                    onSignIn = { navController.navigate(SignInNavigation.route) },
-                    onNavigateToSignUp = { navController.navigate(SignUpNavigation.route) },
-                    onNavigateToForgotPassword = { navController.navigate(ForgotPasswordNavigation.route) },
-                    onSignUpSuccess = { recipient ->
-                        navController.navigate(OtpVerificationNavigation.createRoute(recipient))
-                    },
-                    onOtpValidated = {
-                        navController.navigate(mainAppGraphRoute) {
-                            popUpTo("auth") { inclusive = true }
-                        }
-                    },
-                    onOtpFailed = { navController.popBackStack() },
-                    onResetPasswordSuccess = {
-                        navController.navigate(SignInNavigation.route) {
-                            popUpTo(WelcomeNavigation.destination) { inclusive = false }
-                        }
-                    }
-                )
+                authGraph(navController)
 
                 // ✅ 3. Main app graph
                 navigation(

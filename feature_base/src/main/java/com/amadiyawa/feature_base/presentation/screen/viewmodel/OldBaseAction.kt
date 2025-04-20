@@ -1,4 +1,4 @@
-package com.amadiyawa.feature_base.presentation.viewmodel
+package com.amadiyawa.feature_base.presentation.screen.viewmodel
 
 /**
  * The BaseAction interface represents an action that can be performed on a state.
@@ -8,7 +8,7 @@ package com.amadiyawa.feature_base.presentation.viewmodel
  *
  * @param State The type of the state that this action operates on.
  */
-interface BaseAction<State> {
+interface OldBaseAction<State> {
 
     /**
      * The reduce function takes the current state of the application, performs some operation on it,

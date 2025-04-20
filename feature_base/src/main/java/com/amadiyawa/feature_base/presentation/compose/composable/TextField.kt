@@ -1,10 +1,13 @@
 package com.amadiyawa.feature_base.presentation.compose.composable
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -21,6 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.presentation.theme.dimension
 
 data class TextFieldText(
     val value: String,
@@ -44,7 +48,8 @@ fun DefaultTextField(
     onValueChange: (String) -> Unit,
     onClearText: () -> Unit,
     onVisibilityChange: () -> Unit = {},
-    config: TextFieldConfig = TextFieldConfig()
+    config: TextFieldConfig = TextFieldConfig(),
+    leadingBadge: String? = null
 ) {
     config.trailingIconConfig.text = text.value
     Column(verticalArrangement = Arrangement.spacedBy(Dimen.Spacing.medium)) {
@@ -66,6 +71,28 @@ fun DefaultTextField(
                     onClearText = onClearText,
                     onVisibilityChange = onVisibilityChange
                 )
+            },
+            leadingIcon = leadingBadge?.takeIf { it.isNotBlank() }?.let {
+                {
+                    Box(
+                        modifier = Modifier
+                            .padding(start = MaterialTheme.dimension.gridOneAndHalf)
+                            .background(
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                                shape = RoundedCornerShape(Dimen.Size.extraSmall)
+                            )
+                            .padding(
+                                horizontal = MaterialTheme.dimension.gridOne,
+                                vertical = MaterialTheme.dimension.gridHalf
+                            )
+                    ) {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             },
             value = text.value,
             placeholder = { Text(text.placeholder) },
