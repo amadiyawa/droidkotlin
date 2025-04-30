@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_onboarding.presentation
 
-import com.amadiyawa.feature_onboarding.presentation.screen.onboardlist.OnboardViewModelOld
+import com.amadiyawa.feature_onboarding.presentation.screen.onboarding.OnboardingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -10,6 +10,6 @@ import org.koin.dsl.module
  * and passes it to the ViewModel.
  **/
 internal val presentationModule = module {
-    // Instead of using :: which passes the class directly, we use get() to retreive the values from properties or to get dependencies from Koin
-    viewModel { OnboardViewModelOld(get()) }
+    // Instead of using :: which passes the class directly, we use get() to retrieve the values from properties or to get dependencies from Koin
+    viewModel { OnboardingViewModel(get()) }
 }

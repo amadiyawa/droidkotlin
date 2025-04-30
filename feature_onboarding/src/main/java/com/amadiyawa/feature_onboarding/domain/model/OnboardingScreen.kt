@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  * @property imageResId The resource ID for the image of the onboarding item.
  */
 @Serializable
-data class Onboard(
+data class OnboardingScreen(
     val id: Int,
     val titleResId: Int,
     val descriptionResId: Int,

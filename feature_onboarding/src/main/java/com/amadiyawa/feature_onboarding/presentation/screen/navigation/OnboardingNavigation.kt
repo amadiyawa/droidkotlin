@@ -9,9 +9,9 @@ import com.amadiyawa.feature_base.presentation.navigation.AppNavigationDestinati
  * It implements the [AppNavigationDestination] interface to provide the required
  * navigation properties.
  */
-object OnboardListNavigation: AppNavigationDestination {
-    override val route = "onboard_list"
+object OnboardingNavigation: AppNavigationDestination {
+    override val route = "onboarding"
 
     // The destination for the User feature
-    override val destination = "onboard_list_destination"
+    override val destination = "onboarding_destination"
 }

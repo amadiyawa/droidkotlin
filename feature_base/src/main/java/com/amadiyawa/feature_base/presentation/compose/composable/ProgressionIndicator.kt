@@ -1,5 +1,14 @@
 package com.amadiyawa.feature_base.presentation.compose.composable
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,50 +19,94 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.unit.dp
 import com.amadiyawa.feature_base.presentation.theme.dimension
 
 /**
- * A composable function that displays a progression indicator with multiple levels.
+ * A composable that displays a horizontal progress indicator made of bars.
+ * Each bar represents a level, with animation and visual emphasis to indicate
+ * the current level and completed levels.
  *
- * @param currentLevel The current level of progression.
- * @param totalLevels The total number of levels in the progression.
+ * @param currentLevel The current level (0-based). All levels up to and including
+ *                    this value will be displayed as active with special animation.
+ * @param totalLevels The total number of levels to display (0-based). Determines
+ *                    the total number of bars in the indicator.
  *
- * @author Amadou Iyawa
+ * The bars have the following characteristics:
+ * - Completed levels are highlighted
+ * - Current level has scale animation and different height
+ * - Inactive bars have a muted appearance
+ * - Each bar smoothly animates during transitions
  */
 @Composable
 fun ProgressionIndicator(currentLevel: Int, totalLevels: Int) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.Center
     ) {
         for (level in 0..totalLevels) {
-            ProgressRectangle(
-                isActive = level <= currentLevel,
+            val isActive = level <= currentLevel
+            val isCurrent = level == currentLevel
+
+            // Animate the color change
+            val color by animateColorAsState(
+                targetValue = getActiveColor(isActive),
+                animationSpec = tween(durationMillis = 500),
+                label = "color"
+            )
+
+            // Create a small animation delay based on position
+            val animDelay = 50 * level
+
+            // Animate the weight multiplier
+            val weightMultiplier by animateFloatAsState(
+                targetValue = if (isActive) 1.5f else 1f,
+                // Use tween with delay instead of spring with delay
+                animationSpec = tween(
+                    durationMillis = 300,
+                    delayMillis = animDelay,
+                    easing = FastOutSlowInEasing
+                ),
+                label = "weight"
+            )
+
+            // Optional: height animation for current indicator
+            val height by animateDpAsState(
+                targetValue = if (isCurrent) 5.dp else MaterialTheme.dimension.grid.single,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                ),
+                label = "height"
+            )
+
+            Box(
                 modifier = Modifier
-                    .weight(1f)
-                    .then(if (level != totalLevels) Modifier.padding(end = MaterialTheme.dimension.gridOne) else Modifier)
+                    .weight(weightMultiplier)
+                    .padding(horizontal = MaterialTheme.dimension.spacing.xSmall)
+                    .height(height)
+                    .background(
+                        color = color,
+                        shape = RoundedCornerShape(MaterialTheme.dimension.radius.tiny)
+                    )
+                    // Optional subtle scale animation for current indicator
+                    .then(
+                        if (isCurrent) {
+                            val scale by animateFloatAsState(
+                                targetValue = 1.05f,
+                                animationSpec = infiniteRepeatable(
+                                    animation = tween(800),
+                                    repeatMode = RepeatMode.Reverse
+                                ),
+                                label = "scale"
+                            )
+                            Modifier.scale(scale)
+                        } else Modifier
+                    )
             )
         }
     }
-}
-
-/**
- * A composable function that represents a rectangular progress indicator.
- *
- * @param isActive A boolean indicating whether the progress rectangle is active or not.
- * @param modifier A [Modifier] to be applied to the progress rectangle.
- *
- * @author Amadou Iyawa
- */
-@Composable
-fun ProgressRectangle(isActive: Boolean, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .height(MaterialTheme.dimension.gridOne)
-            .background(
-                color = getActiveColor(isActive),
-                shape = RoundedCornerShape(MaterialTheme.dimension.gridHalf)
-            )
-    )
 }
