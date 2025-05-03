@@ -74,7 +74,7 @@ fun UserDetailScreen(
 
 @Composable
 private fun SetUpToolbar(onBackClick: () -> Unit) {
-    Toolbar(centered = true, title = "", onBackClick = onBackClick)
+    Toolbar(hasNavigationIcon = true, title = "", onBackClick = onBackClick)
 }
 
 @Composable

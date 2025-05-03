@@ -40,6 +40,21 @@
     <string name="otp_description_email">Veuillez entrer le code que nous avons envoyé à votre adresse e-mail %s.</string>
     <string name="otp_description_phone">Veuillez entrer le code que nous avons envoyé à votre numéro de téléphone %s.</string>
     <string name="verify">Vérifier</string>
+    <string name="validate">Valider</string>
     <string name="resend">Renvoyer</string>
+    <string name="reset">Réinitialiser</string>
     <string name="resend_timer_separator"> dans </string>
+
+    <string name="forgot_password_title">Mot de passe oublié?</string>
+    <string name="forgot_password_description">Entrez votre email ou numéro de téléphone pour réinitialiser votre mot de passe.</string>
+    <string name="forgot_password_placeholder">Entrez votre email ou numéro de téléphone</string>
+
+    <string name="reset_password_title">Réinitialiser votre mot de passe</string>
+    <string name="reset_password_description">Veuillez entrer votre nouveau mot de passe ci-dessous.</string>
+
+    <!-- SignIn Loading States -->
+    <string name="signing_in">Connexion en cours…</string>
+    <string name="social_signing_in">Connexion avec %s en cours…</string>
+    <string name="saving_session">Enregistrement de votre session…</string>
+    <string name="activating_session">Activation de votre session…</string>
 </resources>

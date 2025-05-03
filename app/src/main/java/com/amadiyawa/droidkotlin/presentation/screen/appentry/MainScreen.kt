@@ -10,11 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import com.amadiyawa.droidkotlin.presentation.navigation.MainScaffoldedApp
-import com.amadiyawa.feature_auth.presentation.navigation.ForgotPasswordNavigation
-import com.amadiyawa.feature_auth.presentation.navigation.OtpVerificationNavigation
-import com.amadiyawa.feature_auth.presentation.navigation.SignInNavigation
-import com.amadiyawa.feature_auth.presentation.navigation.SignUpNavigation
-import com.amadiyawa.feature_auth.presentation.navigation.WelcomeNavigation
 import com.amadiyawa.feature_auth.presentation.navigation.authGraph
 import com.amadiyawa.feature_base.common.util.getMainStartDestination
 import com.amadiyawa.feature_base.presentation.compose.composable.SetupSystemBars
@@ -22,8 +17,8 @@ import com.amadiyawa.feature_base.presentation.navigation.AppNavGraphProvider
 import com.amadiyawa.feature_base.presentation.navigation.AppState
 import com.amadiyawa.feature_base.presentation.navigation.rememberAppState
 import com.amadiyawa.feature_base.presentation.theme.AppTheme
-import com.amadiyawa.feature_onboarding.presentation.screen.navigation.OnboardListNavigation
-import com.amadiyawa.feature_onboarding.presentation.screen.navigation.onboardListGraph
+import com.amadiyawa.feature_onboarding.presentation.screen.navigation.OnboardingNavigation
+import com.amadiyawa.feature_onboarding.presentation.screen.navigation.onboardingGraph
 import org.koin.compose.getKoin
 
 /**
@@ -44,7 +39,7 @@ fun MainScreen(
 ) {
     val navController = appState.navController
     val graphProviders = getKoin().getAll<AppNavGraphProvider>()
-    val startDestination = rememberSaveable { mutableStateOf(OnboardListNavigation.route) }
+    val startDestination = rememberSaveable { mutableStateOf(OnboardingNavigation.route) }
     val mainAppGraphRoute = "main"
     val authGraphRoute = "auth"
 
@@ -58,7 +53,7 @@ fun MainScreen(
                     .fillMaxSize()
             ) {
                 // ✅ 1. Onboarding
-                onboardListGraph(onFinished = {
+                onboardingGraph(onFinished = {
                     navController.navigate(authGraphRoute) {
                         popUpTo(0) { inclusive = true }
                     }

@@ -1,7 +1,11 @@
 package com.amadiyawa.feature_auth.domain.model
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import timber.log.Timber
 import kotlin.random.Random
 
+@Serializable
 data class SignIn(
     val userId: String,
     val username: String,
@@ -42,5 +46,32 @@ data class SignIn(
                 updatedAt = currentTime
             )
         }
+    }
+}
+
+/**
+ * Converts SignIn to a JSON string
+ */
+fun SignIn.toJson(): String {
+    val json = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+    }
+    return json.encodeToString(SignIn.serializer(), this)
+}
+
+/**
+ * Creates SignIn from a JSON string
+ */
+fun String.toSignIn(): SignIn? {
+    return try {
+        val json = Json {
+            ignoreUnknownKeys = true
+            encodeDefaults = true
+        }
+        json.decodeFromString(SignIn.serializer(), this)
+    } catch (e: Exception) {
+        Timber.e(e, "Error parsing SignIn from JSON")
+        null
     }
 }

@@ -73,7 +73,7 @@ fun UserListScreen(
 
 @Composable
 private fun SetUpToolbar() {
-    Toolbar(centered = false, title = "Random users")
+    Toolbar(hasNavigationIcon = false, title = "Random users")
 }
 
 @Composable

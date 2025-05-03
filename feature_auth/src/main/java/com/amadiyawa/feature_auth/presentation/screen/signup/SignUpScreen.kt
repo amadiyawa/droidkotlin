@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,7 +41,7 @@ import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
 
 @Composable
-fun SignUpScreen(
+internal fun SignUpScreen(
     onSignUpSuccess: (SignUp) -> Unit,
 ) {
     val viewModel: SignUpViewModel = koinViewModel()
@@ -95,7 +95,6 @@ private fun SetupContent(
                 viewModel = viewModel
             )
             LaunchedEffect(Unit) {
-                // Affiche une erreur via Snackbar, Toast, etc.
                 Timber.e("Form error: ${state.message}")
             }
         }
@@ -115,8 +114,7 @@ internal fun SignUpFormUI(
     val phoneFocusRequester = remember { FocusRequester() }
     val passwordFocusRequester = remember { FocusRequester() }
     val confirmPasswordFocusRequester = remember { FocusRequester() }
-
-    val focusManager = LocalFocusManager.current
+    val termsFocusRequester = remember { FocusRequester() }
 
     val isFormValid by remember(form) {
         derivedStateOf { form.asValidatedForm().isValid }
@@ -291,7 +289,7 @@ internal fun SignUpFormUI(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        focusManager.clearFocus()
+                        termsFocusRequester.requestFocus()
                     }
                 ),
                 visualTransformation = if (form.confirmPassword.isValueHidden) PasswordVisualTransformation() else VisualTransformation.None,
@@ -303,6 +301,7 @@ internal fun SignUpFormUI(
         )
 
         TermsAndConditions(
+            modifier = Modifier.focusRequester(termsFocusRequester).focusTarget(),
             isChecked = form.termsAccepted.value,
             onCheckedChange = { accepted ->
                 onAction(

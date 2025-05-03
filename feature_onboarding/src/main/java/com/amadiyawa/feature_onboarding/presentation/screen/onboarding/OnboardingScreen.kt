@@ -34,14 +34,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.amadiyawa.feature_base.presentation.compose.composable.AppTextButton
+import com.amadiyawa.feature_base.presentation.compose.composable.ButtonIconType
 import com.amadiyawa.feature_base.presentation.compose.composable.CircularButton
+import com.amadiyawa.feature_base.presentation.compose.composable.CircularButtonParams
 import com.amadiyawa.feature_base.presentation.compose.composable.ErrorState
 import com.amadiyawa.feature_base.presentation.compose.composable.FilledButton
 import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation
 import com.amadiyawa.feature_base.presentation.compose.composable.ProgressionIndicator
 import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyLarge
 import com.amadiyawa.feature_base.presentation.compose.composable.TextHeadlineLarge
-import com.amadiyawa.feature_base.presentation.compose.composable.getCircularButtonParams
 import com.amadiyawa.feature_base.presentation.theme.dimension
 import com.amadiyawa.feature_onboarding.domain.model.OnboardingScreen
 import com.amadiyawa.feature_onboarding.presentation.compose.composable.getOnboardingImageSize
@@ -191,18 +192,6 @@ fun OnboardingActions(
     onNext: () -> Unit,
     onSkip: () -> Unit
 ) {
-    val circularBackButtonParams = getCircularButtonParams()
-    val circularNextButtonParams = getCircularButtonParams()
-
-    circularBackButtonParams.onClick = onPrevious
-    circularBackButtonParams.enabled = !isFirstScreen
-    circularBackButtonParams.imageVector = Icons.AutoMirrored.Filled.ArrowBack
-    circularBackButtonParams.description = stringResource(id = R.string.previous)
-
-    circularNextButtonParams.onClick = onNext
-    circularNextButtonParams.enabled = !isLastScreen
-    circularNextButtonParams.imageVector = Icons.AutoMirrored.Filled.ArrowForward
-    circularNextButtonParams.description = stringResource(id = R.string.next)
 
     val backButtonColor by animateColorAsState(
         targetValue = if (!isFirstScreen) MaterialTheme.colorScheme.primary else
@@ -220,9 +209,14 @@ fun OnboardingActions(
         verticalAlignment = Alignment.CenterVertically
     ) {
         CircularButton(
-            circularButtonParams = circularBackButtonParams,
-            color = backButtonColor,
-            onColor = MaterialTheme.colorScheme.onPrimary
+            params = CircularButtonParams(
+                iconType = ButtonIconType.Vector(Icons.AutoMirrored.Filled.ArrowBack),
+                backgroundColor = backButtonColor,
+                iconTint = MaterialTheme.colorScheme.onPrimary,
+                onClick = onPrevious,
+                description = stringResource(id = R.string.previous),
+                enabled = !isFirstScreen
+            )
         )
 
         Row {
@@ -248,9 +242,14 @@ fun OnboardingActions(
         }
 
         CircularButton(
-            circularButtonParams = circularNextButtonParams,
-            color = nextButtonColor,
-            onColor = MaterialTheme.colorScheme.onPrimary
+            params = CircularButtonParams(
+                iconType = ButtonIconType.Vector(Icons.AutoMirrored.Filled.ArrowForward),
+                backgroundColor = nextButtonColor,
+                iconTint = MaterialTheme.colorScheme.onPrimary,
+                onClick = onNext,
+                description = stringResource(id = R.string.next),
+                enabled = !isLastScreen
+            )
         )
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.amadiyawa.feature_auth.domain.model.OtpForm
 import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.domain.validation.OtpFormValidator
+import com.amadiyawa.feature_base.domain.mapper.ErrorMessageMapper
 import com.amadiyawa.feature_base.domain.usecase.ValidateOtpUseCase
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
 import kotlinx.coroutines.Job
@@ -18,8 +19,12 @@ import kotlinx.coroutines.launch
 
 internal class OtpVerificationViewModel(
     private val validateOtpUseCase: ValidateOtpUseCase,
-    private val otpFormValidator: OtpFormValidator
-) : BaseViewModel<OtpUiState, OtpAction>(OtpUiState.Idle(OtpForm())) {
+    private val otpFormValidator: OtpFormValidator,
+    errorMessageMapper: ErrorMessageMapper
+) : BaseViewModel<OtpUiState, OtpAction>(
+    OtpUiState.Idle(OtpForm()),
+    errorMessageMapper
+) {
 
     private val _signUp = MutableStateFlow(SignUp.random())
     val signUp: StateFlow<SignUp> = _signUp
@@ -97,7 +102,7 @@ internal class OtpVerificationViewModel(
             val result = validateOtpUseCase.validateMatch(input = otp, expected = otp)
 
             if (result.isValid) {
-                _uiEvent.emit(OtpUiEvent.NavigateToNextScreen)
+                _uiEvent.emit(OtpUiEvent.NavigateToNextScreen(signUp = _signUp.value))
             } else {
                 setState { OtpUiState.Error(form, message = result.errorMessage.orEmpty()) }
             }

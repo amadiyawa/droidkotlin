@@ -1,13 +1,18 @@
 package com.amadiyawa.feature_onboarding.presentation.screen.onboarding
 
+import com.amadiyawa.feature_base.domain.mapper.ErrorMessageMapper
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
 import com.amadiyawa.feature_onboarding.domain.usecase.GetOnboardListUseCase
 import timber.log.Timber
 
 internal class OnboardingViewModel(
-    private val getOnboardListUseCase: GetOnboardListUseCase
-) : BaseViewModel<OnboardingUiState, OnboardingAction>(OnboardingUiState()) {
+    private val getOnboardListUseCase: GetOnboardListUseCase,
+    errorMessageMapper: ErrorMessageMapper
+) : BaseViewModel<OnboardingUiState, OnboardingAction>(
+    OnboardingUiState(),
+    errorMessageMapper
+) {
 
     init {
         dispatch(OnboardingAction.LoadScreens)

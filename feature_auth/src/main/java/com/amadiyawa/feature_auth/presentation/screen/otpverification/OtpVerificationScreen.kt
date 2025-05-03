@@ -48,15 +48,13 @@ import com.amadiyawa.feature_base.presentation.compose.composable.FilledButton
 import com.amadiyawa.feature_base.presentation.compose.composable.FormScaffold
 import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation
 import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyLarge
-import com.amadiyawa.feature_base.presentation.compose.composable.TextBodySmall
-import com.amadiyawa.feature_base.presentation.compose.composable.TextLabelMedium
 import com.amadiyawa.feature_base.presentation.compose.composable.otpFieldColors
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun OtpVerificationScreen(
+internal fun OtpVerificationScreen(
     signUp: SignUp,
-    onOtpValidated: () -> Unit,
+    onOtpValidated: (signUp: SignUp) -> Unit,
     onCancel: () -> Unit,
 ) {
     val viewModel: OtpVerificationViewModel = koinViewModel()
@@ -75,7 +73,7 @@ fun OtpVerificationScreen(
 
     uiEvent.value?.let { event ->
         when (event) {
-            is OtpUiEvent.NavigateToNextScreen -> onOtpValidated()
+            is OtpUiEvent.NavigateToNextScreen -> onOtpValidated(event.signUp)
         }
     }
 }

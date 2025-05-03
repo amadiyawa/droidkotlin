@@ -1,7 +1,7 @@
 package com.amadiyawa.feature_auth.presentation.screen.signup
 
 import com.amadiyawa.feature_auth.domain.model.SignUpForm
-import com.amadiyawa.feature_base.domain.enum.RecipientType
+import com.amadiyawa.feature_base.domain.util.RecipientType
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseAction
 

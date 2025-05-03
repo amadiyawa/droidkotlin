@@ -19,9 +19,9 @@ import androidx.compose.runtime.Composable
 fun barItemColors(): NavigationBarItemColors {
     return NavigationBarItemDefaults.colors(
         selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
         selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
         indicatorColor = MaterialTheme.colorScheme.primaryContainer
     )
 }

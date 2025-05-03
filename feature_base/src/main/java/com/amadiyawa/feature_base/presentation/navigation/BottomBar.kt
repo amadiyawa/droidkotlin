@@ -1,17 +1,24 @@
 package com.amadiyawa.feature_base.presentation.navigation
 
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.amadiyawa.feature_base.presentation.compose.composable.TextLabelSmall
 import com.amadiyawa.feature_base.presentation.compose.composable.barItemColors
 import com.amadiyawa.feature_base.presentation.theme.dimension
 
@@ -35,8 +42,10 @@ fun CustomBottomBar(
     currentDestination: NavDestination?
 ) {
     NavigationBar(
-        modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.surface,
+        modifier = modifier
+            .navigationBarsPadding()
+            .height(MaterialTheme.dimension.componentSize.bottomBar),
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
         contentColor = MaterialTheme.colorScheme.onSurface
     ) {
         destinations.forEach { destination ->
@@ -45,6 +54,10 @@ fun CustomBottomBar(
             } == true
             val title = stringResource(id = destination.title)
             NavigationBarItem(
+                modifier = Modifier.semantics {
+                    contentDescription = "Navigate to ${destination.title}"
+                    role = Role.Tab
+                },
                 selected = selected,
                 onClick = { if (!selected) { onNavigate(destination) } },
                 icon = {
@@ -54,11 +67,17 @@ fun CustomBottomBar(
                     )
                 },
                 label = {
-                    Text(
-                        modifier = Modifier.padding(top = MaterialTheme.dimension.gridHalf),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
-                        text = title
+                    TextLabelSmall(
+                        modifier = Modifier.padding(top = MaterialTheme.dimension.spacing.xSmall),
+                        fontWeight = if (selected) FontWeight.Medium else FontWeight.Normal,
+                        text = title,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = if (selected) {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
                     )
                 },
                 alwaysShowLabel = true,

@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -51,10 +53,10 @@ fun defaultTermsAndConditionsTextData(): TermsAndConditionsTextData {
 
 @Composable
 fun TermsAndConditions(
+    modifier: Modifier = Modifier,
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    data: TermsAndConditionsTextData = defaultTermsAndConditionsTextData(),
-    modifier: Modifier = Modifier
+    data: TermsAndConditionsTextData = defaultTermsAndConditionsTextData()
 ) {
 
     val annotatedText = buildAnnotatedString {
@@ -106,7 +108,7 @@ fun TermsAndConditions(
             text = annotatedText,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.fillMaxWidth().clickable {
-                // fallback au cas où tu veux faire un truc global
+
             },
             onTextLayout = {},
             overflow = TextOverflow.Clip

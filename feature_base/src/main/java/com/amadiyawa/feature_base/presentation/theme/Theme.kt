@@ -7,6 +7,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -29,10 +30,10 @@ val Theme.accentColor: AccentColor
     @ReadOnlyComposable
     get() = LocalAccentColor.current
 
-val Theme.dimension: Dimension
+val Theme.dimension: AppDimensions.Dimensions
     @Composable
     @ReadOnlyComposable
-    get() = LocalDimension.current
+    get() = LocalAppDimensions.current
 
 private val DarkColorScheme = darkColorScheme(
     primary = DarkPrimary,
@@ -44,6 +45,9 @@ private val DarkColorScheme = darkColorScheme(
     background = DarkBackground,
     surface = DarkSurface,
     surfaceVariant = DarkSurfaceVariant,
+    surfaceContainer = DarkSurfaceContainer,
+    surfaceContainerHighest = DarkSurfaceContainerHigh,
+    surfaceContainerLowest = DarkSurfaceContainerLow,
     error = DarkError,
     outline = DarkOutline,
     onPrimary = DarkOnPrimary,
@@ -68,6 +72,9 @@ private val LightColorScheme = lightColorScheme(
     background = LightBackground,
     surface = LightSurface,
     surfaceVariant = LightSurfaceVariant,
+    surfaceContainer = LightSurfaceContainer,
+    surfaceContainerHighest = LightSurfaceContainerHigh,
+    surfaceContainerLowest = LightSurfaceContainerLow,
     error = LightError,
     outline = LightOutline,
     onPrimary = LightOnPrimary,
@@ -94,6 +101,7 @@ fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
+    windowSizeClass: WindowSizeClass? = null,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -106,10 +114,13 @@ fun AppTheme(
         else -> LightColorScheme
     }
 
+    // Get dimensions with proper device correction
+    val dimensions = rememberAppDimensions(windowSizeClass)
+
     CompositionLocalProvider(
         LocalCustomColor provides getCustomColors(darkTheme),
         LocalAccentColor provides AccentColor(),
-        LocalDimension provides getDimension()
+        LocalAppDimensions provides dimensions,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

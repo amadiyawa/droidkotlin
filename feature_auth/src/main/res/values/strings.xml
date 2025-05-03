@@ -38,6 +38,21 @@
     <string name="otp_description_email">Please enter the code we sent to your email address %s.</string>
     <string name="otp_description_phone">Please enter the code we sent to your phone number %s.</string>
     <string name="verify">Verify</string>
+    <string name="validate">Validate</string>
     <string name="resend">Resend</string>
+    <string name="reset">Reset</string>
     <string name="resend_timer_separator"> in </string>
+
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_description">Enter your email or phone number to reset your password.</string>
+    <string name="forgot_password_placeholder">Enter your email or phone number</string>
+
+    <string name="reset_password_title">Reset your password</string>
+    <string name="reset_password_description">Please enter your new password below.</string>
+
+    <!-- SignIn Loading States -->
+    <string name="signing_in">Signing in…</string>
+    <string name="social_signing_in">Signing in with %s…</string>
+    <string name="saving_session">Saving your session…</string>
+    <string name="activating_session">Activating your session…</string>
 </resources>

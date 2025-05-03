@@ -15,11 +15,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -52,7 +49,12 @@ fun DefaultTextField(
     leadingBadge: String? = null
 ) {
     config.trailingIconConfig.text = text.value
-    Column(verticalArrangement = Arrangement.spacedBy(Dimen.Spacing.medium)) {
+
+    val (interactionSource, animatedBorderWidth, animatedBorderColor) = rememberAnimatedBorderStyle(
+        isError = text.errorMessage != null
+    )
+
+    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimension.spacing.small)) {
         TextLabelLarge(text = text.label)
 
         TextField(
@@ -60,10 +62,11 @@ fun DefaultTextField(
                 .fillMaxWidth()
                 .requiredHeight(config.height)
                 .border(
-                    width = Dimen.Spacing.extraSmall,
-                    color = MaterialTheme.colorScheme.outline,
+                    width = animatedBorderWidth,
+                    color = animatedBorderColor,
                     shape = RoundedCornerShape(Dimen.Size.small)
                 ),
+            interactionSource = interactionSource,
             shape = RoundedCornerShape(Dimen.Size.small),
             trailingIcon = {
                 GetTrailingIcon(
@@ -76,14 +79,14 @@ fun DefaultTextField(
                 {
                     Box(
                         modifier = Modifier
-                            .padding(start = MaterialTheme.dimension.gridOneAndHalf)
+                            .padding(start = MaterialTheme.dimension.spacing.small)
                             .background(
                                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
                                 shape = RoundedCornerShape(Dimen.Size.extraSmall)
                             )
                             .padding(
-                                horizontal = MaterialTheme.dimension.gridOne,
-                                vertical = MaterialTheme.dimension.gridHalf
+                                horizontal = MaterialTheme.dimension.spacing.small,
+                                vertical = MaterialTheme.dimension.spacing.xSmall
                             )
                     ) {
                         Text(
@@ -105,30 +108,13 @@ fun DefaultTextField(
 
         AnimatedVisibility(text.errorMessage != null) {
             text.errorMessage?.let {
-                Text(
+                TextBodySmall(
                     text = it,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall
+                    color = MaterialTheme.colorScheme.error
                 )
             }
         }
     }
-}
-
-@Composable
-fun getTextFieldColors(): TextFieldColors {
-    return TextFieldDefaults.colors(
-        focusedContainerColor = MaterialTheme.colorScheme.surface,
-        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-        disabledContainerColor = MaterialTheme.colorScheme.surface,
-        focusedTextColor = MaterialTheme.colorScheme.onSurface,
-        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-        disabledTextColor = MaterialTheme.colorScheme.onSurface,
-        cursorColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        focusedIndicatorColor = Color.Transparent,
-        unfocusedIndicatorColor = Color.Transparent,
-        disabledIndicatorColor = Color.Transparent,
-    )
 }
 
 @Preview

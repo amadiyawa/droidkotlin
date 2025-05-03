@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 
 @Composable
@@ -71,13 +72,16 @@ fun TextHeadlineSmall(
 fun TextTitleLarge(
     text: String,
     modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start,
+    fontWeight: FontWeight = FontWeight.Normal,
     color: Color = MaterialTheme.colorScheme.onSurface
 ) {
     Text(
         text = text,
         modifier = modifier,
         style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.Medium,
+        fontWeight = fontWeight,
+        textAlign = textAlign,
         color = color
     )
 }
@@ -87,7 +91,7 @@ fun TextTitleMedium(
     text: String,
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Start,
-            fontWeight: FontWeight = FontWeight.Normal,
+    fontWeight: FontWeight = FontWeight.Normal,
     color: Color = MaterialTheme.colorScheme.onSurface
 ) {
     Text(
@@ -223,6 +227,8 @@ fun TextLabelSmall(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     fontWeight: FontWeight = FontWeight.Normal,
+    maxLines: Int = 1,
+    overflow: TextOverflow = TextOverflow.Visible,
 ) {
     Text(
         text = text,
@@ -230,6 +236,8 @@ fun TextLabelSmall(
             .clickable { onClick() },
         color = color,
         style = MaterialTheme.typography.labelSmall,
-        fontWeight = fontWeight
+        fontWeight = fontWeight,
+        maxLines = maxLines,
+        overflow = overflow
     )
 }

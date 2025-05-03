@@ -6,12 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResetPasswordRequest(
 
-    @SerialName("recipient")
-    val recipient: String,
+    @SerialName("verificationId")
+    val verificationId: String,
 
-    @SerialName("otp")
-    val otp: String,
-
-    @SerialName("new_password")
+    @SerialName("newPassword")
     val newPassword: String
 )

@@ -10,7 +10,7 @@ import com.amadiyawa.feature_auth.domain.model.SignUp
  * during user interaction with the Sign-Up screen. Each event corresponds to a specific
  * action or navigation flow.
  */
-sealed interface SignUpUiEvent {
+internal sealed interface SignUpUiEvent {
 
     /**
      * Event to navigate to the OTP (One-Time Password) screen.

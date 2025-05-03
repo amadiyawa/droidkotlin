@@ -1,6 +1,8 @@
 package com.amadiyawa.feature_auth.presentation.screen.otpverification
 
-sealed interface OtpUiEvent {
+import com.amadiyawa.feature_auth.domain.model.SignUp
 
-    object NavigateToNextScreen : OtpUiEvent
+internal sealed interface OtpUiEvent {
+
+    data class NavigateToNextScreen(val signUp: SignUp) : OtpUiEvent
 }

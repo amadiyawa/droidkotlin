@@ -11,5 +11,5 @@ import org.koin.dsl.module
  **/
 internal val presentationModule = module {
     // Instead of using :: which passes the class directly, we use get() to retrieve the values from properties or to get dependencies from Koin
-    viewModel { OnboardingViewModel(get()) }
+    viewModel { OnboardingViewModel(get(), get()) }
 }

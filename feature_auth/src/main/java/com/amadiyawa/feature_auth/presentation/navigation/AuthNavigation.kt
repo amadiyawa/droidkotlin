@@ -13,8 +13,15 @@ object WelcomeNavigation : AppNavigationDestination {
 }
 
 object SignInNavigation : AppNavigationDestination {
-    override val route = "auth_sign_in"
+
+    private const val RECIPIENT_PARAM = "recipient"
+
+    override val route = "auth_sign_in/{$RECIPIENT_PARAM}"
     override val destination = "auth_sign_in_destination"
+
+    fun createRoute(recipient: String): String {
+        return "auth_sign_in/$recipient"
+    }
 }
 
 object SignUpNavigation : AppNavigationDestination {
@@ -22,7 +29,7 @@ object SignUpNavigation : AppNavigationDestination {
     override val destination = "auth_sign_up_destination"
 }
 
-object OtpVerificationNavigation : AppNavigationDestination {
+internal object OtpVerificationNavigation : AppNavigationDestination {
 
     private const val SIGN_UP_PARAM = "signUpJson"
 

@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OtpVerificationRequest(
 
-    @SerialName("recipient")
-    val recipient: String,
+    @SerialName("verificationId")
+    val verificationId: String,
 
     @SerialName("code")
     val code: String

@@ -1,5 +1,6 @@
 package com.amadiyawa.feature_base.domain
 
+import com.amadiyawa.feature_base.domain.usecase.ValidateEmailOrPhoneUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateEmailUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateFullNameUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateIdentifierUseCase
@@ -21,6 +22,13 @@ internal val domainModule = module {
         ValidateIdentifierUseCase(
             validateEmail = get(),
             validateUsername = get(),
+            validatePhone = get(),
+            context = androidContext()
+        )
+    }
+    single {
+        ValidateEmailOrPhoneUseCase(
+            validateEmail = get(),
             validatePhone = get(),
             context = androidContext()
         )

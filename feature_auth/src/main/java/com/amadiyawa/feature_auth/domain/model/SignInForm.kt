@@ -1,5 +1,7 @@
 package com.amadiyawa.feature_auth.domain.model
 
+import com.amadiyawa.feature_auth.domain.validation.SignInFormValidator
+import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.domain.model.ValidatedField
 import com.amadiyawa.feature_base.domain.model.ValidatedForm
 
@@ -29,5 +31,53 @@ data class SignInForm(
             "identifier" to identifier,
             "password" to password
         )
+    )
+}
+
+fun SignInForm.updateAndValidateField(
+    key: String,
+    fieldValue: FieldValue,
+    validator: SignInFormValidator
+): SignInForm {
+    return when (fieldValue) {
+        is FieldValue.Text -> when (key) {
+            "identifier" -> copy(
+                identifier = identifier.copy(
+                    value = fieldValue.value,
+                    validation = validator.validateField("identifier", fieldValue.value)
+                )
+            )
+            "password" -> copy(
+                password = password.copy(
+                    value = fieldValue.value,
+                    validation = validator.validateField("password", fieldValue.value)
+                )
+            )
+            else -> this
+        }
+        else -> this
+    }
+}
+
+fun SignInForm.togglePasswordVisibility(): SignInForm {
+    return copy(
+        password = password.copy(isValueHidden = !password.isValueHidden)
+    )
+}
+
+fun ValidatedForm.toSignInForm(): SignInForm {
+    val identifierField = fields["identifier"]?.let {
+        @Suppress("UNCHECKED_CAST")
+        it as ValidatedField<String>
+    } ?: ValidatedField("")
+
+    val passwordField = fields["password"]?.let {
+        @Suppress("UNCHECKED_CAST")
+        it as ValidatedField<String>
+    } ?: ValidatedField("")
+
+    return SignInForm(
+        identifier = identifierField,
+        password = passwordField
     )
 }

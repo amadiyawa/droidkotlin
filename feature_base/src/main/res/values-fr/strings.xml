@@ -38,4 +38,32 @@
     <string name="invalid_otp_digit">Chaque champ doit contenir exactement un chiffre.</string>
     <string name="invalid_otp_format">Le code OTP doit contenir exactement 6 chiffres.</string>
     <string name="otp_code_mismatch">Le code saisi ne correspond pas.</string>
+
+    <string name="error_title">Oups ! Quelque chose s\'est mal passé.</string>
+    <string name="error_retry">Réessayer</string>
+
+    <!-- Authentication error messages -->
+    <string name="error_invalid_credentials">Identifiants de connexion invalides</string>
+    <string name="error_session_expired">Votre session a expiré. Veuillez vous reconnecter</string>
+    <string name="error_unauthorized">Vous n\'avez pas la permission d\'accéder à cette ressource</string>
+    <string name="error_account_not_found">Compte introuvable. Veuillez vérifier vos identifiants</string>
+    <string name="error_too_many_attempts">Trop de tentatives de connexion. Veuillez réessayer plus tard</string>
+
+    <!-- Social authentication errors -->
+    <string name="error_social_account_not_linked">Compte social non lié à un compte existant</string>
+    <string name="error_social_auth_cancelled">L\'authentification sociale a été annulée</string>
+    <string name="error_social_auth_connection_failed">Échec de la connexion au serveur d\'authentification</string>
+
+    <!-- Session errors -->
+    <string name="error_session_save_failed">Impossible de sauvegarder votre session</string>
+    <string name="error_session_activation_failed">L\'activation de la session a échoué</string>
+
+    <!-- Network errors -->
+    <string name="error_no_internet">Pas de connexion Internet</string>
+    <string name="error_connection_timeout">Délai de connexion dépassé</string>
+    <string name="error_server_unavailable">Le serveur est actuellement indisponible</string>
+
+    <!-- Generic errors -->
+    <string name="error_unknown">Une erreur inconnue s\'est produite</string>
+    <string name="error_authentication_failed">L\'authentification a échoué</string>
 </resources>

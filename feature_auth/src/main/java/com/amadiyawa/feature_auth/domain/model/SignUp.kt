@@ -1,13 +1,15 @@
 package com.amadiyawa.feature_auth.domain.model
 
+import com.amadiyawa.feature_auth.domain.enum.OtpPurpose
 import com.amadiyawa.feature_base.common.util.generateRandomHash
 import kotlinx.serialization.Serializable
 import kotlin.random.Random
 
 @Serializable
-data class SignUp(
+internal data class SignUp(
+    var otpPurpose: OtpPurpose = OtpPurpose.SIGN_UP,
     val verificationId: String,
-    val recipient: String,
+    var recipient: String,
     var expiresIn: Int
 ) {
     companion object {
@@ -19,7 +21,8 @@ data class SignUp(
             return SignUp(
                 verificationId = randomVerificationId,
                 recipient = randomRecipient,
-                expiresIn = randomExpiresIn
+                expiresIn = randomExpiresIn,
+                otpPurpose = OtpPurpose.entries.toTypedArray().random()
             )
         }
     }

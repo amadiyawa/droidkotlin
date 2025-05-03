@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
@@ -22,54 +21,46 @@ import com.amadiyawa.paygo.base.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Toolbar(
-    centered: Boolean,
+    modifier: Modifier = Modifier,
+    hasNavigationIcon: Boolean,
     title: String = stringResource(id = R.string.empty_toolbar_title),
     onBackClick: (() -> Unit) = {},
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
 ){
-    if (centered) {
-        CenterAlignedTopAppBar(
-            modifier = Modifier.padding(horizontal = MaterialTheme.dimension.gridTwo),
-            title = {
-                TextTitleLarge(
-                    text = title,
-                    modifier = Modifier.padding(start = Dimen.Spacing.large),
-                )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(
-                titleContentColor = MaterialTheme.colorScheme.onSurface,
-                containerColor = backgroundColor
-            ),
-            navigationIcon = {
-                Row(modifier = Modifier.padding(horizontal = MaterialTheme.dimension.gridTwo)) {
-                    CircularButton(
-                        circularButtonParams = CircularButtonParams(
-                            onClick = onBackClick,
-                            enabled = true,
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            description = stringResource(id = R.string.back),
-                        ),
-                        size = MaterialTheme.dimension.gridFour,
-                        color = MaterialTheme.colorScheme.surface,
-                        onColor = MaterialTheme.colorScheme.primary
-                    )
-                }
-            },
-            windowInsets = WindowInsets(0, 0, 0, 0)
-        )
-    } else {
-        TopAppBar(
-            title = {
-                TextTitleLarge(
-                    text = title,
-                    modifier = Modifier.padding(start = 10.dp),
-                )
-            },
-            actions = {
+    TopAppBar(
+        modifier = modifier.padding(horizontal = MaterialTheme.dimension.spacing.medium),
+        navigationIcon = if (hasNavigationIcon) {
+            { NavigationIcon(onBackClick) }
+        } else { {} },
+        title = {
+            TextTitleLarge(
+                text = title,
+                modifier = if (hasNavigationIcon) Modifier.padding(start = Dimen.Spacing.large) else Modifier.padding(start = 10.dp),
+            )
+        },
+        actions = {
 
-            },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = backgroundColor),
-            windowInsets = WindowInsets(0, 0, 0, 0)
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            containerColor = backgroundColor
+        ),
+        windowInsets = WindowInsets(0, 0, 0, 0)
+    )
+}
+
+@Composable
+private fun NavigationIcon(onBackClick: () -> Unit) {
+    Row {
+        CircularButton(
+            params = CircularButtonParams(
+                iconType = ButtonIconType.Vector(Icons.AutoMirrored.Filled.ArrowBack),
+                backgroundColor = MaterialTheme.colorScheme.surface,
+                borderWidth = MaterialTheme.dimension.grid.quarter,
+                iconTint = MaterialTheme.colorScheme.primary,
+                onClick = { onBackClick },
+                description = "Back click"
+            )
         )
     }
 }

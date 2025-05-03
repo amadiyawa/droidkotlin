@@ -1,12 +1,15 @@
 package com.amadiyawa.feature_auth.presentation.screen.signup
 
 import androidx.lifecycle.viewModelScope
+import com.amadiyawa.feature_auth.common.util.getSignUpPreferredRecipient
+import com.amadiyawa.feature_auth.domain.enum.OtpPurpose
 import com.amadiyawa.feature_auth.domain.mapper.toSignUpForm
 import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.domain.model.SignUpForm
 import com.amadiyawa.feature_auth.domain.model.updateAndValidateField
 import com.amadiyawa.feature_auth.domain.usecase.SignUpUseCase
 import com.amadiyawa.feature_auth.domain.validation.SignUpFormValidator
+import com.amadiyawa.feature_base.domain.mapper.ErrorMessageMapper
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,8 +21,12 @@ import kotlinx.coroutines.launch
 
 internal class SignUpViewModel(
     private val signUpUseCase: SignUpUseCase,
-    private val validator: SignUpFormValidator
-) : BaseViewModel<SignUpUiState, SignUpAction>(SignUpUiState.Idle()) {
+    private val validator: SignUpFormValidator,
+    errorMessageMapper: ErrorMessageMapper
+) : BaseViewModel<SignUpUiState, SignUpAction>(
+    SignUpUiState.Idle(),
+    errorMessageMapper
+) {
 
     private val _uiEvent = MutableSharedFlow<SignUpUiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
@@ -80,6 +87,8 @@ internal class SignUpViewModel(
         viewModelScope.launch {
             delay(2000) // simulate API call
             val signUp = SignUp.random()
+            signUp.otpPurpose = OtpPurpose.SIGN_UP
+            signUp.recipient = getSignUpPreferredRecipient(form)
             _uiEvent.emit(SignUpUiEvent.NavigateToOtp(signUp))
             _isSubmitting.value = false
         }

@@ -1,10 +1,18 @@
 package com.amadiyawa.feature_base.presentation.compose.composable
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,30 +20,68 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import com.amadiyawa.feature_base.common.res.Dimen
-import com.amadiyawa.feature_base.presentation.theme.dimension
-import kotlin.invoke
 
-data class TextButtonStyle(
-    val textAlign: TextAlign = TextAlign.Start,
-    val textDecoration: TextDecoration = TextDecoration.None,
-    val fontWeight: FontWeight = FontWeight.Normal,
-    val fontSize: TextUnit = TextUnit.Unspecified,
+data class LoadingButtonParams(
+    val modifier: Modifier = Modifier,
+    val enabled: Boolean = true,
+    var text: String = "",
+    var isLoading: Boolean = false,
+    var onClick: () -> Unit = {}
 )
+
+@Composable
+fun LoadingButton(
+    params: LoadingButtonParams,
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+        disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+    )
+) {
+    Button(
+        modifier = params.modifier,
+        onClick = params.onClick,
+        enabled = params.enabled && !params.isLoading,
+        colors = colors
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AnimatedVisibility(
+                visible = params.isLoading,
+                enter = fadeIn() + expandHorizontally(),
+                exit = fadeOut() + shrinkHorizontally()
+            ) {
+                DefaultCircularProgressIndicator()
+            }
+            TextLabelLarge(
+                text = params.text,
+                fontWeight = FontWeight.Medium,
+                color = LocalContentColor.current
+            )
+        }
+    }
+}
 
 @Composable
 fun FilledButton(
@@ -121,70 +167,64 @@ fun AppTextButton(
     )
 }
 
-/**
- * Data class representing the parameters for a circular button.
- *
- * @property onClick The action to be performed when the button is clicked.
- * @property enabled Indicates whether the button is enabled.
- * @property imageVector The image vector for the icon displayed on the button.
- * @property description The content description for the icon, used for accessibility.
- */
+sealed class ButtonIconType {
+    data class Resource(val resId: Int) : ButtonIconType()
+    data class Vector(val imageVector: ImageVector) : ButtonIconType()
+}
+
 data class CircularButtonParams(
-    val onClick: () -> Unit,
-    val enabled: Boolean,
-    val imageVector: ImageVector,
-    val description: String = ""
+    var onClick: () -> Unit = {},
+    var enabled: Boolean = true,
+    var iconType: ButtonIconType,
+    var description: String = "",
+    var size: Dp = 48.dp,
+    var iconSize: Dp = 24.dp,
+    var backgroundColor: Color = Color.Transparent,
+    var iconTint: Color = Color.Unspecified,
+    var borderWidth: Dp = 0.dp,
+    var borderColor: Color = Color.Transparent
 )
 
-/**
- * A composable function that creates a circular button with an icon.
- *
- * @param modifier The modifier to be applied to the button.
- * @param circularButtonParams The parameters for the circular button, including the onClick action,
- *                             whether the button is enabled, the image vector for the icon, and the description.
- * @param size The size of the button. Defaults to the grid size defined in the MaterialTheme.
- * @param color The background color of the button. Defaults to the primary color in the MaterialTheme.
- * @param onColor The color of the icon. Defaults to the onPrimary color in the MaterialTheme.
- */
 @Composable
 fun CircularButton(
     modifier: Modifier = Modifier,
-    circularButtonParams: CircularButtonParams,
-    size: Dp = MaterialTheme.dimension.gridSix,
-    color: Color = MaterialTheme.colorScheme.primary,
-    onColor: Color = MaterialTheme.colorScheme.onPrimary
+    params: CircularButtonParams
 ) {
-    IconButton(
-        onClick = circularButtonParams.onClick,
-        enabled = circularButtonParams.enabled,
+    Box(
         modifier = modifier
-            .requiredSize(size)
-            .background(color = color, shape = CircleShape)
+            .size(params.size)
+            .clip(CircleShape)
+            .border(
+                width = params.borderWidth,
+                color = params.borderColor,
+                shape = CircleShape
+            )
+            .background(color = params.backgroundColor, shape = CircleShape)
+            .clickable(
+                enabled = params.enabled,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = params.onClick
+            ),
+        contentAlignment = Alignment.Center
     ) {
-        Icon(
-            imageVector = circularButtonParams.imageVector,
-            contentDescription = circularButtonParams.description,
-            tint = onColor
-        )
-    }
-}
-
-@Composable
-fun SocialButton(
-    modifier: Modifier = Modifier,
-    painter: Painter,
-    description: String = "",
-    onClick: () -> Unit,
-    size: Dp = MaterialTheme.dimension.gridSix,
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = modifier.size(size)
-    ) {
-        Icon(
-            painter = painter,
-            contentDescription = description,
-            tint = Color.Unspecified
-        )
+        when (val iconType = params.iconType) {
+            is ButtonIconType.Resource -> {
+                Icon(
+                    painter = painterResource(id = iconType.resId),
+                    contentDescription = params.description,
+                    tint = params.iconTint,
+                    modifier = Modifier.size(params.iconSize)
+                )
+            }
+            is ButtonIconType.Vector -> {
+                Icon(
+                    imageVector = iconType.imageVector,
+                    contentDescription = params.description,
+                    tint = params.iconTint,
+                    modifier = Modifier.size(params.iconSize)
+                )
+            }
+        }
     }
 }

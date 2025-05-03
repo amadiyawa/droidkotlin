@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.amadiyawa.feature_auth.domain.enum.OtpPurpose
 import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.presentation.screen.forgotpassword.ForgotPasswordScreen
 import com.amadiyawa.feature_auth.presentation.screen.otpverification.OtpVerificationScreen
@@ -16,36 +17,46 @@ import com.amadiyawa.feature_auth.presentation.screen.signup.SignUpScreen
 import com.amadiyawa.feature_auth.presentation.screen.welcome.WelcomeScreen
 import kotlinx.serialization.json.Json
 
-fun NavGraphBuilder.authGraph(
-    onSignIn: () -> Unit,
-    onNavigateToSignUp: () -> Unit,
-    onNavigateToForgotPassword: () -> Unit,
-    onSignUpSuccess: (signUp: SignUp) -> Unit,
-    onOtpValidated: () -> Unit,
-    onOtpFailed: () -> Unit,
-    onResetPasswordSuccess: () -> Unit
-) {
+internal data class AuthGraphCallbacks(
+    val onSignIn: () -> Unit,
+    val onNavigateToSignUp: () -> Unit,
+    val onNavigateToForgotPassword: () -> Unit,
+    val onSignInSuccess: () -> Unit,
+    val onSignUpSuccess: (signUp: SignUp) -> Unit,
+    val onOtpSentFromReset: (signUp: SignUp) -> Unit,
+    val onOtpValidated: (signUp: SignUp) -> Unit,
+    val onOtpFailed: () -> Unit,
+    val onResetPasswordSuccess: (recipient: String) -> Unit
+)
+
+internal fun NavGraphBuilder.authGraph(callbacks: AuthGraphCallbacks) {
     navigation(
         startDestination = WelcomeNavigation.destination,
         route = "auth"
     ) {
         composable(WelcomeNavigation.destination) {
             WelcomeScreen(
-                onSignIn = onSignIn,
-                onSignUp = onNavigateToSignUp
+                onSignIn = callbacks.onSignIn,
+                onSignUp = callbacks.onNavigateToSignUp
             )
         }
 
-        composable(SignInNavigation.route) {
+        composable(
+            route = SignInNavigation.route,
+            arguments = listOf(navArgument("recipient") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val recipient = backStackEntry.arguments?.getString("recipient")
+
             SignInScreen(
-                onSignInSuccess = onOtpValidated,
-                onForgotPassword = onNavigateToForgotPassword
+                defaultIdentifier = recipient,
+                onSignInSuccess = callbacks.onSignInSuccess,
+                onForgotPassword = callbacks.onNavigateToForgotPassword
             )
         }
 
         composable(SignUpNavigation.route) {
             SignUpScreen(
-                onSignUpSuccess = onSignUpSuccess
+                onSignUpSuccess = callbacks.onSignUpSuccess
             )
         }
 
@@ -59,51 +70,72 @@ fun NavGraphBuilder.authGraph(
             if (signUp != null) {
                 OtpVerificationScreen(
                     signUp = signUp,
-                    onOtpValidated = onOtpValidated,
-                    onCancel = onOtpFailed
+                    onOtpValidated = callbacks.onOtpValidated,
+                    onCancel = callbacks.onOtpFailed
                 )
             } else {
-                // Handle null case: maybe navigate back or show error
+                // Gérer le cas null
             }
         }
 
         composable(ForgotPasswordNavigation.route) {
             ForgotPasswordScreen(
-                onOtpSent = { recipient ->
-                    // handled in graph navController
-                }
+                onOtpSent = callbacks.onOtpSentFromReset
             )
         }
 
         composable(ResetPasswordNavigation.route) {
             ResetPasswordScreen(
-                onSuccess = onResetPasswordSuccess
+                onSuccess = callbacks.onResetPasswordSuccess
             )
         }
     }
 }
 
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
-    authGraph(
-        onSignIn = { navController.navigate(SignInNavigation.route) },
+    val callbacks = AuthGraphCallbacks(
+        onSignIn = { navController.navigate(SignInNavigation.createRoute("")) },
         onNavigateToSignUp = { navController.navigate(SignUpNavigation.route) },
         onNavigateToForgotPassword = { navController.navigate(ForgotPasswordNavigation.route) },
+        onSignInSuccess = {
+            navController.navigate("main") {
+                popUpTo("auth") { inclusive = true }
+                launchSingleTop = true
+            }
+        },
         onSignUpSuccess = { signUp: SignUp ->
             navController.navigate(OtpVerificationNavigation.createRoute(signUp)) {
                 popUpTo(SignUpNavigation.route) { inclusive = true }
                 launchSingleTop = true
             }
         },
-        onOtpValidated = {
-            navController.navigate("main") {
-                popUpTo("auth") { inclusive = true }
+        onOtpSentFromReset = { signUp ->
+            navController.navigate(OtpVerificationNavigation.createRoute(signUp)) {
+                popUpTo(ForgotPasswordNavigation.route) { inclusive = true }
+                launchSingleTop = true
+            }
+        },
+        onOtpValidated = { signUp ->
+            if (signUp.otpPurpose == OtpPurpose.SIGN_UP) {
+                navController.navigate("main") {
+                    popUpTo("auth") { inclusive = true }
+                    launchSingleTop = true
+                }
+            } else {
+                navController.navigate(ResetPasswordNavigation.route) {
+                    popUpTo(OtpVerificationNavigation.route) { inclusive = true }
+                    launchSingleTop = true
+                }
             }
         },
         onOtpFailed = { navController.popBackStack() },
-        onResetPasswordSuccess = {
-            navController.navigate(SignInNavigation.route) {
-                popUpTo(WelcomeNavigation.destination) { inclusive = false }
+        onResetPasswordSuccess = { recipient ->
+            navController.navigate(SignInNavigation.createRoute(recipient)) {
+                popUpTo(ResetPasswordNavigation.route) { inclusive = true }
+                launchSingleTop = true
             }
         }
     )
+
+    authGraph(callbacks)
 }

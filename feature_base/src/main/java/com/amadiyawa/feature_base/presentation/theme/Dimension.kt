@@ -1,155 +1,503 @@
 package com.amadiyawa.feature_base.presentation.theme
 
+import android.content.res.Configuration
+import android.os.Build
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.amadiyawa.feature_base.presentation.compose.composable.getScreenSizeInfo
+import timber.log.Timber
+
+private const val TAG = "DeviceDimensions"
 
 /**
- * Object containing default dimension values used throughout the application.
+ * A comprehensive dimension system that adapts to different screen sizes,
+ * device orientations, and manufacturer implementations.
  */
-data object DimensionDefaults {
-    internal const val GRID_QUARTER = 1.5f
-    internal const val GRID_HALF = 3
-    internal const val GRID_ONE = 6
-    internal const val GRID_ONE_AND_HALF = 9
-    internal const val GRID_TWO = 12
-    internal const val GRID_TWO_AND_HALF = 15
-    internal const val GRID_THREE = 18
-    internal const val GRID_THREE_AND_HALF = 21
-    internal const val GRID_FOUR = 24
-    internal const val GRID_FOUR_AND_HALF = 27
-    internal const val GRID_FIVE = 30
-    internal const val GRID_FIVE_AND_HALF = 33
-    internal const val GRID_SIX = 36
-    internal const val MIN_TOUCH_TARGET = 48
-    internal const val MIN_LIST_ITEM_HEIGHT = 52
-    internal const val APP_BAR_HEIGHT = 32
-    internal const val DEFAULT_FULL_PADDING = 16
-    internal const val DEFAULT_HALF_PADDING = 8
-    internal const val IMAGE_BUTTON_SIZE = 48
-    internal const val NAVIGATION_ICON_SIZE = 24
-    internal const val WINDOW_WIDTH_COMPACT_HALF = 299
-    internal const val WINDOW_WIDTH_COMPACT_ONE_THIRD = 199
-    internal const val WINDOW_WIDTH_COMPACT = 599
-    internal const val WINDOW_WIDTH_MEDIUM = 839
-    internal const val WINDOW_HEIGHT_COMPACT = 379
-    internal const val WINDOW_HEIGHT_MEDIUM = 900
+object AppDimensions {
+    /**
+     * Device orientation enum
+     */
+    enum class Orientation {
+        PORTRAIT,
+        LANDSCAPE
+    }
+
+    /**
+     * Grid dimensions for consistent spacing
+     */
+    data class Grid(
+        val quarter: Dp = 1.dp,
+        val half: Dp = 2.dp,
+        val single: Dp = 4.dp,
+        val double: Dp = 8.dp,
+        val triple: Dp = 12.dp,
+        val quadruple: Dp = 16.dp,
+        val quintuple: Dp = 20.dp,
+        val sextuple: Dp = 24.dp,
+        val septuple: Dp = 28.dp,
+        val octuple: Dp = 32.dp,
+        val nonuple: Dp = 36.dp,
+        val decuple: Dp = 40.dp,
+        val undecuple: Dp = 44.dp,
+        val duodecuple: Dp = 48.dp,
+        val large: Dp = 64.dp,
+        val extraLarge: Dp = 96.dp
+    )
+
+    /**
+     * Spacing dimensions for padding and margins
+     */
+    data class Spacing(
+        val none: Dp = 0.dp,
+        val xxxSmall: Dp = 1.dp,
+        val xxSmall: Dp = 2.dp,
+        val xSmall: Dp = 4.dp,
+        val small: Dp = 8.dp,
+        val medium: Dp = 16.dp,
+        val large: Dp = 24.dp,
+        val xLarge: Dp = 32.dp,
+        val xxLarge: Dp = 48.dp,
+        val xxxLarge: Dp = 64.dp
+    )
+
+    /**
+     * Component sizing dimensions
+     */
+    data class ComponentSize(
+        val touchTarget: Dp = 48.dp,
+        val iconTiny: Dp = 12.dp,
+        val iconSmall: Dp = 16.dp,
+        val iconMedium: Dp = 24.dp,
+        val iconLarge: Dp = 32.dp,
+        val iconExtraLarge: Dp = 48.dp,
+        val button: Dp = 36.dp,
+        val buttonLarge: Dp = 48.dp,
+        val appBar: Dp = 64.dp,
+        val bottomBar: Dp = 80.dp,
+        val listItem: Dp = 56.dp,
+        val listItemSmall: Dp = 48.dp,
+        val listItemLarge: Dp = 72.dp,
+        val inputField: Dp = 56.dp,
+        val card: Dp = 120.dp,
+        val dialog: Dp = 320.dp,
+        val divider: Dp = 1.dp,
+        // Added padding dimensions for common use cases
+        val contentPadding: Dp = 16.dp,
+        val screenEdgePadding: Dp = 16.dp,
+        val itemSpacing: Dp = 8.dp
+    )
+
+    /**
+     * Corner radius dimensions
+     */
+    data class Radius(
+        val none: Dp = 0.dp,
+        val tiny: Dp = 2.dp,
+        val small: Dp = 4.dp,
+        val medium: Dp = 8.dp,
+        val large: Dp = 12.dp,
+        val xLarge: Dp = 16.dp,
+        val xxLarge: Dp = 24.dp,
+        val circular: Dp = 1000.dp // Effectively circular for most components
+    )
+
+    /**
+     * Elevation dimensions
+     */
+    data class Elevation(
+        val none: Dp = 0.dp,
+        val tiny: Dp = 1.dp,
+        val small: Dp = 2.dp,
+        val medium: Dp = 4.dp,
+        val large: Dp = 8.dp,
+        val xLarge: Dp = 16.dp
+    )
+
+    /**
+     * Class to hold all dimension categories
+     */
+    data class Dimensions(
+        val grid: Grid = Grid(),
+        val spacing: Spacing = Spacing(),
+        val componentSize: ComponentSize = ComponentSize(),
+        val radius: Radius = Radius(),
+        val elevation: Elevation = Elevation(),
+        val orientation: Orientation = Orientation.PORTRAIT,
+        val deviceType: DeviceType = DeviceType.PHONE
+    ) {
+        companion object {
+            /**
+             * Creates dimensions adjusted for a device
+             * @param deviceType The device type to create dimensions for
+             * @param orientation The current device orientation
+             * @param pixelCorrection Apply Pixel-specific correction if needed
+             */
+            fun forDeviceType(
+                deviceType: DeviceType = DeviceType.PHONE,
+                orientation: Orientation = Orientation.PORTRAIT,
+                pixelCorrection: Boolean = false
+            ): Dimensions {
+                // Base dimensions for the device type
+                val baseDimensions = when (deviceType) {
+                    DeviceType.PHONE -> Dimensions(
+                        deviceType = deviceType,
+                        orientation = orientation
+                    )
+                    DeviceType.TABLET -> Dimensions(
+                        grid = Grid(
+                            quarter = 1.5.dp,
+                            half = 3.dp,
+                            single = 6.dp,
+                            double = 12.dp,
+                            triple = 18.dp,
+                            quadruple = 24.dp,
+                            quintuple = 30.dp,
+                            sextuple = 36.dp,
+                            septuple = 42.dp,
+                            octuple = 48.dp,
+                            nonuple = 54.dp,
+                            decuple = 60.dp,
+                            undecuple = 66.dp,
+                            duodecuple = 72.dp,
+                            large = 96.dp,
+                            extraLarge = 144.dp
+                        ),
+                        spacing = Spacing(
+                            xxxSmall = 1.5.dp,
+                            xxSmall = 3.dp,
+                            xSmall = 6.dp,
+                            small = 12.dp,
+                            medium = 24.dp,
+                            large = 36.dp,
+                            xLarge = 48.dp,
+                            xxLarge = 72.dp,
+                            xxxLarge = 96.dp
+                        ),
+                        componentSize = ComponentSize(
+                            touchTarget = 64.dp,
+                            iconTiny = 18.dp,
+                            iconSmall = 24.dp,
+                            iconMedium = 32.dp,
+                            iconLarge = 48.dp,
+                            iconExtraLarge = 64.dp,
+                            button = 48.dp,
+                            buttonLarge = 64.dp,
+                            appBar = 72.dp,
+                            bottomBar = 96.dp,
+                            listItem = 72.dp,
+                            listItemSmall = 64.dp,
+                            listItemLarge = 88.dp,
+                            inputField = 72.dp,
+                            card = 180.dp,
+                            dialog = 400.dp,
+                            divider = 1.dp,
+                            contentPadding = 24.dp,
+                            screenEdgePadding = 24.dp,
+                            itemSpacing = 12.dp
+                        ),
+                        radius = Radius(
+                            tiny = 3.dp,
+                            small = 6.dp,
+                            medium = 12.dp,
+                            large = 18.dp,
+                            xLarge = 24.dp,
+                            xxLarge = 36.dp
+                        ),
+                        elevation = Elevation(
+                            tiny = 1.5.dp,
+                            small = 3.dp,
+                            medium = 6.dp,
+                            large = 12.dp,
+                            xLarge = 24.dp
+                        ),
+                        deviceType = deviceType,
+                        orientation = orientation
+                    )
+                    DeviceType.LARGE_TABLET -> Dimensions(
+                        grid = Grid(
+                            quarter = 2.dp,
+                            half = 4.dp,
+                            single = 8.dp,
+                            double = 16.dp,
+                            triple = 24.dp,
+                            quadruple = 32.dp,
+                            quintuple = 40.dp,
+                            sextuple = 48.dp,
+                            septuple = 56.dp,
+                            octuple = 64.dp,
+                            nonuple = 72.dp,
+                            decuple = 80.dp,
+                            undecuple = 88.dp,
+                            duodecuple = 96.dp,
+                            large = 128.dp,
+                            extraLarge = 192.dp
+                        ),
+                        spacing = Spacing(
+                            xxxSmall = 2.dp,
+                            xxSmall = 4.dp,
+                            xSmall = 8.dp,
+                            small = 16.dp,
+                            medium = 32.dp,
+                            large = 48.dp,
+                            xLarge = 64.dp,
+                            xxLarge = 96.dp,
+                            xxxLarge = 128.dp
+                        ),
+                        componentSize = ComponentSize(
+                            touchTarget = 72.dp,
+                            iconTiny = 24.dp,
+                            iconSmall = 32.dp,
+                            iconMedium = 48.dp,
+                            iconLarge = 64.dp,
+                            iconExtraLarge = 80.dp,
+                            button = 56.dp,
+                            buttonLarge = 72.dp,
+                            appBar = 80.dp,
+                            bottomBar = 112.dp,
+                            listItem = 80.dp,
+                            listItemSmall = 72.dp,
+                            listItemLarge = 96.dp,
+                            inputField = 80.dp,
+                            card = 240.dp,
+                            dialog = 480.dp,
+                            divider = 2.dp,
+                            contentPadding = 32.dp,
+                            screenEdgePadding = 32.dp,
+                            itemSpacing = 16.dp
+                        ),
+                        radius = Radius(
+                            tiny = 4.dp,
+                            small = 8.dp,
+                            medium = 16.dp,
+                            large = 24.dp,
+                            xLarge = 32.dp,
+                            xxLarge = 48.dp
+                        ),
+                        elevation = Elevation(
+                            tiny = 2.dp,
+                            small = 4.dp,
+                            medium = 8.dp,
+                            large = 16.dp,
+                            xLarge = 32.dp
+                        ),
+                        deviceType = deviceType,
+                        orientation = orientation
+                    )
+                }
+
+                // Apply Pixel-specific correction if needed
+                // The correction factor is higher for Pixel 8 Pro (1.25) compared to other Pixel devices (1.15)
+                val pixelCorrectionFactor = if (pixelCorrection) {
+                    // Pixel 8 Pro needs more correction than older Pixel devices
+                    if (Build.MODEL.contains("Pixel 8 Pro", ignoreCase = true)) {
+                        1.25f
+                    } else {
+                        1.15f
+                    }
+                } else {
+                    1.0f
+                }
+
+                val correctedDimensions = if (pixelCorrectionFactor != 1.0f) {
+                    baseDimensions.copy(
+                        grid = baseDimensions.grid.scale(pixelCorrectionFactor),
+                        spacing = baseDimensions.spacing.scale(pixelCorrectionFactor),
+                        componentSize = baseDimensions.componentSize.scale(pixelCorrectionFactor),
+                        radius = baseDimensions.radius.scale(pixelCorrectionFactor),
+                        elevation = baseDimensions.elevation.scale(pixelCorrectionFactor)
+                    )
+                } else {
+                    baseDimensions
+                }
+
+                // Apply orientation-specific adjustments
+                return if (orientation == Orientation.LANDSCAPE) {
+                    // In landscape, we typically want:
+                    // 1. Shorter app bars and bottom bars
+                    // 2. Wider dialogs and cards
+                    // 3. Slightly smaller list items to fit more content
+                    // 4. Different padding for screen edges
+                    correctedDimensions.copy(
+                        componentSize = correctedDimensions.componentSize.copy(
+                            appBar = correctedDimensions.componentSize.appBar * 0.9f,
+                            bottomBar = correctedDimensions.componentSize.bottomBar * 0.85f,
+                            listItem = correctedDimensions.componentSize.listItem * 0.9f,
+                            listItemSmall = correctedDimensions.componentSize.listItemSmall * 0.9f,
+                            listItemLarge = correctedDimensions.componentSize.listItemLarge * 0.9f,
+                            dialog = correctedDimensions.componentSize.dialog * 1.2f,
+                            card = correctedDimensions.componentSize.card * 1.2f,
+                            // Adjust screen edge padding for landscape
+                            screenEdgePadding = correctedDimensions.componentSize.screenEdgePadding * 0.75f
+                        )
+                    )
+                } else {
+                    correctedDimensions
+                }
+            }
+        }
+    }
+
+    /**
+     * Device type enum to determine base dimensions
+     */
+    enum class DeviceType {
+        PHONE,
+        TABLET,
+        LARGE_TABLET
+    }
 }
 
-
 /**
- * Data class representing dimension values used in the application.
- *
- * @property gridQuarter The dimension value for a quarter grid.
- * @property gridHalf The dimension value for half a grid.
- * @property gridOne The dimension value for one grid.
- * @property gridOneAndHalf The dimension value for one and a half grids.
- * @property gridTwo The dimension value for two grids.
- * @property gridTwoAndHalf The dimension value for two and a half grids.
- * @property gridThree The dimension value for three grids.
- * @property gridThreeAndHalf The dimension value for three and a half grids.
- * @property gridFour The dimension value for four grids.
- * @property gridFourAndHalf The dimension value for four and a half grids.
- * @property gridFive The dimension value for five grids.
- * @property gridFiveAndHalf The dimension value for five and a half grids.
- * @property gridSix The dimension value for six grids.
- * @property minTouchTarget The minimum touch target dimension.
- * @property minListItemHeight The minimum list item height dimension.
- * @property appBarHeight The app bar height dimension.
- * @property defaultFullPadding The default full padding dimension.
- * @property defaultHalfPadding The default half padding dimension.
- * @property imageButtonSize The image button size dimension.
- * @property navigationIconSize The navigation icon size dimension.
- * @property windowWidthCompactHalf The window width for compact half dimension.
- * @property windowWidthCompactOneThird The window width for compact one third dimension.
- * @property windowWidthCompact The window width for compact dimension.
- * @property windowWidthMedium The window width for medium dimension.
- * @property windowHeightCompact The window height for compact dimension.
- * @property windowHeightMedium The window height for medium dimension.
- *
- * @author Amadou Iyawa
+ * Scale extension function for Grid
  */
-data class Dimension(
-    val gridQuarter: Dp = DimensionDefaults.GRID_QUARTER.dp,
-    val gridHalf: Dp = DimensionDefaults.GRID_HALF.dp,
-    val gridOne: Dp = DimensionDefaults.GRID_ONE.dp,
-    val gridOneAndHalf: Dp = DimensionDefaults.GRID_ONE_AND_HALF.dp,
-    val gridTwo: Dp = DimensionDefaults.GRID_TWO.dp,
-    val gridTwoAndHalf: Dp = DimensionDefaults.GRID_TWO_AND_HALF.dp,
-    val gridThree: Dp = DimensionDefaults.GRID_THREE.dp,
-    val gridThreeAndHalf: Dp = DimensionDefaults.GRID_THREE_AND_HALF.dp,
-    val gridFour: Dp = DimensionDefaults.GRID_FOUR.dp,
-    val gridFourAndHalf: Dp = DimensionDefaults.GRID_FOUR_AND_HALF.dp,
-    val gridFive: Dp = DimensionDefaults.GRID_FIVE.dp,
-    val gridFiveAndHalf: Dp = DimensionDefaults.GRID_FIVE_AND_HALF.dp,
-    val gridSix: Dp = DimensionDefaults.GRID_SIX.dp,
-    val minTouchTarget: Dp = DimensionDefaults.MIN_TOUCH_TARGET.dp,
-    val minListItemHeight: Dp = DimensionDefaults.MIN_LIST_ITEM_HEIGHT.dp,
-    val appBarHeight: Dp = DimensionDefaults.APP_BAR_HEIGHT.dp,
-    val defaultFullPadding: Dp = DimensionDefaults.DEFAULT_FULL_PADDING.dp,
-    val defaultHalfPadding: Dp = DimensionDefaults.DEFAULT_HALF_PADDING.dp,
-    val imageButtonSize: Dp = DimensionDefaults.IMAGE_BUTTON_SIZE.dp,
-    val navigationIconSize: Dp = DimensionDefaults.NAVIGATION_ICON_SIZE.dp,
-    val windowWidthCompactHalf: Dp = DimensionDefaults.WINDOW_WIDTH_COMPACT_HALF.dp,
-    val windowWidthCompactOneThird: Dp = DimensionDefaults.WINDOW_WIDTH_COMPACT_ONE_THIRD.dp,
-    val windowWidthCompact: Dp = DimensionDefaults.WINDOW_WIDTH_COMPACT.dp,
-    val windowWidthMedium: Dp = DimensionDefaults.WINDOW_WIDTH_MEDIUM.dp,
-    val windowHeightCompact: Dp = DimensionDefaults.WINDOW_HEIGHT_COMPACT.dp,
-    val windowHeightMedium: Dp = DimensionDefaults.WINDOW_HEIGHT_MEDIUM.dp,
+fun AppDimensions.Grid.scale(factor: Float): AppDimensions.Grid = AppDimensions.Grid(
+    quarter = (quarter.value * factor).dp,
+    half = (half.value * factor).dp,
+    single = (single.value * factor).dp,
+    double = (double.value * factor).dp,
+    triple = (triple.value * factor).dp,
+    quadruple = (quadruple.value * factor).dp,
+    quintuple = (quintuple.value * factor).dp,
+    sextuple = (sextuple.value * factor).dp,
+    septuple = (septuple.value * factor).dp,
+    octuple = (octuple.value * factor).dp,
+    nonuple = (nonuple.value * factor).dp,
+    decuple = (decuple.value * factor).dp,
+    undecuple = (undecuple.value * factor).dp,
+    duodecuple = (duodecuple.value * factor).dp,
+    large = (large.value * factor).dp,
+    extraLarge = (extraLarge.value * factor).dp
 )
 
 /**
- * Instance of Dimension with default values for small screens.
+ * Scale extension function for Spacing
  */
-val smallDimension = Dimension(
-    gridQuarter = DimensionDefaults.GRID_QUARTER.dp,
-    gridHalf = DimensionDefaults.GRID_HALF.dp,
-    gridOne = DimensionDefaults.GRID_ONE.dp,
-    gridOneAndHalf = DimensionDefaults.GRID_ONE_AND_HALF.dp,
-    gridTwo = DimensionDefaults.GRID_TWO.dp,
-    gridTwoAndHalf = DimensionDefaults.GRID_TWO_AND_HALF.dp,
-    gridThree = DimensionDefaults.GRID_THREE.dp,
-    gridThreeAndHalf = DimensionDefaults.GRID_THREE_AND_HALF.dp,
-    gridFour = DimensionDefaults.GRID_FOUR.dp,
-    gridFourAndHalf = DimensionDefaults.GRID_FOUR_AND_HALF.dp,
-    gridFive = DimensionDefaults.GRID_FIVE.dp,
-    gridFiveAndHalf = DimensionDefaults.GRID_FIVE_AND_HALF.dp,
-    gridSix = DimensionDefaults.GRID_SIX.dp,
+fun AppDimensions.Spacing.scale(factor: Float): AppDimensions.Spacing = AppDimensions.Spacing(
+    none = none,
+    xxxSmall = (xxxSmall.value * factor).dp,
+    xxSmall = (xxSmall.value * factor).dp,
+    xSmall = (xSmall.value * factor).dp,
+    small = (small.value * factor).dp,
+    medium = (medium.value * factor).dp,
+    large = (large.value * factor).dp,
+    xLarge = (xLarge.value * factor).dp,
+    xxLarge = (xxLarge.value * factor).dp,
+    xxxLarge = (xxxLarge.value * factor).dp
 )
 
 /**
- * Instance of Dimension with default values for screens with a width of 360dp.
+ * Scale extension function for ComponentSize
  */
-val sw360Dimension = Dimension(
-    gridQuarter = 2.dp,
-    gridHalf = 4.dp,
-    gridOne = 8.dp,
-    gridOneAndHalf = 12.dp,
-    gridTwo = 16.dp,
-    gridTwoAndHalf = 20.dp,
-    gridThree = 24.dp,
-    gridThreeAndHalf = 28.dp,
-    gridFour = 32.dp,
-    gridFourAndHalf = 36.dp,
-    gridFive = 40.dp,
-    gridFiveAndHalf = 44.dp,
-    gridSix = 48.dp,
+fun AppDimensions.ComponentSize.scale(factor: Float): AppDimensions.ComponentSize = AppDimensions.ComponentSize(
+    touchTarget = (touchTarget.value * factor).dp,
+    iconTiny = (iconTiny.value * factor).dp,
+    iconSmall = (iconSmall.value * factor).dp,
+    iconMedium = (iconMedium.value * factor).dp,
+    iconLarge = (iconLarge.value * factor).dp,
+    iconExtraLarge = (iconExtraLarge.value * factor).dp,
+    button = (button.value * factor).dp,
+    buttonLarge = (buttonLarge.value * factor).dp,
+    appBar = (appBar.value * factor).dp,
+    bottomBar = (bottomBar.value * factor).dp,
+    listItem = (listItem.value * factor).dp,
+    listItemSmall = (listItemSmall.value * factor).dp,
+    listItemLarge = (listItemLarge.value * factor).dp,
+    inputField = (inputField.value * factor).dp,
+    card = (card.value * factor).dp,
+    dialog = (dialog.value * factor).dp,
+    divider = divider, // Don't scale divider thickness
+    contentPadding = (contentPadding.value * factor).dp,
+    screenEdgePadding = (screenEdgePadding.value * factor).dp,
+    itemSpacing = (itemSpacing.value * factor).dp
 )
 
 /**
- * Composable function to get the appropriate Dimension instance based on screen size.
- *
- * @return Dimension The appropriate Dimension instance.
- *
- * @author Amadou Iyawa
+ * Scale extension function for Radius
+ */
+fun AppDimensions.Radius.scale(factor: Float): AppDimensions.Radius = AppDimensions.Radius(
+    none = none,
+    tiny = (tiny.value * factor).dp,
+    small = (small.value * factor).dp,
+    medium = (medium.value * factor).dp,
+    large = (large.value * factor).dp,
+    xLarge = (xLarge.value * factor).dp,
+    xxLarge = (xxLarge.value * factor).dp,
+    circular = circular // Don't scale circular radius
+)
+
+/**
+ * Scale extension function for Elevation
+ */
+fun AppDimensions.Elevation.scale(factor: Float): AppDimensions.Elevation = AppDimensions.Elevation(
+    none = none,
+    tiny = (tiny.value * factor).dp,
+    small = (small.value * factor).dp,
+    medium = (medium.value * factor).dp,
+    large = (large.value * factor).dp,
+    xLarge = (xLarge.value * factor).dp
+)
+
+// CompositionLocal for dimensions
+val LocalAppDimensions = compositionLocalOf {
+    AppDimensions.Dimensions()
+}
+
+/**
+ * Returns appropriate dimensions based on device characteristics including orientation
  */
 @Composable
-fun getDimension(): Dimension {
-    val screenSizeInfo = getScreenSizeInfo()
-    return if (screenSizeInfo.widthDp <= 360.dp) smallDimension else sw360Dimension
-}
+fun rememberAppDimensions(windowSizeClass: WindowSizeClass? = null): AppDimensions.Dimensions {
+    // Use LocalDensity for device density information
+    val density = LocalDensity.current
 
-// Create a CompositionLocal to provide the Dimension instance
-val LocalDimension = compositionLocalOf<Dimension> { error("No Dimension provided") }
+    // Get configuration for orientation and screen size
+    val configuration = LocalConfiguration.current
+
+    // Determine orientation
+    val orientation = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        AppDimensions.Orientation.LANDSCAPE
+    } else {
+        AppDimensions.Orientation.PORTRAIT
+    }
+
+    return remember(density, windowSizeClass, orientation, configuration.screenWidthDp) {
+        // Determine device type based on window size class or screen size
+        val deviceType = when (// First try to use the provided windowSizeClass parameter
+            windowSizeClass?.widthSizeClass) {
+            WindowWidthSizeClass.Expanded -> AppDimensions.DeviceType.LARGE_TABLET
+            WindowWidthSizeClass.Medium -> AppDimensions.DeviceType.TABLET
+            // Fall back to Configuration if windowSizeClass is not available
+            else -> {
+                val screenWidthDp = configuration.screenWidthDp
+                when {
+                    screenWidthDp >= 900 -> AppDimensions.DeviceType.LARGE_TABLET
+                    screenWidthDp >= 600 -> AppDimensions.DeviceType.TABLET
+                    else -> AppDimensions.DeviceType.PHONE
+                }
+            }
+        }
+
+        // Check if this is a Pixel device that needs correction
+        val manufacturer = Build.MANUFACTURER
+        val model = Build.MODEL
+        val isPixelDevice = manufacturer.equals("Google", ignoreCase = true)
+
+        // Log device information with proper formatting
+        Timber.tag(TAG).d(
+            "Device info - Manufacturer: %s, Model: %s, Device Type: %s, Orientation: %s, Density: %f",
+            manufacturer, model, deviceType, orientation, density.density
+        )
+
+        AppDimensions.Dimensions.forDeviceType(
+            deviceType = deviceType,
+            orientation = orientation,
+            pixelCorrection = isPixelDevice
+        )
+    }
+}

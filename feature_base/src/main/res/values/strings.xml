@@ -38,4 +38,32 @@
     <string name="invalid_otp_format">The OTP code must contain exactly 6 digits.</string>
     <string name="otp_code_mismatch">The code you entered does not match.</string>
 
+    <string name="error_title">Oops! Something went wrong.</string>
+    <string name="error_retry">Try Again</string>
+
+    <!-- Authentication error messages -->
+    <string name="error_invalid_credentials">Invalid login credentials</string>
+    <string name="error_session_expired">Your session has expired. Please log in again</string>
+    <string name="error_unauthorized">You don\'t have permission to access this resource</string>
+    <string name="error_account_not_found">Account not found. Please check your credentials</string>
+    <string name="error_too_many_attempts">Too many login attempts. Please try again later</string>
+
+    <!-- Social authentication errors -->
+    <string name="error_social_account_not_linked">Social account not linked to any existing account</string>
+    <string name="error_social_auth_cancelled">Social authentication was cancelled</string>
+    <string name="error_social_auth_connection_failed">Failed to connect to authentication server</string>
+
+    <!-- Session errors -->
+    <string name="error_session_save_failed">Your session couldn\'t be saved</string>
+    <string name="error_session_activation_failed">Session activation failed</string>
+
+    <!-- Network errors -->
+    <string name="error_no_internet">No internet connection</string>
+    <string name="error_connection_timeout">Connection timed out</string>
+    <string name="error_server_unavailable">Server is currently unavailable</string>
+
+    <!-- Generic errors -->
+    <string name="error_unknown">An unknown error occurred</string>
+    <string name="error_authentication_failed">Authentication failed</string>
+
 </resources>
