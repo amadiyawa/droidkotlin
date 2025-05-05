@@ -150,7 +150,8 @@ internal fun SignUpFormUI(
                     onNext = {
                         usernameFocusRequester.requestFocus()
                     }
-                )
+                ),
+                trailingIconConfig = TrailingIconConfig.Clearable("")
             )
         )
 
@@ -177,7 +178,8 @@ internal fun SignUpFormUI(
                     onNext = {
                         emailFocusRequester.requestFocus()
                     }
-                )
+                ),
+                trailingIconConfig = TrailingIconConfig.Clearable("")
             )
         )
 
@@ -204,7 +206,8 @@ internal fun SignUpFormUI(
                     onNext = {
                         phoneFocusRequester.requestFocus()
                     }
-                )
+                ),
+                trailingIconConfig = TrailingIconConfig.Clearable("")
             )
         )
 
@@ -232,7 +235,8 @@ internal fun SignUpFormUI(
                     onNext = {
                         passwordFocusRequester.requestFocus()
                     }
-                )
+                ),
+                trailingIconConfig = TrailingIconConfig.Clearable("")
             )
         )
 
@@ -261,9 +265,9 @@ internal fun SignUpFormUI(
                     }
                 ),
                 visualTransformation = if (form.password.isValueHidden) PasswordVisualTransformation() else VisualTransformation.None,
-                trailingIconConfig = TrailingIconConfig(
-                    isPasswordField = true,
-                    isPasswordVisible = form.password.isValueHidden
+                trailingIconConfig = TrailingIconConfig.Password(
+                    text = form.password.value,
+                    isVisible = form.password.isValueHidden
                 )
             )
         )
@@ -293,9 +297,9 @@ internal fun SignUpFormUI(
                     }
                 ),
                 visualTransformation = if (form.confirmPassword.isValueHidden) PasswordVisualTransformation() else VisualTransformation.None,
-                trailingIconConfig = TrailingIconConfig(
-                    isPasswordField = true,
-                    isPasswordVisible = form.confirmPassword.isValueHidden
+                trailingIconConfig = TrailingIconConfig.Password(
+                    text = form.password.value,
+                    isVisible = form.password.isValueHidden
                 )
             )
         )

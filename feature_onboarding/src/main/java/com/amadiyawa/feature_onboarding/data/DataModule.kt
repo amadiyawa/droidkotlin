@@ -1,7 +1,7 @@
 package com.amadiyawa.feature_onboarding.data
 
-import com.amadiyawa.feature_onboarding.data.repository.OnboardRepositoryImpl
-import com.amadiyawa.feature_onboarding.domain.repository.OnboardRepository
+import com.amadiyawa.feature_onboarding.data.repository.OnboardingRepositoryImpl
+import com.amadiyawa.feature_onboarding.domain.repository.OnboardingRepository
 import org.koin.dsl.module // Koin for Dependency Injection (DI)
 
 /**
@@ -14,7 +14,7 @@ import org.koin.dsl.module // Koin for Dependency Injection (DI)
 internal val dataModule = module {
 
     //Bind the OnboardRepository interface to its implementation
-    single<OnboardRepository> {
-        OnboardRepositoryImpl()  // Provides a single instance of OnboardRepositoryImpl
+    single<OnboardingRepository> {
+        OnboardingRepositoryImpl()  // Provides a single instance of OnboardRepositoryImpl
     }
 }

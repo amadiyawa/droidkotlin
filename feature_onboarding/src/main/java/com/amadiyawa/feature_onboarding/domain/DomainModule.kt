@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_onboarding.domain
 
-import com.amadiyawa.feature_onboarding.domain.usecase.GetOnboardListUseCase
+import com.amadiyawa.feature_onboarding.domain.usecase.GetOnboardingUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module //Koin Module
 
@@ -12,5 +12,5 @@ import org.koin.dsl.module //Koin Module
  *  the application.
  */
 internal val domainModule = module {
-    singleOf(::GetOnboardListUseCase)
+    singleOf(::GetOnboardingUseCase)
 }

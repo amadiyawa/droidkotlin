@@ -4,8 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.amadiyawa.feature_auth.domain.model.ResetPasswordForm
 import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.domain.model.updateAndValidateField
-import com.amadiyawa.feature_auth.domain.validation.ResetPasswordValidator
-import com.amadiyawa.feature_base.domain.mapper.ErrorMessageMapper
+import com.amadiyawa.feature_auth.domain.util.validation.ResetPasswordValidator
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -17,12 +16,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 internal class ResetPasswordViewModel(
-    private val validator: ResetPasswordValidator,
-    errorMessageMapper: ErrorMessageMapper
-) : BaseViewModel<ResetPasswordUiState, ResetPasswordAction>(
-    ResetPasswordUiState.Idle(),
-    errorMessageMapper
-) {
+    private val validator: ResetPasswordValidator
+) : BaseViewModel<ResetPasswordUiState, ResetPasswordAction>(ResetPasswordUiState.Idle()) {
 
     private val _uiEvent = MutableSharedFlow<ResetPasswordUiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()

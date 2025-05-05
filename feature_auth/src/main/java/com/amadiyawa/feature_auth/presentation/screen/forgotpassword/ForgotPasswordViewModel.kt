@@ -1,12 +1,11 @@
 package com.amadiyawa.feature_auth.presentation.screen.forgotpassword
 
 import androidx.lifecycle.viewModelScope
-import com.amadiyawa.feature_auth.domain.enum.OtpPurpose
 import com.amadiyawa.feature_auth.domain.model.ForgotPasswordForm
 import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.domain.model.updateAndValidateField
-import com.amadiyawa.feature_auth.domain.validation.ForgotPasswordFormValidator
-import com.amadiyawa.feature_base.domain.mapper.ErrorMessageMapper
+import com.amadiyawa.feature_auth.domain.util.OtpPurpose
+import com.amadiyawa.feature_auth.domain.util.validation.ForgotPasswordFormValidator
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -18,12 +17,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 internal class ForgotPasswordViewModel(
-    private val validator: ForgotPasswordFormValidator,
-    errorMessageMapper: ErrorMessageMapper
-) : BaseViewModel<ForgotPasswordUiState, ForgotPasswordAction>(
-    ForgotPasswordUiState.Idle(),
-    errorMessageMapper
-) {
+    private val validator: ForgotPasswordFormValidator
+) : BaseViewModel<ForgotPasswordUiState, ForgotPasswordAction>(ForgotPasswordUiState.Idle()) {
 
     private val _uiEvent = MutableSharedFlow<ForgotPasswordUiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()

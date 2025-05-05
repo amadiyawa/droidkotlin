@@ -25,7 +25,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.domain.model.SignInForm
-import com.amadiyawa.feature_auth.presentation.screen.welcome.AuthFooter
+import com.amadiyawa.feature_auth.domain.util.SocialProvider
+import com.amadiyawa.feature_auth.presentation.components.SocialAuthFooter
 import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.presentation.compose.composable.AppTextButton
@@ -226,6 +227,9 @@ internal fun SignInFormUI(
         // Bottom section: Social login options
         Spacer(modifier = Modifier.weight(1f))
 
-        AuthFooter()
+        SocialAuthFooter(
+            onGoogleSignIn = { onAction(SignInAction.SocialSignIn(SocialProvider.GOOGLE)) },
+            onFacebookSignIn = { onAction(SignInAction.SocialSignIn(SocialProvider.FACEBOOK)) }
+        )
     }
 }

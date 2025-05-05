@@ -2,7 +2,7 @@ package com.amadiyawa.feature_onboarding.domain.usecase
 
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_onboarding.domain.model.OnboardingScreen
-import com.amadiyawa.feature_onboarding.domain.repository.OnboardRepository
+import com.amadiyawa.feature_onboarding.domain.repository.OnboardingRepository
 
 /**
  * UseCase class responsible for fetching the onboard list.
@@ -11,10 +11,10 @@ import com.amadiyawa.feature_onboarding.domain.repository.OnboardRepository
  * by interacting with the OnboardRepository. It returns the result as a
  * `Result<List<Onboard>>`, allowing the caller to handle success or error states.
  *
- * @property onboardRepository The repository used to fetch the onboard list.
+ * @property onboardingRepository The repository used to fetch the onboard list.
  */
-internal class GetOnboardListUseCase(private val onboardRepository: OnboardRepository) {
+internal class GetOnboardingUseCase(private val onboardingRepository: OnboardingRepository) {
     suspend operator fun invoke(): OperationResult<List<OnboardingScreen>> {
-        return onboardRepository.getOnboardList()
+        return onboardingRepository.getOnboardList()
     }
 }

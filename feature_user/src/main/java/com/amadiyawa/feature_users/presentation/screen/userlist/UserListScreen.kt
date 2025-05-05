@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -39,6 +40,7 @@ import com.amadiyawa.feature_base.presentation.compose.composable.PlaceholderIma
 import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleMedium
 import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleSmall
 import com.amadiyawa.feature_base.presentation.compose.composable.Toolbar
+import com.amadiyawa.feature_base.presentation.compose.composable.ToolbarParams
 import com.amadiyawa.feature_users.domain.model.User
 import com.amadiyawa.feature_users.presentation.screen.compose.composable.FloatingActionButton
 import org.koin.androidx.compose.koinViewModel
@@ -60,7 +62,8 @@ fun UserListScreen(
                 isVisible = listState.isScrollingUp()
             )
         },
-        topBar = { SetUpToolbar() }
+        topBar = { SetUpToolbar() },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { paddingValues ->
         SetupContent(
             paddingValues = paddingValues,
@@ -73,7 +76,7 @@ fun UserListScreen(
 
 @Composable
 private fun SetUpToolbar() {
-    Toolbar(hasNavigationIcon = false, title = "Random users")
+    Toolbar(params = ToolbarParams(title = "Users"))
 }
 
 @Composable

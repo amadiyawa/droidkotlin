@@ -1,21 +1,29 @@
 package com.amadiyawa.feature_onboarding.presentation.screen.onboarding
 
-import com.amadiyawa.feature_base.domain.mapper.ErrorMessageMapper
+import com.amadiyawa.feature_base.data.datastore.DataStoreManager
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
-import com.amadiyawa.feature_onboarding.domain.usecase.GetOnboardListUseCase
+import com.amadiyawa.feature_onboarding.domain.usecase.GetOnboardingUseCase
+import kotlinx.coroutines.flow.first
 import timber.log.Timber
 
 internal class OnboardingViewModel(
-    private val getOnboardListUseCase: GetOnboardListUseCase,
-    errorMessageMapper: ErrorMessageMapper
-) : BaseViewModel<OnboardingUiState, OnboardingAction>(
-    OnboardingUiState(),
-    errorMessageMapper
-) {
+    private val getOnboardingUseCase: GetOnboardingUseCase,
+    private val dataStoreManager: DataStoreManager
+) : BaseViewModel<OnboardingUiState, OnboardingAction>(OnboardingUiState()) {
 
     init {
-        dispatch(OnboardingAction.LoadScreens)
+        launchSafely {
+            val isOnboardingComplete = dataStoreManager
+                .getData(DataStoreManager.ONBOARDING_COMPLETED)
+                .first() == true
+
+            if (isOnboardingComplete) {
+                emitEvent(OnboardingUiEvent.NavigateToAuth)
+            } else {
+                dispatch(OnboardingAction.LoadScreens)
+            }
+        }
     }
 
     override fun dispatch(action: OnboardingAction) {
@@ -34,37 +42,23 @@ internal class OnboardingViewModel(
         launchSafely {
             setState { it.copy(isLoading = true, error = null) }
 
-            getOnboardListUseCase().also { result ->
+            getOnboardingUseCase().also { result ->
                 Timber.d("getOnboardListUseCase result: $result")
 
                 setState { state ->
                     when (result) {
                         is OperationResult.Success -> {
-                            if (result.data.isEmpty()) {
-                                emitEvent(OnboardingUiEvent.ShowError("No onboarding screens found"))
-                                state.copy(isLoading = false, error = "No onboarding screens found")
-                            } else {
-                                state.copy(
-                                    screens = result.data,
-                                    isLoading = false,
-                                    error = null
-                                )
-                            }
+                            state.copy(
+                                screens = result.data,
+                                isLoading = false,
+                                error = null
+                            )
                         }
-
-                        is OperationResult.Failure -> {
-                            val errorMessage = result.message ?: "Failed to load onboarding screens"
-                            emitEvent(OnboardingUiEvent.ShowError(errorMessage))
-                            state.copy(isLoading = false, error = errorMessage)
-                        }
-
                         is OperationResult.Error -> {
-                            val exception = result.throwable
-                            val errorMessage = exception?.message ?: "An unexpected error occurred"
-                            Timber.e(exception, "Error loading onboarding screens")
-                            emitEvent(OnboardingUiEvent.ShowError(errorMessage))
-                            state.copy(isLoading = false, error = errorMessage)
+                            emitEvent(OnboardingUiEvent.ShowError(result.message!!))
+                            state.copy(isLoading = false, error = result.message!!)
                         }
+                        is OperationResult.Failure -> state
                     }
                 }
             }
@@ -102,7 +96,12 @@ internal class OnboardingViewModel(
     }
 
     private fun completeOnboarding() {
-        // Simply emit navigation event to move to the next module
-        emitEvent(OnboardingUiEvent.NavigateToAuth)
+        launchSafely  {
+            // Save onboarding completion status in DataStore
+            dataStoreManager.saveData(DataStoreManager.ONBOARDING_COMPLETED, true)
+
+            // Simply emit navigation event to move to the next module
+            emitEvent(OnboardingUiEvent.NavigateToAuth)
+        }
     }
 }

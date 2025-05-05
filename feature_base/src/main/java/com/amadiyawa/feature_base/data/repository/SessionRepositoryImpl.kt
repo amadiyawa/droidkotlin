@@ -2,6 +2,7 @@ package com.amadiyawa.feature_base.data.repository
 
 import com.amadiyawa.feature_base.data.datastore.DataStoreManager
 import com.amadiyawa.feature_base.domain.repository.DataStoreRepository
+import com.amadiyawa.feature_base.domain.repository.ErrorLocalizer
 import com.amadiyawa.feature_base.domain.repository.SessionRepository
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import kotlinx.coroutines.flow.Flow
@@ -10,12 +11,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
-
-/**
- * Implementation of SessionRepository that uses DataStore for persistence
- */
 class SessionRepositoryImpl(
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: DataStoreRepository,
+    private val errorLocalizer: ErrorLocalizer
 ) : SessionRepository {
 
     /**
@@ -24,7 +22,9 @@ class SessionRepositoryImpl(
     override suspend fun saveSessionUserJson(userJson: String): OperationResult<Unit> {
         return try {
             // Get existing user (if any)
-            val existingUserJson = dataStoreRepository.getData(DataStoreManager.SIGNED_USER_DATA).first() as? String
+            val existingUserJson = dataStoreRepository
+                .getData(DataStoreManager.SIGNED_USER_DATA)
+                .first() as? String
 
             // Only save if different from existing
             if (existingUserJson != userJson) {
@@ -33,7 +33,14 @@ class SessionRepositoryImpl(
             OperationResult.Success(Unit)
         } catch (e: Exception) {
             Timber.e(e, "Error saving session user data")
-            OperationResult.Error(e)
+            OperationResult.Error(
+                message = errorLocalizer.getLocalizedMessage(
+                    errorCode = AndroidErrorLocalizer.ErrorCode.SessionSaveError.code,
+                    defaultMessage = "Error saving session user data"
+                ),
+                code = AndroidErrorLocalizer.ErrorCode.SessionSaveError.code,
+                throwable = e
+            )
         }
     }
 
@@ -42,11 +49,20 @@ class SessionRepositoryImpl(
      */
     override suspend fun getSessionUserJson(): OperationResult<String?> {
         return try {
-            val userJson = dataStoreRepository.getData(DataStoreManager.SIGNED_USER_DATA).first() as? String
+            val userJson = dataStoreRepository
+                .getData(DataStoreManager.SIGNED_USER_DATA)
+                .first() as? String
             OperationResult.Success(userJson)
         } catch (e: Exception) {
             Timber.e(e, "Error retrieving session user data")
-            OperationResult.Error(e)
+            OperationResult.Error(
+                message = errorLocalizer.getLocalizedMessage(
+                    errorCode = AndroidErrorLocalizer.ErrorCode.SessionGetError.code,
+                    defaultMessage = "Error retrieving session user data"
+                ),
+                code = AndroidErrorLocalizer.ErrorCode.SessionGetError.code,
+                throwable = e
+            )
         }
     }
 
@@ -59,7 +75,14 @@ class SessionRepositoryImpl(
             OperationResult.Success(Unit)
         } catch (e: Exception) {
             Timber.e(e, "Error updating session state")
-            OperationResult.Error(e)
+            OperationResult.Error(
+                message = errorLocalizer.getLocalizedMessage(
+                    errorCode = AndroidErrorLocalizer.ErrorCode.SessionUpdateError.code,
+                    defaultMessage = "Error updating session state"
+                ),
+                code = AndroidErrorLocalizer.ErrorCode.SessionUpdateError.code,
+                throwable = e
+            )
         }
     }
 
@@ -85,7 +108,14 @@ class SessionRepositoryImpl(
             OperationResult.Success(Unit)
         } catch (e: Exception) {
             Timber.e(e, "Error clearing session data")
-            OperationResult.Error(e)
+            OperationResult.Error(
+                message = errorLocalizer.getLocalizedMessage(
+                    errorCode = AndroidErrorLocalizer.ErrorCode.SessionClearError.code,
+                    defaultMessage = "Error clearing session data"
+                ),
+                code = AndroidErrorLocalizer.ErrorCode.SessionClearError.code,
+                throwable = e
+            )
         }
     }
 }

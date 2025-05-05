@@ -3,8 +3,7 @@ package com.amadiyawa.feature_auth.presentation.screen.otpverification
 import androidx.lifecycle.viewModelScope
 import com.amadiyawa.feature_auth.domain.model.OtpForm
 import com.amadiyawa.feature_auth.domain.model.SignUp
-import com.amadiyawa.feature_auth.domain.validation.OtpFormValidator
-import com.amadiyawa.feature_base.domain.mapper.ErrorMessageMapper
+import com.amadiyawa.feature_auth.domain.util.validation.OtpFormValidator
 import com.amadiyawa.feature_base.domain.usecase.ValidateOtpUseCase
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
 import kotlinx.coroutines.Job
@@ -19,12 +18,8 @@ import kotlinx.coroutines.launch
 
 internal class OtpVerificationViewModel(
     private val validateOtpUseCase: ValidateOtpUseCase,
-    private val otpFormValidator: OtpFormValidator,
-    errorMessageMapper: ErrorMessageMapper
-) : BaseViewModel<OtpUiState, OtpAction>(
-    OtpUiState.Idle(OtpForm()),
-    errorMessageMapper
-) {
+    private val otpFormValidator: OtpFormValidator
+) : BaseViewModel<OtpUiState, OtpAction>(OtpUiState.Idle(OtpForm())) {
 
     private val _signUp = MutableStateFlow(SignUp.random())
     val signUp: StateFlow<SignUp> = _signUp

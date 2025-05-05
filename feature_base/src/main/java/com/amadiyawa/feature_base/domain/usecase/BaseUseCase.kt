@@ -4,6 +4,16 @@ import com.amadiyawa.feature_base.domain.repository.ErrorLocalizer
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import java.io.IOException
 
+/**
+ * Abstract base class for use cases in the application.
+ *
+ * This class provides common functionality for handling success, failure, and error scenarios
+ * in use case operations. It also includes constants for network and server error codes
+ * and default error messages.
+ *
+ * @param T The type of the response handled by the use case.
+ * @property errorLocalizer An instance of `ErrorLocalizer` used to retrieve localized error messages.
+ */
 abstract class BaseUseCase<T>(
     protected val errorLocalizer: ErrorLocalizer
 ) {

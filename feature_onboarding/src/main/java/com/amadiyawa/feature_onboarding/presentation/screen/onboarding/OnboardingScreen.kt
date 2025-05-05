@@ -45,7 +45,7 @@ import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyLarge
 import com.amadiyawa.feature_base.presentation.compose.composable.TextHeadlineLarge
 import com.amadiyawa.feature_base.presentation.theme.dimension
 import com.amadiyawa.feature_onboarding.domain.model.OnboardingScreen
-import com.amadiyawa.feature_onboarding.presentation.compose.composable.getOnboardingImageSize
+import com.amadiyawa.feature_onboarding.presentation.components.getOnboardingImageSize
 import com.amadiyawa.onboarding.R
 import org.koin.androidx.compose.koinViewModel
 

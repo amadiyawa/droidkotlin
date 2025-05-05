@@ -139,9 +139,9 @@ internal fun ResetPasswordFormUI(
                     }
                 ),
                 visualTransformation = if (form.password.isValueHidden) PasswordVisualTransformation() else VisualTransformation.None,
-                trailingIconConfig = TrailingIconConfig(
-                    isPasswordField = true,
-                    isPasswordVisible = form.password.isValueHidden
+                trailingIconConfig = TrailingIconConfig.Password(
+                    text = form.password.value,
+                    isVisible = form.password.isValueHidden
                 )
             )
         )
@@ -166,9 +166,9 @@ internal fun ResetPasswordFormUI(
                     imeAction = ImeAction.Done
                 ),
                 visualTransformation = if (form.confirmPassword.isValueHidden) PasswordVisualTransformation() else VisualTransformation.None,
-                trailingIconConfig = TrailingIconConfig(
-                    isPasswordField = true,
-                    isPasswordVisible = form.confirmPassword.isValueHidden
+                trailingIconConfig = TrailingIconConfig.Password(
+                    text = form.password.value,
+                    isVisible = form.password.isValueHidden
                 )
             )
         )

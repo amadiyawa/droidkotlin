@@ -1,4 +1,4 @@
-package com.amadiyawa.feature_onboarding.presentation.screen.navigation
+package com.amadiyawa.feature_onboarding.presentation.navigation
 
 import com.amadiyawa.feature_base.presentation.navigation.AppNavigationDestination
 

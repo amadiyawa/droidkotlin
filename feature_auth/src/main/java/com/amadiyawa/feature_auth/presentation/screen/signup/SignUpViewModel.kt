@@ -2,14 +2,12 @@ package com.amadiyawa.feature_auth.presentation.screen.signup
 
 import androidx.lifecycle.viewModelScope
 import com.amadiyawa.feature_auth.common.util.getSignUpPreferredRecipient
-import com.amadiyawa.feature_auth.domain.enum.OtpPurpose
 import com.amadiyawa.feature_auth.domain.mapper.toSignUpForm
 import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.domain.model.SignUpForm
 import com.amadiyawa.feature_auth.domain.model.updateAndValidateField
-import com.amadiyawa.feature_auth.domain.usecase.SignUpUseCase
-import com.amadiyawa.feature_auth.domain.validation.SignUpFormValidator
-import com.amadiyawa.feature_base.domain.mapper.ErrorMessageMapper
+import com.amadiyawa.feature_auth.domain.util.OtpPurpose
+import com.amadiyawa.feature_auth.domain.util.validation.SignUpFormValidator
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,13 +18,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 internal class SignUpViewModel(
-    private val signUpUseCase: SignUpUseCase,
     private val validator: SignUpFormValidator,
-    errorMessageMapper: ErrorMessageMapper
-) : BaseViewModel<SignUpUiState, SignUpAction>(
-    SignUpUiState.Idle(),
-    errorMessageMapper
-) {
+) : BaseViewModel<SignUpUiState, SignUpAction>(SignUpUiState.Idle()) {
 
     private val _uiEvent = MutableSharedFlow<SignUpUiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()

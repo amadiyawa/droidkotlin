@@ -34,7 +34,7 @@ data class TextFieldConfig(
     val keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     val keyboardActions: KeyboardActions = KeyboardActions.Default,
     val height: Dp = Dimen.Size.extraLarge,
-    val trailingIconConfig: TrailingIconConfig = TrailingIconConfig(),
+    val trailingIconConfig: TrailingIconConfig,
     val visualTransformation: VisualTransformation = VisualTransformation.None
 )
 
@@ -43,12 +43,21 @@ fun DefaultTextField(
     modifier: Modifier = Modifier,
     text: TextFieldText,
     onValueChange: (String) -> Unit,
-    onClearText: () -> Unit,
+    onClearText: () -> Unit = {},
     onVisibilityChange: () -> Unit = {},
-    config: TextFieldConfig = TextFieldConfig(),
+    config: TextFieldConfig = TextFieldConfig(
+        trailingIconConfig = TrailingIconConfig.None
+    ),
     leadingBadge: String? = null
 ) {
-    config.trailingIconConfig.text = text.value
+    // Create an updated trailing icon config based on the current text value
+    val updatedTrailingIconConfig = when (val iconConfig = config.trailingIconConfig) {
+        is TrailingIconConfig.Clearable -> iconConfig.copy(text = text.value)
+        is TrailingIconConfig.Password -> iconConfig.copy(text = text.value)
+        TrailingIconConfig.None -> iconConfig
+    }
+
+    val updatedConfig = config.copy(trailingIconConfig = updatedTrailingIconConfig)
 
     val (interactionSource, animatedBorderWidth, animatedBorderColor) = rememberAnimatedBorderStyle(
         isError = text.errorMessage != null
@@ -60,7 +69,7 @@ fun DefaultTextField(
         TextField(
             modifier = modifier
                 .fillMaxWidth()
-                .requiredHeight(config.height)
+                .requiredHeight(updatedConfig.height)
                 .border(
                     width = animatedBorderWidth,
                     color = animatedBorderColor,
@@ -69,8 +78,8 @@ fun DefaultTextField(
             interactionSource = interactionSource,
             shape = RoundedCornerShape(Dimen.Size.small),
             trailingIcon = {
-                GetTrailingIcon(
-                    config = config.trailingIconConfig,
+                TextFieldTrailingIcon(
+                    config = updatedConfig.trailingIconConfig,
                     onClearText = onClearText,
                     onVisibilityChange = onVisibilityChange
                 )
@@ -100,9 +109,9 @@ fun DefaultTextField(
             value = text.value,
             placeholder = { Text(text.placeholder) },
             onValueChange = onValueChange,
-            keyboardOptions = config.keyboardOptions,
-            keyboardActions = config.keyboardActions,
-            visualTransformation = config.visualTransformation,
+            keyboardOptions = updatedConfig.keyboardOptions,
+            keyboardActions = updatedConfig.keyboardActions,
+            visualTransformation = updatedConfig.visualTransformation,
             colors = getTextFieldColors()
         )
 

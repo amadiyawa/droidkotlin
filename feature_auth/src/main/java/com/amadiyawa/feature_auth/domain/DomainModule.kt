@@ -1,19 +1,17 @@
 package com.amadiyawa.feature_auth.domain
 
 import com.amadiyawa.feature_auth.domain.usecase.SignInUseCase
-import com.amadiyawa.feature_auth.domain.usecase.SignUpUseCase
 import com.amadiyawa.feature_auth.domain.usecase.SocialSignInUseCase
-import com.amadiyawa.feature_auth.domain.validation.ForgotPasswordFormValidator
-import com.amadiyawa.feature_auth.domain.validation.OtpFormValidator
-import com.amadiyawa.feature_auth.domain.validation.ResetPasswordValidator
-import com.amadiyawa.feature_auth.domain.validation.SignInFormValidator
-import com.amadiyawa.feature_auth.domain.validation.SignUpFormValidator
+import com.amadiyawa.feature_auth.domain.util.validation.ForgotPasswordFormValidator
+import com.amadiyawa.feature_auth.domain.util.validation.OtpFormValidator
+import com.amadiyawa.feature_auth.domain.util.validation.ResetPasswordValidator
+import com.amadiyawa.feature_auth.domain.util.validation.SignInFormValidator
+import com.amadiyawa.feature_auth.domain.util.validation.SignUpFormValidator
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 internal val domainModule = module {
     singleOf(::SignInUseCase)
-    singleOf(::SignUpUseCase)
     singleOf(::SocialSignInUseCase)
     single {
         SignUpFormValidator(

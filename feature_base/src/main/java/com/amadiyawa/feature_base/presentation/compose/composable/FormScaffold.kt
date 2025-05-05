@@ -7,27 +7,23 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.amadiyawa.feature_base.presentation.theme.dimension
 
@@ -41,15 +37,21 @@ fun FormScaffold(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .statusBarsPadding()
+            .windowInsetsPadding(WindowInsets.navigationBars)
             .imePadding()
     ) {
         // Custom Top Bar
-        FormHeader(
-            showBackButton = config.showBackButton,
-            title = config.title,
-            onBackPressed = config.onBackPressed
+        Toolbar(
+            params = ToolbarParams(
+                showBackButton = config.showBackButton,
+                title = config.title,
+                onBackPressed = config.onBackPressed,
+            ),
+            backgroundColor = Color.Transparent
         )
+
+        // Add standard 16dp spacing between header and content
+        Spacer(modifier = Modifier.height(MaterialTheme.dimension.spacing.medium))
 
         // Content Area
         Box(
@@ -80,76 +82,6 @@ fun FormScaffold(
                 alignment = Alignment.BottomCenter
             )
         }
-    }
-}
-
-@Composable
-private fun FormHeader(
-    showBackButton: Boolean,
-    title: String?,
-    onBackPressed: (() -> Unit)?
-) {
-    if (!showBackButton && title == null) return
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(MaterialTheme.dimension.componentSize.appBar)
-            // Standard horizontal padding of 16dp
-            .padding(horizontal = MaterialTheme.dimension.spacing.medium),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        BackButtonSection(showBackButton, onBackPressed)
-        TitleSection(title, showBackButton)
-
-        // Add standard 16dp spacing between header and content
-        Spacer(modifier = Modifier.height(MaterialTheme.dimension.spacing.medium))
-    }
-}
-
-@Composable
-private fun RowScope.BackButtonSection(
-    showBackButton: Boolean,
-    onBackPressed: (() -> Unit)?
-) {
-    if (showBackButton) {
-        CircularButton(
-            params = CircularButtonParams(
-                iconType = ButtonIconType.Vector(Icons.AutoMirrored.Filled.ArrowBack),
-                backgroundColor = MaterialTheme.colorScheme.surface,
-                borderWidth = MaterialTheme.dimension.grid.quarter,
-                iconTint = MaterialTheme.colorScheme.primary,
-                onClick = { onBackPressed?.invoke() },
-                description = "Navigate back"
-            )
-        )
-
-        // Add 8dp spacing after back button
-        Spacer(modifier = Modifier.width(MaterialTheme.dimension.spacing.small))
-    }
-}
-
-@Composable
-private fun RowScope.TitleSection(
-    title: String?,
-    showBackButton: Boolean
-) {
-    if (title != null) {
-        val startPadding = if (showBackButton)
-            MaterialTheme.dimension.spacing.none
-        else
-            MaterialTheme.dimension.spacing.medium
-
-        TextTitleLarge(
-            text = title,
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = startPadding),
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = if (showBackButton) TextAlign.Start else TextAlign.Center
-        )
-    } else {
-        Spacer(modifier = Modifier.weight(1f))
     }
 }
 

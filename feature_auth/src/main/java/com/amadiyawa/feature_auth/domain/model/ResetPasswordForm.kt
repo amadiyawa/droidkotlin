@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_auth.domain.model
 
-import com.amadiyawa.feature_auth.domain.validation.ResetPasswordValidator
+import com.amadiyawa.feature_auth.domain.util.validation.ResetPasswordValidator
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.domain.model.ValidatedField
 import com.amadiyawa.feature_base.domain.model.ValidatedForm

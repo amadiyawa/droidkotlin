@@ -1,4 +1,4 @@
-package com.amadiyawa.feature_auth.domain.validation
+package com.amadiyawa.feature_auth.domain.util.validation
 
 import com.amadiyawa.feature_auth.domain.model.ResetPasswordForm
 import com.amadiyawa.feature_base.domain.model.FieldValidationResult

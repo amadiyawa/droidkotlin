@@ -66,4 +66,18 @@
     <string name="error_unknown">An unknown error occurred</string>
     <string name="error_authentication_failed">Authentication failed</string>
 
+
+    <string name="error_400">Invalid request: %1$s</string>
+    <string name="error_401">Authentication failed</string>
+    <string name="error_403">Access denied</string>
+    <string name="error_500">System error occurred</string>
+    <string name="error_503">Service unavailable. Please check your connection</string>
+
+    <!-- Session Repository Errors -->
+    <string name="error_session_save_user">Failed to save user session data</string>
+    <string name="error_session_get_user">Failed to retrieve user session data</string>
+    <string name="error_session_update_state">Failed to update session state</string>
+    <string name="error_session_clear">Failed to clear session data</string>
+    <string name="error_session_generic">Session operation failed</string>
+
 </resources>

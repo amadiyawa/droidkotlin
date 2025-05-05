@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_auth.domain.model
 
-import com.amadiyawa.feature_auth.domain.validation.SignUpFormValidator
+import com.amadiyawa.feature_auth.domain.util.validation.SignUpFormValidator
 import com.amadiyawa.feature_base.domain.util.RecipientType
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.domain.model.ValidatedField

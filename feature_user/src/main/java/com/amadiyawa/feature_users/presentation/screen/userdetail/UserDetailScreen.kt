@@ -44,6 +44,7 @@ import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleLarge
 import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleMedium
 import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleSmall
 import com.amadiyawa.feature_base.presentation.compose.composable.Toolbar
+import com.amadiyawa.feature_base.presentation.compose.composable.ToolbarParams
 import com.amadiyawa.feature_user.R
 import com.amadiyawa.feature_users.domain.model.Dob
 import com.amadiyawa.feature_users.domain.model.Id
@@ -74,7 +75,13 @@ fun UserDetailScreen(
 
 @Composable
 private fun SetUpToolbar(onBackClick: () -> Unit) {
-    Toolbar(hasNavigationIcon = true, title = "", onBackClick = onBackClick)
+    Toolbar(
+        params = ToolbarParams(
+            showBackButton = true,
+            title = "",
+            onBackPressed = onBackClick
+        ),
+    )
 }
 
 @Composable

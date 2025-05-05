@@ -66,4 +66,19 @@
     <!-- Generic errors -->
     <string name="error_unknown">Une erreur inconnue s\'est produite</string>
     <string name="error_authentication_failed">L\'authentification a échoué</string>
+
+    <!-- res/values-fr/strings.xml -->
+    <string name="error_400">Requête invalide: %1$s</string>
+    <string name="error_401">Échec de l\'authentification</string>
+    <string name="error_403">Accès refusé</string>
+    <string name="error_500">Erreur système</string>
+    <string name="error_503">Service indisponible. Vérifiez votre connexion</string>
+
+    <!-- Session Repository Errors -->
+    <string name="error_session_save_user">Échec de l\'enregistrement des données de session utilisateur</string>
+    <string name="error_session_get_user">Échec de la récupération des données de session utilisateur</string>
+    <string name="error_session_update_state">Échec de la mise à jour de l\'état de la session</string>
+    <string name="error_session_clear">Échec de l\'effacement des données de session</string>
+    <string name="error_session_generic">Échec de l\'opération de session</string>
+
 </resources>

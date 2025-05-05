@@ -31,6 +31,7 @@ import com.amadiyawa.feature_base.presentation.compose.composable.FormScaffold
 import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldConfig
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldText
+import com.amadiyawa.feature_base.presentation.compose.composable.TrailingIconConfig
 import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
 
@@ -135,7 +136,8 @@ internal fun ForgotPasswordFormUI(
                     onNext = {
                         forgotPasswordFocusRequester.requestFocus()
                     }
-                )
+                ),
+                trailingIconConfig = TrailingIconConfig.Clearable("")
             )
         )
 

@@ -14,81 +14,79 @@ import androidx.compose.ui.res.stringResource
 import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.paygo.base.R
 
-/**
- * Configuration for the trailing icon in a text field.
- *
- * @property text The current text in the field.
- * @property isPasswordField Indicates whether the field is a password field.
- * @property isPasswordVisible Indicates whether the password is visible.
- */
-data class TrailingIconConfig(
-    var text: String = "",
-    val isPasswordField: Boolean = false,
-    val isPasswordVisible: Boolean = false
-)
+sealed class TrailingIconConfig {
+    data object None : TrailingIconConfig()
+    data class Clearable(val text: String) : TrailingIconConfig()
+    data class Password(
+        val text: String,
+        val isVisible: Boolean
+    ) : TrailingIconConfig()
+}
 
-/**
- * Composable function to display a trailing icon in a text field.
- *
- * This function displays an icon based on the configuration provided.
- * If the field is a password field, it toggles the visibility of the password.
- * Otherwise, it provides an option to clear the text.
- *
- * @param config The configuration for the trailing icon.
- * @param onVisibilityChange Callback triggered when the password visibility changes.
- * @param onClearText Callback triggered when the text is cleared.
- */
 @Composable
-fun GetTrailingIcon(
-    config: TrailingIconConfig = TrailingIconConfig(),
+fun TextFieldTrailingIcon(
+    modifier: Modifier = Modifier,
+    config: TrailingIconConfig,
     onVisibilityChange: () -> Unit = {},
-    onClearText: () -> Unit
+    onClearText: () -> Unit = {}
 ) {
-    if (shouldShowIcon(config)) {
-        IconButton(
-            modifier = Modifier.size(Dimen.Size.large),
-            onClick = { handleIconClick(config, onVisibilityChange, onClearText) }
-        ) {
-            Icon(
-                imageVector = getImageVector(config),
-                contentDescription = getContentDescription(config),
-                modifier = Modifier.size(Dimen.Size.small),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+    when (config) {
+        is TrailingIconConfig.None -> Unit
+        is TrailingIconConfig.Clearable -> {
+            if (config.text.isNotEmpty()) {
+                ClearTextIcon(
+                    onClick = onClearText,
+                    modifier = modifier
+                )
+            }
+        }
+        is TrailingIconConfig.Password -> {
+            PasswordVisibilityIcon(
+                isVisible = config.isVisible,
+                onClick = onVisibilityChange,
+                modifier = modifier
             )
         }
     }
 }
 
-private fun shouldShowIcon(config: TrailingIconConfig): Boolean {
-    return config.text.isNotEmpty() || config.isPasswordField
-}
-
-private fun handleIconClick(
-    config: TrailingIconConfig,
-    onVisibilityChange: () -> Unit,
-    onClearText: () -> Unit
+@Composable
+private fun ClearTextIcon(
+    onClick: () -> Unit,
+    modifier: Modifier
 ) {
-    if (config.isPasswordField) {
-        onVisibilityChange()
-    } else {
-        onClearText()
+    IconButton(
+        onClick = onClick,
+        modifier = modifier.size(Dimen.Size.large)
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Cancel,
+            contentDescription = stringResource(R.string.clear_text),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(Dimen.Size.small)
+        )
     }
 }
 
 @Composable
-private fun getImageVector(config: TrailingIconConfig) = when {
-    config.isPasswordField -> if (config.isPasswordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
-    else -> Icons.Filled.Cancel
-}
-
-@Composable
-private fun getContentDescription(config: TrailingIconConfig): String {
-    return when {
-        config.isPasswordField -> if (config.isPasswordVisible) {
-            stringResource(id = R.string.hide_password)
-        } else {
-            stringResource(id = R.string.show_password)
-        }
-        else -> stringResource(id = R.string.clear_text)
+private fun PasswordVisibilityIcon(
+    isVisible: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier
+) {
+    IconButton(
+        onClick = onClick,
+        modifier = modifier.size(Dimen.Size.large)
+    ) {
+        Icon(
+            imageVector = if (isVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+            contentDescription = if (isVisible) {
+                stringResource(R.string.hide_password)
+            } else {
+                stringResource(R.string.show_password)
+            },
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(Dimen.Size.small)
+        )
     }
 }

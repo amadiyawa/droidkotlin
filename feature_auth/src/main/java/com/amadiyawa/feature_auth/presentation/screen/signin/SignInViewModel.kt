@@ -1,8 +1,8 @@
 package com.amadiyawa.feature_auth.presentation.screen.signin
 
 import androidx.lifecycle.viewModelScope
-import com.amadiyawa.feature_auth.data.datasource.api.model.SignInRequest
-import com.amadiyawa.feature_auth.domain.enum.SocialProvider
+import com.amadiyawa.feature_auth.data.dto.request.SignInRequest
+import com.amadiyawa.feature_auth.domain.model.AuthResult
 import com.amadiyawa.feature_auth.domain.model.SignInForm
 import com.amadiyawa.feature_auth.domain.model.toJson
 import com.amadiyawa.feature_auth.domain.model.toSignInForm
@@ -10,25 +10,23 @@ import com.amadiyawa.feature_auth.domain.model.togglePasswordVisibility
 import com.amadiyawa.feature_auth.domain.model.updateAndValidateField
 import com.amadiyawa.feature_auth.domain.usecase.SignInUseCase
 import com.amadiyawa.feature_auth.domain.usecase.SocialSignInUseCase
-import com.amadiyawa.feature_auth.domain.validation.SignInFormValidator
-import com.amadiyawa.feature_base.domain.mapper.ErrorMessageMapper
+import com.amadiyawa.feature_auth.domain.util.SocialProvider
+import com.amadiyawa.feature_auth.domain.util.validation.SignInFormValidator
 import com.amadiyawa.feature_base.domain.model.ValidatedForm
 import com.amadiyawa.feature_base.domain.repository.SessionRepository
 import com.amadiyawa.feature_base.domain.result.OperationResult
-import com.amadiyawa.feature_base.domain.util.ErrorCategory
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 internal class SignInViewModel(
     private val signInUseCase: SignInUseCase,
     private val socialSignInUseCase: SocialSignInUseCase,
     private val validator: SignInFormValidator,
-    private val sessionRepository: SessionRepository,
-    errorMessageMapper: ErrorMessageMapper
+    private val sessionRepository: SessionRepository
 ) : BaseViewModel<SignInUiState, SignInAction>(
-    SignInUiState.Idle(),
-    errorMessageMapper = errorMessageMapper
+    SignInUiState.Idle()
 ) {
 
     // Jobs
@@ -49,7 +47,7 @@ internal class SignInViewModel(
         when (action) {
             is SignInAction.UpdateField -> handleUpdateField(action)
             SignInAction.TogglePasswordVisibility -> handleTogglePasswordVisibility()
-            SignInAction.Submit -> handleSubmit()
+            SignInAction.Submit -> handleSignIn()
             SignInAction.ForgotPassword -> handleForgotPassword()
             is SignInAction.SocialSignIn -> handleSocialSignIn(action.provider)
             SignInAction.ClearErrors -> handleClearErrors()
@@ -80,7 +78,7 @@ internal class SignInViewModel(
         }
     }
 
-    private fun handleSubmit() {
+    private fun handleSignIn() {
         val validated = validator.validate(form)
         if (!validated.isValid) {
             handleValidationError(validated)
@@ -91,93 +89,87 @@ internal class SignInViewModel(
 
         signInJob?.cancel()
         signInJob = viewModelScope.launch {
-            // Execute sign-in use case (which returns OperationResult)
             val result = signInUseCase(
                 SignInRequest(
                     identifier = form.identifier.value,
                     password = form.password.value
                 )
             )
+            handleAuthResult(result)
+        }
+    }
 
-            when (result) {
-                is OperationResult.Success -> {
-                    // User signed in successfully
-                    val signIn = result.data
+    private fun handleSocialSignIn(provider: SocialProvider) {
+        setState { SignInUiState.Loading.SocialAuthentication(form = form, provider = provider) }
 
-                    // Store user session
-                    val saveResult = sessionRepository.saveSessionUserJson(signIn.toJson())
-
-                    if (saveResult is OperationResult.Success) {
-                        // Update state to next loading phase
-                        setState { SignInUiState.Loading.SessionSaving(form = form) }
-
-                        // Set session as active
-                        val activeResult = sessionRepository.setSessionActive(true)
-
-                        if (activeResult is OperationResult.Success) {
-                            // Update state to final loading phase
-                            setState { SignInUiState.Loading.SessionActivation(form = form) }
-
-                            // All operations succeeded
-                            emitEvent(SignInUiEvent.ShowSnackbar("Sign in successful"))
-                            emitEvent(SignInUiEvent.NavigateToMainScreen)
-                            setState { SignInUiState.Idle(form = SignInForm()) }
-                        } else {
-                            // Handle session activation failure
-                            handleOperationFailure(
-                                result = activeResult,
-                                errorCategory = ErrorCategory.SESSION,
-                                onStateUpdate = { message ->
-                                    setState {
-                                        SignInUiState.Error(
-                                            form = form,
-                                            message = message
-                                        )
-                                    }
-                                },
-                                createSnackbarEvent = { message ->
-                                    SignInUiEvent.ShowSnackbar(message, isError = true)
-                                }
-                            )
-                        }
-                    } else {
-                        // Handle save session failure
-                        handleOperationFailure(
-                            result = saveResult,
-                            errorCategory = ErrorCategory.SESSION,
-                            onStateUpdate = { message ->
-                                setState {
-                                    SignInUiState.Error(
-                                        form = form,
-                                        message = message
-                                    )
-                                }
-                            },
-                            createSnackbarEvent = { message ->
-                                SignInUiEvent.ShowSnackbar(message, isError = true)
-                            }
-                        )
-                    }
-                }
-                else -> {
-                    // Handle sign-in failure
-                    handleOperationFailure(
-                        result = result,
-                        errorCategory = ErrorCategory.AUTHENTICATION,
-                        onStateUpdate = { message ->
-                            setState {
-                                SignInUiState.Error(
-                                    form = form,
-                                    message = message
-                                )
-                            }
-                        },
-                        createSnackbarEvent = { message ->
-                            SignInUiEvent.ShowSnackbar(message, isError = true)
-                        }
-                    )
-                }
+        socialSignInJob?.cancel()
+        socialSignInJob = viewModelScope.launch {
+            when (val result = socialSignInUseCase(provider)) {
+                is OperationResult.Success -> handleAuthSuccess(result.data, provider)
+                is OperationResult.Error -> handleAuthError(result.message!!, provider)
+                is OperationResult.Failure -> handleAuthError(result.message!!, provider)
             }
+        }
+    }
+
+    private suspend fun handleAuthResult(
+        result: OperationResult<AuthResult>,
+        provider: SocialProvider? = null
+    ) {
+        when (result) {
+            is OperationResult.Success -> handleAuthSuccess(result.data, provider)
+            is OperationResult.Error -> handleAuthError(result.message!!)
+            is OperationResult.Failure -> handleAuthError(result.message!!)
+        }
+    }
+
+    private suspend fun handleAuthSuccess(authResult: AuthResult, provider: SocialProvider? = null) {
+        setState { SignInUiState.Loading.SessionSaving(form = form) }
+        delay(2000)
+
+        val saveResult = sessionRepository.saveSessionUserJson(authResult.toJson())
+        if (saveResult is OperationResult.Success) {
+            val activeResult = sessionRepository.setSessionActive(true)
+
+            setState { SignInUiState.Loading.SessionActivation(form = form) }
+            delay(2000)
+            if (activeResult is OperationResult.Success) {
+                provider?.let {
+                    emitEvent(SignInUiEvent.SocialSignInResult(
+                        provider = it,
+                        success = true
+                    ))
+                }
+                emitEvent(SignInUiEvent.ShowSnackbar("Sign in successful"))
+                emitEvent(SignInUiEvent.NavigateToMainScreen)
+                setState { SignInUiState.Idle(form = SignInForm()) }
+            } else if (activeResult is OperationResult.Error) {
+                handleAuthError(
+                    message = activeResult.message!!,
+                    provider = provider
+                )
+            }
+        } else if (saveResult is OperationResult.Error) {
+            handleAuthError(
+                message = saveResult.message!!,
+                provider = provider
+            )
+        }
+    }
+
+    private fun handleAuthError(
+        message: String,
+        provider: SocialProvider? = null
+    ) {
+        setState { SignInUiState.Error(form = form, message = message) }
+        emitEvent(SignInUiEvent.ShowSnackbar(message, isError = true))
+
+        provider?.let {
+            emitEvent(SignInUiEvent.SocialSignInResult(
+                provider = it,
+                success = false,
+                message = message
+            ))
         }
     }
 
@@ -189,133 +181,6 @@ internal class SignInViewModel(
             )
         }
         emitEvent(SignInUiEvent.ShowSnackbar("Please correct the form errors", isError = true))
-    }
-
-    private fun handleSocialSignIn(provider: SocialProvider) {
-        setState {
-            SignInUiState.Loading.SocialAuthentication(
-                form = form,
-                provider = provider
-            )
-        }
-
-        socialSignInJob?.cancel()
-        socialSignInJob = viewModelScope.launch {
-            // Execute social sign-in use case (which returns OperationResult)
-            val result = socialSignInUseCase(provider)
-
-            when (result) {
-                is OperationResult.Success -> {
-                    // User signed in successfully with social provider
-                    val signIn = result.data
-
-                    // Store user session
-                    val saveResult = sessionRepository.saveSessionUserJson(signIn.toJson())
-
-                    if (saveResult is OperationResult.Success) {
-                        // Update state to next loading phase
-                        setState { SignInUiState.Loading.SessionSaving(form = form) }
-
-                        // Set session as active
-                        val activeResult = sessionRepository.setSessionActive(true)
-
-                        if (activeResult is OperationResult.Success) {
-                            // Update state to final loading phase
-                            setState { SignInUiState.Loading.SessionActivation(form = form) }
-
-                            // All operations succeeded
-                            emitEvent(
-                                SignInUiEvent.SocialSignInResult(
-                                    provider = provider,
-                                    success = true
-                                )
-                            )
-                            emitEvent(SignInUiEvent.NavigateToMainScreen)
-                            setState { SignInUiState.Idle(form = SignInForm()) }
-                        } else {
-                            // Handle session activation failure
-                            handleOperationFailure(
-                                result = activeResult,
-                                errorCategory = ErrorCategory.SESSION,
-                                onStateUpdate = { message ->
-                                    setState {
-                                        SignInUiState.Error(
-                                            form = form,
-                                            message = message
-                                        )
-                                    }
-                                },
-                                createSnackbarEvent = { message ->
-                                    SignInUiEvent.ShowSnackbar(message, isError = true)
-                                },
-                                additionalEvents = { message ->
-                                    listOf(
-                                        SignInUiEvent.SocialSignInResult(
-                                            provider = provider,
-                                            success = false,
-                                            message = message
-                                        )
-                                    )
-                                }
-                            )
-                        }
-                    } else {
-                        // Handle save session failure
-                        handleOperationFailure(
-                            result = saveResult,
-                            errorCategory = ErrorCategory.SESSION,
-                            onStateUpdate = { message ->
-                                setState {
-                                    SignInUiState.Error(
-                                        form = form,
-                                        message = message
-                                    )
-                                }
-                            },
-                            createSnackbarEvent = { message ->
-                                SignInUiEvent.ShowSnackbar(message, isError = true)
-                            },
-                            additionalEvents = { message ->
-                                listOf(
-                                    SignInUiEvent.SocialSignInResult(
-                                        provider = provider,
-                                        success = false,
-                                        message = message
-                                    )
-                                )
-                            }
-                        )
-                    }
-                }
-                else -> {
-                    // Handle social sign-in failure
-                    handleOperationFailure(
-                        result = result,
-                        errorCategory = ErrorCategory.AUTHENTICATION,
-                        onStateUpdate = { message ->
-                            setState {
-                                SignInUiState.Error(
-                                    form = form,
-                                    message = message
-                                )
-                            }
-                        },
-                        createSnackbarEvent = { message ->
-                            SignInUiEvent.ShowSnackbar(message, isError = true)
-                        },
-                        additionalEvents = { message ->
-                            listOf(
-                                SignInUiEvent.SocialSignInResult(
-                                    provider = provider,
-                                    success = false,
-                                    message = message
-                                )
-                            )
-                        }
-                    )
-                }
-            }
-        }
     }
 
     override fun onCleared() {

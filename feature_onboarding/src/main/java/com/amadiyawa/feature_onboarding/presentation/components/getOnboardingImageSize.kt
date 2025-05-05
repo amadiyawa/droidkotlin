@@ -1,4 +1,4 @@
-package com.amadiyawa.feature_onboarding.presentation.compose.composable
+package com.amadiyawa.feature_onboarding.presentation.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

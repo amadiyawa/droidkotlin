@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_auth.domain.model
 
-import com.amadiyawa.feature_auth.domain.enum.OtpPurpose
+import com.amadiyawa.feature_auth.domain.util.OtpPurpose
 import com.amadiyawa.feature_base.common.util.generateRandomHash
 import kotlinx.serialization.Serializable
 import kotlin.random.Random

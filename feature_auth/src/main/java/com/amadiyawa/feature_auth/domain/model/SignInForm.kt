@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_auth.domain.model
 
-import com.amadiyawa.feature_auth.domain.validation.SignInFormValidator
+import com.amadiyawa.feature_auth.domain.util.validation.SignInFormValidator
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.domain.model.ValidatedField
 import com.amadiyawa.feature_base.domain.model.ValidatedForm
@@ -16,7 +16,7 @@ import com.amadiyawa.feature_base.domain.model.ValidatedForm
  */
 data class SignInForm(
     val identifier: ValidatedField<String> = ValidatedField(""),
-    val password: ValidatedField<String> = ValidatedField("")
+    val password: ValidatedField<String> = ValidatedField(value = "", isValueHidden = true)
 ) {
     /**
      * Converts the sign-in form into a `ValidatedForm` object.

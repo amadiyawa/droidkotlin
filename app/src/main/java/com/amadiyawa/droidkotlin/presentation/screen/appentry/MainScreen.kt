@@ -17,8 +17,8 @@ import com.amadiyawa.feature_base.presentation.navigation.AppNavGraphProvider
 import com.amadiyawa.feature_base.presentation.navigation.AppState
 import com.amadiyawa.feature_base.presentation.navigation.rememberAppState
 import com.amadiyawa.feature_base.presentation.theme.AppTheme
-import com.amadiyawa.feature_onboarding.presentation.screen.navigation.OnboardingNavigation
-import com.amadiyawa.feature_onboarding.presentation.screen.navigation.onboardingGraph
+import com.amadiyawa.feature_onboarding.presentation.navigation.OnboardingNavigation
+import com.amadiyawa.feature_onboarding.presentation.navigation.onboardingGraph
 import org.koin.compose.getKoin
 
 /**

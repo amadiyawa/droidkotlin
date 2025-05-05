@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_auth.presentation.screen.signin
 
-import com.amadiyawa.feature_auth.domain.enum.SocialProvider
+import com.amadiyawa.feature_auth.domain.util.SocialProvider
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseAction
 
