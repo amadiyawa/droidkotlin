@@ -7,7 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.amadiyawa.feature_auth.domain.enum.OtpPurpose
+import com.amadiyawa.feature_auth.domain.util.OtpPurpose
 import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.presentation.screen.forgotpassword.ForgotPasswordScreen
 import com.amadiyawa.feature_auth.presentation.screen.otpverification.OtpVerificationScreen
@@ -73,8 +73,6 @@ internal fun NavGraphBuilder.authGraph(callbacks: AuthGraphCallbacks) {
                     onOtpValidated = callbacks.onOtpValidated,
                     onCancel = callbacks.onOtpFailed
                 )
-            } else {
-                // Gérer le cas null
             }
         }
 
