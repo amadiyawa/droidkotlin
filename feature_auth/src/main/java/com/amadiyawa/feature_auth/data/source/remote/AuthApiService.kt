@@ -1,12 +1,12 @@
-package com.amadiyawa.feature_auth.data.remote
+package com.amadiyawa.feature_auth.data.source.remote
 
-import com.amadiyawa.feature_auth.data.datasource.api.model.SignInApiModel
-import com.amadiyawa.feature_auth.data.datasource.api.model.SignUpApiModel
-import com.amadiyawa.feature_auth.data.datasource.api.model.ForgotPasswordRequest
-import com.amadiyawa.feature_auth.data.datasource.api.model.OtpVerificationRequest
-import com.amadiyawa.feature_auth.data.datasource.api.model.ResetPasswordRequest
-import com.amadiyawa.feature_auth.data.datasource.api.model.SignInRequest
-import com.amadiyawa.feature_auth.data.datasource.api.model.SignUpRequest
+import com.amadiyawa.feature_auth.data.dto.response.AuthResponse
+import com.amadiyawa.feature_auth.data.dto.request.ForgotPasswordRequest
+import com.amadiyawa.feature_auth.data.dto.request.OtpVerificationRequest
+import com.amadiyawa.feature_auth.data.dto.request.ResetPasswordRequest
+import com.amadiyawa.feature_auth.data.dto.request.SignInRequest
+import com.amadiyawa.feature_auth.data.dto.response.SignUpResponse
+import com.amadiyawa.feature_auth.data.dto.request.SignUpRequest
 import com.amadiyawa.feature_base.data.remote.model.SimpleApiResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -23,7 +23,7 @@ interface AuthApiService {
      * @return A DTO containing user details and access token on success.
      */
     @POST("auth/sign-in")
-    suspend fun signIn(@Body request: SignInRequest): SignInApiModel
+    suspend fun signIn(@Body request: SignInRequest): AuthResponse
 
     /**
      * Registers a new user.
@@ -32,7 +32,7 @@ interface AuthApiService {
      * @return A DTO containing confirmation status or user profile.
      */
     @POST("auth/sign-up")
-    suspend fun signUp(@Body request: SignUpRequest): SignUpApiModel
+    suspend fun signUp(@Body request: SignUpRequest): SignUpResponse
 
     /**
      * Verifies OTP for email or phone confirmation.
