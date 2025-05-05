@@ -1,4 +1,4 @@
-package com.amadiyawa.feature_auth.data.datasource.api.model
+package com.amadiyawa.feature_auth.data.dto.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
