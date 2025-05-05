@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.map
 import okio.IOException
 
 /**
- * Extension property to create a DataStore instance with the name "app_prefs".
+ * Extension property to create a DataStore instance with the name "droidkotlin_prefs".
  */
-private val Context.dataStore by preferencesDataStore("app_prefs")
+private val Context.dataStore by preferencesDataStore("droidkotlin_prefs")
 
 /**
  * Manager class for handling DataStore operations.
