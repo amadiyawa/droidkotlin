@@ -3,7 +3,6 @@ package com.amadiyawa.feature_auth.presentation.screen.signin
 import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,7 +23,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.domain.model.SignInForm
 import com.amadiyawa.feature_auth.presentation.screen.welcome.AuthFooter
@@ -36,11 +34,9 @@ import com.amadiyawa.feature_base.presentation.compose.composable.DefaultTextFie
 import com.amadiyawa.feature_base.presentation.compose.composable.FormScaffold
 import com.amadiyawa.feature_base.presentation.compose.composable.LoadingButton
 import com.amadiyawa.feature_base.presentation.compose.composable.LoadingButtonParams
-import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyMedium
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldConfig
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldText
 import com.amadiyawa.feature_base.presentation.compose.composable.TrailingIconConfig
-import com.amadiyawa.feature_base.presentation.theme.dimension
 import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
 
@@ -103,42 +99,29 @@ private fun SetupContent(
     state: SignInUiState,
     onAction: (SignInAction) -> Unit
 ) {
-    when (state) {
-        is SignInUiState.Idle -> {
-            SignInFormUI(
-                form = state.form,
-                onAction = onAction,
-                uiState = state
-            )
-        }
+    val form = when (state) {
+        is SignInUiState.Idle -> state.form
+        is SignInUiState.Loading -> state.form
+        is SignInUiState.Error -> state.form
+    }
 
-        is SignInUiState.Loading -> {
-            SignInFormUI(
-                form = state.form,
-                onAction = onAction,
-                uiState = state
-            )
-        }
-
-        is SignInUiState.Error -> {
-            SignInFormUI(
-                form = state.form,
-                onAction = onAction,
-                errorMessage = state.message,
-                uiState = state
-            )
-            LaunchedEffect(Unit) {
-                Timber.e("Form error: ${state.message}")
-            }
+    if (state is SignInUiState.Error) {
+        LaunchedEffect(state.message) {
+            Timber.e("Form error: ${state.message}")
         }
     }
+
+    SignInFormUI(
+        form = form,
+        onAction = onAction,
+        uiState = state
+    )
 }
 
 @Composable
 internal fun SignInFormUI(
     form: SignInForm,
     onAction: (SignInAction) -> Unit,
-    errorMessage: String? = null,
     uiState: SignInUiState
 ) {
     val passwordFocusRequester = remember { FocusRequester() }
@@ -149,18 +132,6 @@ internal fun SignInFormUI(
             title = stringResource(id = R.string.welcome_back),
             description = stringResource(id = R.string.signin_description)
         )
-
-        // Show error message if present
-        errorMessage?.let {
-            TextBodyMedium(
-                text = it,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = MaterialTheme.dimension.spacing.small),
-                textAlign = TextAlign.Center
-            )
-        }
 
         DefaultTextField(
             text = TextFieldText(
@@ -184,7 +155,8 @@ internal fun SignInFormUI(
                     onNext = {
                         passwordFocusRequester.requestFocus()
                     }
-                )
+                ),
+                trailingIconConfig = TrailingIconConfig.Clearable("")
             )
         )
 
@@ -202,16 +174,16 @@ internal fun SignInFormUI(
             onClearText = {
                 onAction(SignInAction.UpdateField("password", FieldValue.Text("")))
             },
-            onVisibilityChange = { SignInAction.TogglePasswordVisibility },
+            onVisibilityChange = { onAction(SignInAction.TogglePasswordVisibility) },
             config = TextFieldConfig(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Next
                 ),
                 visualTransformation = if (form.password.isValueHidden) PasswordVisualTransformation() else VisualTransformation.None,
-                trailingIconConfig = TrailingIconConfig(
-                    isPasswordField = true,
-                    isPasswordVisible = form.password.isValueHidden
+                trailingIconConfig = TrailingIconConfig.Password(
+                    text = form.password.value,
+                    isVisible = form.password.isValueHidden
                 )
             )
         )
