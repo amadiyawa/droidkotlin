@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.domain.model.OtpForm
-import com.amadiyawa.feature_auth.domain.model.SignUp
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.feature_base.domain.model.ValidatedField
 import com.amadiyawa.feature_base.presentation.compose.composable.AppTextButton
@@ -53,16 +53,16 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun OtpVerificationScreen(
-    signUp: SignUp,
-    onOtpValidated: (signUp: SignUp) -> Unit,
+    data: VerificationResult,
+    onOtpValidated: (data: VerificationResult) -> Unit,
     onCancel: () -> Unit,
 ) {
     val viewModel: OtpVerificationViewModel = koinViewModel()
     val uiState by viewModel.uiStateFlow.collectAsState()
     val uiEvent = viewModel.uiEvent.collectAsState(initial = null)
 
-    LaunchedEffect(signUp) {
-        viewModel.dispatch(OtpAction.Initialize(signUp))
+    LaunchedEffect(data) {
+        viewModel.dispatch(OtpAction.Initialize(data))
     }
 
     SetupContent(
@@ -73,7 +73,7 @@ internal fun OtpVerificationScreen(
 
     uiEvent.value?.let { event ->
         when (event) {
-            is OtpUiEvent.NavigateToNextScreen -> onOtpValidated(event.signUp)
+            is OtpUiEvent.NavigateToNextScreen -> onOtpValidated(event.data)
         }
     }
 }
@@ -123,11 +123,11 @@ private fun OtpFormUI(
     onAction: (OtpAction) -> Unit,
     viewModel: OtpVerificationViewModel
 ) {
-    val signUp = viewModel.signUp.collectAsStateWithLifecycle()
-    val (emailOrPhone, description) = if (signUp.value.recipient.contains("@")) {
-        "e-mails" to stringResource(R.string.otp_description_email, signUp.value.recipient)
+    val verificationResult = viewModel.verificationResult.collectAsStateWithLifecycle()
+    val (emailOrPhone, description) = if (verificationResult.value.recipient.contains("@")) {
+        "e-mails" to stringResource(R.string.otp_description_email, verificationResult.value.recipient)
     } else {
-        "sms" to stringResource(R.string.otp_description_phone, signUp.value.recipient)
+        "sms" to stringResource(R.string.otp_description_phone, verificationResult.value.recipient)
     }
 
     FormScaffold {
@@ -145,7 +145,7 @@ private fun OtpFormUI(
             }
         )
 
-        OtpResendField(signUp)
+        OtpResendField(verificationResult)
 
         FilledButton(
             modifier = Modifier
@@ -270,7 +270,7 @@ private fun handleKeyEvent(
 
 @Composable
 private fun OtpResendField(
-    signUp: State<SignUp>
+    signUp: State<VerificationResult>
 ) {
     val minutes = signUp.value.expiresIn / 60
     val seconds = signUp.value.expiresIn % 60
