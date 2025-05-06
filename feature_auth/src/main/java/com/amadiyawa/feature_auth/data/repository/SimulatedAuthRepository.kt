@@ -1,10 +1,13 @@
 package com.amadiyawa.feature_auth.data.repository
 
+import com.amadiyawa.feature_auth.data.dto.request.ForgotPasswordRequest
 import com.amadiyawa.feature_auth.data.dto.response.AuthResponse
 import com.amadiyawa.feature_auth.data.dto.request.SignInRequest
+import com.amadiyawa.feature_auth.data.dto.response.VerificationResponse
 import com.amadiyawa.feature_auth.data.dto.response.random
 import com.amadiyawa.feature_auth.data.mapper.AuthDataMapper.toDomain
 import com.amadiyawa.feature_auth.domain.model.AuthResult
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_auth.domain.util.SocialProvider
 import com.amadiyawa.feature_auth.domain.repository.AuthRepository
 import com.amadiyawa.feature_base.domain.result.OperationResult
@@ -121,6 +124,40 @@ internal class SimulatedAuthRepository : AuthRepository {
                 "provider" to provider.name,
                 "simulated" to "true",
                 "retry_after" to "5m"
+            )
+        )
+    }
+
+    override suspend fun forgotPassword(request: ForgotPasswordRequest): OperationResult<VerificationResult> {
+        delay(simulatedNetworkDelay)
+
+        return try {
+            when (Random.nextInt(0, 100)) {
+                in 0..89 -> OperationResult.success(VerificationResponse.random().toDomain())
+                else -> simulateForgotPasswordFailure(request)      // 10% failure rate
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Simulated error during forgot password")
+            OperationResult.error(
+                throwable = e,
+                message = "Simulated system error"
+            )
+        }
+    }
+
+    private fun simulateForgotPasswordFailure(request: ForgotPasswordRequest): OperationResult<VerificationResult> {
+        val (code, message) = when (Random.nextInt(0, 3)) {
+            0 -> 404 to "Account not found"
+            1 -> 429 to "Too many password reset attempts"
+            else -> 503 to "Email service temporarily unavailable"
+        }
+
+        return OperationResult.failure(
+            code = code,
+            message = message,
+            details = mapOf(
+                "recipient" to request.recipient,
+                "retry_after" to "15m"
             )
         )
     }
