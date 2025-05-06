@@ -55,4 +55,6 @@
     <string name="social_signing_in">Signing in with %s…</string>
     <string name="saving_session">Saving your session…</string>
     <string name="activating_session">Activating your session…</string>
+
+    <string name="sending">Sending…</string>
 </resources>

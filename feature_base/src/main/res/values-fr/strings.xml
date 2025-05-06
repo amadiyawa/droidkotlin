@@ -80,5 +80,4 @@
     <string name="error_session_update_state">Échec de la mise à jour de l\'état de la session</string>
     <string name="error_session_clear">Échec de l\'effacement des données de session</string>
     <string name="error_session_generic">Échec de l\'opération de session</string>
-
 </resources>
