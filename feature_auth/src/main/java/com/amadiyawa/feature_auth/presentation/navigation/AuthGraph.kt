@@ -7,8 +7,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_auth.domain.util.OtpPurpose
-import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.presentation.screen.forgotpassword.ForgotPasswordScreen
 import com.amadiyawa.feature_auth.presentation.screen.otpverification.OtpVerificationScreen
 import com.amadiyawa.feature_auth.presentation.screen.resetpassword.ResetPasswordScreen
@@ -22,9 +22,9 @@ internal data class AuthGraphCallbacks(
     val onNavigateToSignUp: () -> Unit,
     val onNavigateToForgotPassword: () -> Unit,
     val onSignInSuccess: () -> Unit,
-    val onSignUpSuccess: (signUp: SignUp) -> Unit,
-    val onOtpSentFromReset: (signUp: SignUp) -> Unit,
-    val onOtpValidated: (signUp: SignUp) -> Unit,
+    val onSignUpSuccess: (data: VerificationResult) -> Unit,
+    val onOtpSentFromReset: (data: VerificationResult) -> Unit,
+    val onOtpValidated: (data: VerificationResult) -> Unit,
     val onOtpFailed: () -> Unit,
     val onResetPasswordSuccess: (recipient: String) -> Unit
 )
@@ -62,14 +62,14 @@ internal fun NavGraphBuilder.authGraph(callbacks: AuthGraphCallbacks) {
 
         composable(
             route = OtpVerificationNavigation.route,
-            arguments = listOf(navArgument("signUpJson") { type = NavType.StringType })
+            arguments = listOf(navArgument("verificationResultJson") { type = NavType.StringType })
         ) { backStackEntry ->
-            val json = backStackEntry.arguments?.getString("signUpJson")
-            val signUp = json?.let { Json.decodeFromString<SignUp>(Uri.decode(it)) }
+            val json = backStackEntry.arguments?.getString("verificationResultJson")
+            val data = json?.let { Json.decodeFromString<VerificationResult>(Uri.decode(it)) }
 
-            if (signUp != null) {
+            if (data != null) {
                 OtpVerificationScreen(
-                    signUp = signUp,
+                    data = data,
                     onOtpValidated = callbacks.onOtpValidated,
                     onCancel = callbacks.onOtpFailed
                 )
@@ -101,20 +101,20 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
                 launchSingleTop = true
             }
         },
-        onSignUpSuccess = { signUp: SignUp ->
-            navController.navigate(OtpVerificationNavigation.createRoute(signUp)) {
+        onSignUpSuccess = { data ->
+            navController.navigate(OtpVerificationNavigation.createRoute(data)) {
                 popUpTo(SignUpNavigation.route) { inclusive = true }
                 launchSingleTop = true
             }
         },
-        onOtpSentFromReset = { signUp ->
-            navController.navigate(OtpVerificationNavigation.createRoute(signUp)) {
+        onOtpSentFromReset = { data ->
+            navController.navigate(OtpVerificationNavigation.createRoute(data)) {
                 popUpTo(ForgotPasswordNavigation.route) { inclusive = true }
                 launchSingleTop = true
             }
         },
         onOtpValidated = { signUp ->
-            if (signUp.otpPurpose == OtpPurpose.SIGN_UP) {
+            if (signUp.purpose == OtpPurpose.SIGN_UP) {
                 navController.navigate("main") {
                     popUpTo("auth") { inclusive = true }
                     launchSingleTop = true
