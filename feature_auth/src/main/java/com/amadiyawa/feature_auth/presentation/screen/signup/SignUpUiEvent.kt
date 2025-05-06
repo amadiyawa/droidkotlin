@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_auth.presentation.screen.signup
 
-import com.amadiyawa.feature_auth.domain.model.SignUp
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
 
 /**
  * Represents one-time UI events that should not be part of the persistent state
@@ -15,19 +15,9 @@ internal sealed interface SignUpUiEvent {
     /**
      * Event to navigate to the OTP (One-Time Password) screen.
      *
-     * @property signUp The SignUp object containing the necessary data for the OTP screen.
+     * @property data The SignUp object containing the necessary data for the OTP screen.
      */
-    data class NavigateToOtp(val signUp: SignUp) : SignUpUiEvent
-
-    /**
-     * Event to navigate to the Sign-In screen.
-     */
-    object NavigateToSignIn : SignUpUiEvent
-
-    /**
-     * Event to navigate back to the previous screen.
-     */
-    object NavigateBack : SignUpUiEvent
+    data class NavigateToOtp(val data: VerificationResult) : SignUpUiEvent
 
     /**
      * Event to display a snackbar with a message.
