@@ -1,9 +1,5 @@
 package com.amadiyawa.feature_auth.presentation.screen.forgotpassword
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
@@ -12,23 +8,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.domain.model.ForgotPasswordForm
-import com.amadiyawa.feature_auth.domain.model.SignUp
-import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.presentation.compose.composable.AuthHeader
 import com.amadiyawa.feature_base.presentation.compose.composable.DefaultTextField
-import com.amadiyawa.feature_base.presentation.compose.composable.FilledButton
 import com.amadiyawa.feature_base.presentation.compose.composable.FormScaffold
-import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation
+import com.amadiyawa.feature_base.presentation.compose.composable.LoadingButton
+import com.amadiyawa.feature_base.presentation.compose.composable.LoadingButtonParams
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldConfig
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldText
 import com.amadiyawa.feature_base.presentation.compose.composable.TrailingIconConfig
@@ -37,22 +29,21 @@ import timber.log.Timber
 
 @Composable
 internal fun ForgotPasswordScreen(
-    onOtpSent: (SignUp) -> Unit,
+    onOtpSent: (VerificationResult) -> Unit,
 ) {
     val viewModel: ForgotPasswordViewModel = koinViewModel()
     val uiState by viewModel.uiStateFlow.collectAsState()
-    val uiEvent = viewModel.uiEvent.collectAsState(initial = null)
+    val events = viewModel.events.collectAsState(initial = null)
 
     SetupContent(
         state = uiState,
-        onAction = viewModel::dispatch,
-        viewModel = viewModel
+        onAction = viewModel::dispatch
     )
 
-    uiEvent.value?.let { event ->
+    events.value?.let { event ->
         when (event) {
             is ForgotPasswordUiEvent.NavigateToOtp -> {
-                onOtpSent(event.signUp)
+                onOtpSent(event.data)
             }
 
             is ForgotPasswordUiEvent.ShowSnackbar -> {
@@ -67,45 +58,34 @@ internal fun ForgotPasswordScreen(
 @Composable
 private fun SetupContent(
     state: ForgotPasswordUiState,
-    onAction: (ForgotPasswordAction) -> Unit,
-    viewModel: ForgotPasswordViewModel
+    onAction: (ForgotPasswordAction) -> Unit
 ) {
-    when (state) {
-        is ForgotPasswordUiState.Idle -> {
-            ForgotPasswordFormUI(
-                form = state.form,
-                onAction = onAction,
-                viewModel = viewModel
-            )
-        }
+    val form = when (state) {
+        is ForgotPasswordUiState.Idle -> state.form
+        is ForgotPasswordUiState.Loading -> state.form
+        is ForgotPasswordUiState.Error -> state.form
+    }
 
-        is ForgotPasswordUiState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                LoadingAnimation(visible = true)
-            }
-        }
-
-        is ForgotPasswordUiState.Error -> {
-            ForgotPasswordFormUI(
-                form = state.form,
-                onAction = onAction,
-                viewModel = viewModel
-            )
-            LaunchedEffect(Unit) {
-                Timber.e("Form error: ${state.message}")
-            }
+    if (state is ForgotPasswordUiState.Error) {
+        LaunchedEffect(state.message) {
+            Timber.e("Form error: ${state.message}")
         }
     }
+
+    ForgotPasswordFormUI(
+        form = form,
+        onAction = onAction,
+        uiState = state
+    )
 }
 
 @Composable
 internal fun ForgotPasswordFormUI(
     form: ForgotPasswordForm,
     onAction: (ForgotPasswordAction) -> Unit,
-    viewModel: ForgotPasswordViewModel
+    uiState: ForgotPasswordUiState
 ) {
     val isFormValid by remember(form) { derivedStateOf { form.asValidatedForm().isValid } }
-    val isSubmitting by viewModel.isSubmitting.collectAsState()
     val forgotPasswordFocusRequester = remember { FocusRequester() }
 
     FormScaffold {
@@ -141,14 +121,19 @@ internal fun ForgotPasswordFormUI(
             )
         )
 
-        FilledButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(forgotPasswordFocusRequester)
-                .requiredHeight(Dimen.Size.extraLarge),
-            enabled = isFormValid && !isSubmitting,
-            text = stringResource(id = R.string.validate),
-            onClick = { onAction(ForgotPasswordAction.Submit) }
+        LoadingButton(
+            params = LoadingButtonParams(
+                enabled = isFormValid,
+                text = when (uiState) {
+                    is ForgotPasswordUiState.Loading ->
+                        stringResource(R.string.sending)
+                    is ForgotPasswordUiState.Idle,
+                    is ForgotPasswordUiState.Error -> // Not loading states
+                        stringResource(id = R.string.validate)
+                },
+                isLoading = uiState is ForgotPasswordUiState.Loading,
+                onClick = { onAction(ForgotPasswordAction.Submit) }
+            )
         )
     }
 }
