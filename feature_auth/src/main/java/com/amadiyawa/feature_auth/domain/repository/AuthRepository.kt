@@ -1,7 +1,9 @@
 package com.amadiyawa.feature_auth.domain.repository
 
+import com.amadiyawa.feature_auth.data.dto.request.ForgotPasswordRequest
 import com.amadiyawa.feature_auth.data.dto.request.SignInRequest
 import com.amadiyawa.feature_auth.domain.model.AuthResult
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_auth.domain.util.SocialProvider
 import com.amadiyawa.feature_base.domain.result.OperationResult
 
@@ -16,10 +18,10 @@ internal interface AuthRepository {
     /**
      * Signs in a user using the provided credentials.
      *
-     * @param signInRequest The request object containing the user's credentials.
+     * @param data The request object containing the user's credentials.
      * @return An `OperationResult` containing the authentication result.
      */
-    suspend fun signIn(signInRequest: SignInRequest): OperationResult<AuthResult>
+    suspend fun signIn(data: SignInRequest): OperationResult<AuthResult>
 
     /**
      * Signs in a user using a social provider.
@@ -28,4 +30,17 @@ internal interface AuthRepository {
      * @return An `OperationResult` containing the authentication result.
      */
     suspend fun socialSignIn(provider: SocialProvider): OperationResult<AuthResult>
+
+    /**
+     * Initiates the forgot password process for a user.
+     *
+     * This method sends a request to start the password recovery process
+     * for the user identified by the provided data. The result includes
+     * a verification response that contains details such as the verification ID
+     * and expiration time.
+     *
+     * @param data The request object containing the user's information for password recovery.
+     * @return An `OperationResult` containing the verification response.
+     */
+    suspend fun forgotPassword(data: ForgotPasswordRequest): OperationResult<VerificationResult>
 }
