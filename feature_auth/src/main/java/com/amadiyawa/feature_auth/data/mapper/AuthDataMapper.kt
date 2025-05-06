@@ -3,9 +3,12 @@ package com.amadiyawa.feature_auth.data.mapper
 import com.amadiyawa.feature_auth.data.dto.response.AuthResponse
 import com.amadiyawa.feature_auth.data.dto.response.TokenResponse
 import com.amadiyawa.feature_auth.data.dto.response.UserResponse
+import com.amadiyawa.feature_auth.data.dto.response.VerificationResponse
 import com.amadiyawa.feature_auth.domain.model.AuthResult
 import com.amadiyawa.feature_auth.domain.model.AuthTokens
 import com.amadiyawa.feature_auth.domain.model.User
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
+import com.amadiyawa.feature_auth.domain.util.VerificationType
 
 /**
  * Object responsible for mapping authentication-related data transfer objects (DTOs)
@@ -49,6 +52,19 @@ internal object AuthDataMapper {
             expiresIn = expiresIn,
             issuedAt = issuedAt,
             tokenType = tokenType
+        )
+    }
+
+    fun VerificationResponse.toDomain(): VerificationResult {
+        return VerificationResult(
+            verificationId = verificationId,
+            recipient = recipient,
+            expiresIn = expiresIn,
+            type = when {
+                recipient.contains('@') -> VerificationType.EMAIL
+                recipient.startsWith('+') -> VerificationType.SMS
+                else -> VerificationType.UNKNOWN
+            }
         )
     }
 }
