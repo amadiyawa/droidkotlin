@@ -23,8 +23,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.amadiyawa.feature_auth.R
-import com.amadiyawa.feature_auth.domain.model.SignUp
 import com.amadiyawa.feature_auth.domain.model.SignUpForm
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.feature_base.common.util.getCountryDialCode
 import com.amadiyawa.feature_base.domain.model.FieldValue
@@ -42,7 +42,7 @@ import timber.log.Timber
 
 @Composable
 internal fun SignUpScreen(
-    onSignUpSuccess: (SignUp) -> Unit,
+    onSignUpSuccess: (VerificationResult) -> Unit,
 ) {
     val viewModel: SignUpViewModel = koinViewModel()
     val uiState by viewModel.uiStateFlow.collectAsState()
@@ -56,7 +56,7 @@ internal fun SignUpScreen(
 
     uiEvent.value?.let { event ->
         when (event) {
-            is SignUpUiEvent.NavigateToOtp -> onSignUpSuccess(event.signUp)
+            is SignUpUiEvent.NavigateToOtp -> onSignUpSuccess(event.data)
             is SignUpUiEvent.ShowSnackbar -> {
                 LaunchedEffect(Unit) {
                     Timber.e("Snackbar: ${event.message}")
