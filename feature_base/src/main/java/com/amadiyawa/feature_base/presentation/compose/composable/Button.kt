@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.presentation.theme.dimension
 
 data class LoadingButtonParams(
     val modifier: Modifier = Modifier,
@@ -57,7 +59,9 @@ fun LoadingButton(
     )
 ) {
     Button(
-        modifier = params.modifier,
+        modifier = params.modifier
+            .fillMaxWidth()
+            .requiredHeight(MaterialTheme.dimension.componentSize.inputField),
         onClick = params.onClick,
         enabled = params.enabled && !params.isLoading,
         colors = colors
