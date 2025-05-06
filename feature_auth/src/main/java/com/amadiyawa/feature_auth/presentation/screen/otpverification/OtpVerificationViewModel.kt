@@ -1,8 +1,10 @@
 package com.amadiyawa.feature_auth.presentation.screen.otpverification
 
 import androidx.lifecycle.viewModelScope
+import com.amadiyawa.feature_auth.data.dto.response.VerificationResponse
+import com.amadiyawa.feature_auth.data.mapper.AuthDataMapper.toDomain
 import com.amadiyawa.feature_auth.domain.model.OtpForm
-import com.amadiyawa.feature_auth.domain.model.SignUp
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_auth.domain.util.validation.OtpFormValidator
 import com.amadiyawa.feature_base.domain.usecase.ValidateOtpUseCase
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
@@ -21,8 +23,8 @@ internal class OtpVerificationViewModel(
     private val otpFormValidator: OtpFormValidator
 ) : BaseViewModel<OtpUiState, OtpAction>(OtpUiState.Idle(OtpForm())) {
 
-    private val _signUp = MutableStateFlow(SignUp.random())
-    val signUp: StateFlow<SignUp> = _signUp
+    private val _verificationResult = MutableStateFlow(VerificationResponse.random().toDomain())
+    val verificationResult: StateFlow<VerificationResult> = _verificationResult
 
     private val _uiEvent = MutableSharedFlow<OtpUiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
@@ -44,7 +46,7 @@ internal class OtpVerificationViewModel(
 
         when (action) {
             is OtpAction.Initialize -> {
-                _signUp.value = action.signUp
+                _verificationResult.value = action.data
                 startCountdown()
                 setState { OtpUiState.Idle(form = form) }
             }
@@ -73,9 +75,9 @@ internal class OtpVerificationViewModel(
         countdownJob?.cancel()
 
         countdownJob = viewModelScope.launch {
-            while (_signUp.value.expiresIn > 0) {
+            while (_verificationResult.value.expiresIn > 0) {
                 delay(1000)
-                _signUp.update { it.copy(expiresIn = it.expiresIn - 1) }
+                _verificationResult.update { it.copy(expiresIn = it.expiresIn - 1) }
             }
         }
     }
@@ -97,7 +99,7 @@ internal class OtpVerificationViewModel(
             val result = validateOtpUseCase.validateMatch(input = otp, expected = otp)
 
             if (result.isValid) {
-                _uiEvent.emit(OtpUiEvent.NavigateToNextScreen(signUp = _signUp.value))
+                _uiEvent.emit(OtpUiEvent.NavigateToNextScreen(data = _verificationResult.value))
             } else {
                 setState { OtpUiState.Error(form, message = result.errorMessage.orEmpty()) }
             }
