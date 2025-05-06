@@ -5,7 +5,7 @@ import com.amadiyawa.feature_auth.data.dto.request.ForgotPasswordRequest
 import com.amadiyawa.feature_auth.data.dto.request.OtpVerificationRequest
 import com.amadiyawa.feature_auth.data.dto.request.ResetPasswordRequest
 import com.amadiyawa.feature_auth.data.dto.request.SignInRequest
-import com.amadiyawa.feature_auth.data.dto.response.SignUpResponse
+import com.amadiyawa.feature_auth.data.dto.response.VerificationResponse
 import com.amadiyawa.feature_auth.data.dto.request.SignUpRequest
 import com.amadiyawa.feature_base.data.remote.model.SimpleApiResponse
 import retrofit2.http.Body
@@ -32,7 +32,7 @@ interface AuthApiService {
      * @return A DTO containing confirmation status or user profile.
      */
     @POST("auth/sign-up")
-    suspend fun signUp(@Body request: SignUpRequest): SignUpResponse
+    suspend fun signUp(@Body request: SignUpRequest): VerificationResponse
 
     /**
      * Verifies OTP for email or phone confirmation.
