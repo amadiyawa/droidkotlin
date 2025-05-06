@@ -1,9 +1,8 @@
 package com.amadiyawa.feature_auth.presentation.navigation
 
-import com.amadiyawa.feature_auth.domain.model.SignUp
+import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_base.presentation.navigation.AppNavigationDestination
 import kotlinx.serialization.json.Json
-import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -31,20 +30,15 @@ object SignUpNavigation : AppNavigationDestination {
 
 internal object OtpVerificationNavigation : AppNavigationDestination {
 
-    private const val SIGN_UP_PARAM = "signUpJson"
+    private const val SIGN_UP_PARAM = "verificationResultJson"
 
     override val route = "auth_otp/{$SIGN_UP_PARAM}"
     override val destination = "auth_otp_destination"
 
-    fun createRoute(signUp: SignUp): String {
-        val json = Json.encodeToString(SignUp.serializer(), signUp)
+    fun createRoute(data: VerificationResult): String {
+        val json = Json.encodeToString(VerificationResult.serializer(), data)
         val encoded = URLEncoder.encode(json, StandardCharsets.UTF_8.toString())
         return "auth_otp/$encoded"
-    }
-
-    fun parseArgument(encodedJson: String): SignUp {
-        val decoded = URLDecoder.decode(encodedJson, StandardCharsets.UTF_8.toString())
-        return Json.decodeFromString(SignUp.serializer(), decoded)
     }
 }
 
