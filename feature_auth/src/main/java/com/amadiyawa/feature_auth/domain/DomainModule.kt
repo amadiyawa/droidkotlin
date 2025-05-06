@@ -1,5 +1,6 @@
 package com.amadiyawa.feature_auth.domain
 
+import com.amadiyawa.feature_auth.domain.usecase.ForgotPasswordUseCase
 import com.amadiyawa.feature_auth.domain.usecase.SignInUseCase
 import com.amadiyawa.feature_auth.domain.usecase.SocialSignInUseCase
 import com.amadiyawa.feature_auth.domain.util.validation.ForgotPasswordFormValidator
@@ -13,6 +14,7 @@ import org.koin.dsl.module
 internal val domainModule = module {
     singleOf(::SignInUseCase)
     singleOf(::SocialSignInUseCase)
+    singleOf(::ForgotPasswordUseCase)
     single {
         SignUpFormValidator(
             validateFullName = get(),
