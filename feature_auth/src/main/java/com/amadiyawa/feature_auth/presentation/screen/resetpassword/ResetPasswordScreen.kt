@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.domain.model.ResetPasswordForm
-import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.common.resources.Dimen
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.presentation.compose.composable.AuthHeader
 import com.amadiyawa.feature_base.presentation.compose.composable.DefaultTextField
@@ -38,6 +38,7 @@ import timber.log.Timber
 
 @Composable
 fun ResetPasswordScreen(
+    resetToken: String,
     onSuccess: (String) -> Unit,
 ) {
     val viewModel: ResetPasswordViewModel = koinViewModel()
