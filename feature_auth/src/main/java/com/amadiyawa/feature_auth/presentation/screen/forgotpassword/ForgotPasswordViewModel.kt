@@ -71,7 +71,7 @@ internal class ForgotPasswordViewModel(
     }
 
     private fun handleAuthSuccess(data: VerificationResult) {
-        data.purpose = OtpPurpose.FORGOT_PASSWORD
+        data.purpose = OtpPurpose.PASSWORD_RESET
         emitEvent(ForgotPasswordUiEvent.NavigateToOtp(data))
     }
 
