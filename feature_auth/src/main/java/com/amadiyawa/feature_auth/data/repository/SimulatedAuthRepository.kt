@@ -1,15 +1,20 @@
 package com.amadiyawa.feature_auth.data.repository
 
 import com.amadiyawa.feature_auth.data.dto.request.ForgotPasswordRequest
-import com.amadiyawa.feature_auth.data.dto.response.AuthResponse
+import com.amadiyawa.feature_auth.data.dto.request.OtpVerificationRequest
+import com.amadiyawa.feature_auth.data.dto.request.ResendOtpRequest
 import com.amadiyawa.feature_auth.data.dto.request.SignInRequest
+import com.amadiyawa.feature_auth.data.dto.response.AuthResponse
+import com.amadiyawa.feature_auth.data.dto.response.OtpVerificationResponse
 import com.amadiyawa.feature_auth.data.dto.response.VerificationResponse
 import com.amadiyawa.feature_auth.data.dto.response.random
 import com.amadiyawa.feature_auth.data.mapper.AuthDataMapper.toDomain
 import com.amadiyawa.feature_auth.domain.model.AuthResult
+import com.amadiyawa.feature_auth.domain.model.OtpVerificationResult
 import com.amadiyawa.feature_auth.domain.model.VerificationResult
-import com.amadiyawa.feature_auth.domain.util.SocialProvider
 import com.amadiyawa.feature_auth.domain.repository.AuthRepository
+import com.amadiyawa.feature_auth.domain.util.OtpPurpose
+import com.amadiyawa.feature_auth.domain.util.SocialProvider
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import kotlinx.coroutines.delay
 import timber.log.Timber
@@ -133,8 +138,10 @@ internal class SimulatedAuthRepository : AuthRepository {
 
         return try {
             when (Random.nextInt(0, 100)) {
-                in 0..89 -> OperationResult.success(VerificationResponse.random().toDomain())
-                else -> simulateForgotPasswordFailure(request)      // 10% failure rate
+                in 0..89 -> OperationResult.success(
+                    VerificationResponse.random(OtpPurpose.PASSWORD_RESET.name).toDomain()
+                )
+                else -> simulateForgotPasswordFailure(request)
             }
         } catch (e: Exception) {
             Timber.e(e, "Simulated error during forgot password")
@@ -158,6 +165,95 @@ internal class SimulatedAuthRepository : AuthRepository {
             details = mapOf(
                 "recipient" to request.recipient,
                 "retry_after" to "15m"
+            )
+        )
+    }
+
+    override suspend fun verifyOtp(request: OtpVerificationRequest): OperationResult<OtpVerificationResult> {
+        delay(simulatedNetworkDelay)
+
+        return try {
+            when (request.code) {
+                "000000" -> simulateOtpSystemError()
+                "999999" -> simulateOtpFailure(request)
+                else -> {
+                    OperationResult.success(
+                        OtpVerificationResponse.randomSuccess(request.purpose).toDomain()
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Simulated error during OTP verification")
+            OperationResult.error(
+                throwable = e,
+                message = "Simulated system error"
+            )
+        }
+    }
+
+    private fun simulateOtpSystemError(): OperationResult<OtpVerificationResult> {
+        return OperationResult.error(
+            throwable = RuntimeException("OTP service unavailable"),
+            message = "System error during verification",
+            code = 503
+        )
+    }
+
+    private fun simulateOtpFailure(request: OtpVerificationRequest): OperationResult<OtpVerificationResult> {
+        return OperationResult.failure(
+            code = 400,
+            message = if (Random.nextBoolean()) "Invalid OTP code" else "Expired OTP",
+            details = mapOf(
+                "verificationId" to request.verificationId,
+                "purpose" to request.purpose
+            )
+        )
+    }
+
+    override suspend fun resendOtp(request: ResendOtpRequest): OperationResult<VerificationResult> {
+        delay(simulatedNetworkDelay)
+
+        return try {
+            when (Random.nextInt(0, 100)) {
+                in 0..89 -> simulateResendOtpSuccess(request)  // 90% success rate
+                else -> simulateResendOtpFailure(request)      // 10% failure rate
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Simulated error during OTP resend")
+            OperationResult.error(
+                throwable = e,
+                message = "Simulated system error during OTP resend"
+            )
+        }
+    }
+
+    private fun simulateResendOtpSuccess(request: ResendOtpRequest): OperationResult<VerificationResult> {
+        return OperationResult.success(
+            VerificationResponse.random(request.purpose).copy(
+                purpose = request.purpose,
+                metadata = mapOf(
+                    "resent" to "true",
+                    "previous_verification_id" to request.verificationId,
+                    "simulated" to "true"
+                )
+            ).toDomain()
+        )
+    }
+
+    private fun simulateResendOtpFailure(request: ResendOtpRequest): OperationResult<VerificationResult> {
+        val (code, message) = when (Random.nextInt(0, 3)) {
+            0 -> 404 to "Verification ID not found"
+            1 -> 429 to "Too many OTP resend attempts"
+            else -> 503 to "OTP service temporarily unavailable"
+        }
+
+        return OperationResult.failure(
+            code = code,
+            message = message,
+            details = mapOf(
+                "verificationId" to request.verificationId,
+                "purpose" to request.purpose,
+                "retry_after" to "30s"
             )
         )
     }
