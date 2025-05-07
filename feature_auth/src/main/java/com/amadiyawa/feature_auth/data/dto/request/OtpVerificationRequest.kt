@@ -10,5 +10,7 @@ data class OtpVerificationRequest(
     val verificationId: String,
 
     @SerialName("code")
-    val code: String
+    val code: String,
+
+    val purpose: String
 )
