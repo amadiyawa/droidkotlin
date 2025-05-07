@@ -24,42 +24,45 @@ data class VerificationResponse(
     val recipient: String,
 
     @SerialName("expiresIn")
-    val expiresIn: Int
+    val expiresIn: Int,
+
+    @SerialName("purpose")
+    val purpose: String = "SIGN_UP",
+
+    @SerialName("metadata")
+    val metadata: Map<String, String> = emptyMap(),
 ) {
     companion object {
         private val charPool: List<Char> =
             ('a'..'z') + ('A'..'Z') + ('0'..'9')
 
-        // For generating realistic-looking verification IDs
-        private val idPrefixes = listOf("reset", "verify", "otp", "auth", "signup")
-
-        fun random(): VerificationResponse {
+        fun random(purpose: String): VerificationResponse {
             return if (Random.nextBoolean()) {
-                randomEmailVerification()
+                randomEmailVerification(purpose)
             } else {
-                randomSmsVerification()
+                randomSmsVerification(purpose)
             }
         }
 
-        fun randomEmailVerification(): VerificationResponse {
+        fun randomEmailVerification(purpose: String): VerificationResponse {
             val domains = listOf("gmail.com", "yahoo.com", "proton.me", "company.io")
             val username = (1..10).map { charPool.random() }.joinToString("")
             val domain = domains.random()
             val fullEmail = "$username@$domain"
 
             return VerificationResponse(
-                verificationId = "${idPrefixes.random()}_${generateRandomToken(12)}",
+                verificationId = "${purpose.lowercase()}_${generateRandomToken(12)}",
                 recipient = maskEmail(fullEmail),
                 expiresIn = Random.nextInt(300, 3601) // 5-60 minutes
             )
         }
 
-        fun randomSmsVerification(): VerificationResponse {
+        fun randomSmsVerification(purpose: String): VerificationResponse {
             val countryCode = listOf("+1", "+44", "+33", "+49", "+81").random()
             val phoneNumber = (1..10).joinToString("") { Random.nextInt(0, 9).toString() }
 
             return VerificationResponse(
-                verificationId = "${idPrefixes.random()}_${generateRandomToken(8)}",
+                verificationId = "${purpose.lowercase()}_${generateRandomToken(8)}",
                 recipient = maskPhone("$countryCode$phoneNumber"),
                 expiresIn = Random.nextInt(120, 301) // 2-5 minutes
             )

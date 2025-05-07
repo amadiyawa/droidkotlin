@@ -10,5 +10,6 @@ internal data class VerificationResult(
     val recipient: String,
     val expiresIn: Int,
     val type: VerificationType,
-    var purpose: OtpPurpose = OtpPurpose.UNKNOWN,
+    var purpose: OtpPurpose = OtpPurpose.SIGN_UP,
+    val metadata: Map<String, String>? = null,
 )
