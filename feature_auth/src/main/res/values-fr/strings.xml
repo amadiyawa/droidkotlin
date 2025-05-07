@@ -58,5 +58,8 @@
     <string name="saving_session">Enregistrement de votre session…</string>
     <string name="activating_session">Activation de votre session…</string>
 
-    <string name="sending">Envoi en cours…</string>
+    <string name="sending">Envoi…</string>
+    <string name="verifying">Vérification…</string>
+
+    <string name="didnt_receive_code">Vous n\'avez pas reçu le code ?</string>
 </resources>

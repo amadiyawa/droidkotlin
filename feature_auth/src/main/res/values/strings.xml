@@ -57,4 +57,7 @@
     <string name="activating_session">Activating your session…</string>
 
     <string name="sending">Sending…</string>
+    <string name="verifying">Verifying…</string>
+
+    <string name="didnt_receive_code">Didn\'t receive the code?</string>
 </resources>

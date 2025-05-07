@@ -80,4 +80,9 @@
     <string name="error_session_clear">Failed to clear session data</string>
     <string name="error_session_generic">Session operation failed</string>
 
+    <string name="single_digit_only">Please enter a single digit</string>
+    <string name="numbers_only">Only numbers are allowed</string>
+    <string name="otp_length_error">OTP must be 6 digits</string>
+    <string name="otp_mismatch">Codes don\'t match</string>
+    <string name="invalid_otp">Invalid verification code</string>
 </resources>

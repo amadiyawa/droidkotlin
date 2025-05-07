@@ -80,4 +80,11 @@
     <string name="error_session_update_state">Échec de la mise à jour de l\'état de la session</string>
     <string name="error_session_clear">Échec de l\'effacement des données de session</string>
     <string name="error_session_generic">Échec de l\'opération de session</string>
+
+    <!-- French translations (values-fr/strings.xml) -->
+    <string name="single_digit_only">Veuillez entrer un seul chiffre</string>
+    <string name="numbers_only">Seuls les chiffres sont autorisés</string>
+    <string name="otp_length_error">Le code OTP doit contenir 6 chiffres</string>
+    <string name="otp_mismatch">Les codes ne correspondent pas</string>
+    <string name="invalid_otp">Code de vérification invalide</string>
 </resources>
