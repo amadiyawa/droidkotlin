@@ -1,7 +1,6 @@
 package com.amadiyawa.feature_auth.domain.util
 
-internal enum class OtpPurpose {
+enum class OtpPurpose {
     SIGN_UP,
-    FORGOT_PASSWORD,
-    UNKNOWN
+    PASSWORD_RESET
 }
