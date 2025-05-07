@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.common.resources.Dimen
 
 @Composable
 fun LabeledAnimation(@StringRes label: Int, @RawRes assetResId: Int) {

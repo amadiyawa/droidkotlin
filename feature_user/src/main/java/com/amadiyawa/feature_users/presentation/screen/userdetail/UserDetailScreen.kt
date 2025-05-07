@@ -33,7 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.common.resources.Dimen
 import com.amadiyawa.feature_base.common.util.formatDobString
 import com.amadiyawa.feature_base.presentation.compose.composable.DataNotFoundAnim
 import com.amadiyawa.feature_base.presentation.compose.composable.DrawHorizontalDottedLine

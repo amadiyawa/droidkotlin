@@ -32,7 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.common.resources.Dimen
 import com.amadiyawa.feature_base.common.util.isScrollingUp
 import com.amadiyawa.feature_base.presentation.compose.composable.DataNotFoundAnim
 import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation

@@ -37,7 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.common.resources.Dimen
 import com.amadiyawa.feature_base.presentation.theme.dimension
 
 data class LoadingButtonParams(

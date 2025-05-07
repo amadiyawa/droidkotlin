@@ -11,7 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.common.resources.Dimen
 import com.amadiyawa.droidkotlin.base.R
 
 sealed class TrailingIconConfig {
