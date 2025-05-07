@@ -48,6 +48,11 @@ object ForgotPasswordNavigation : AppNavigationDestination {
 }
 
 object ResetPasswordNavigation : AppNavigationDestination {
-    override val route = "auth_reset_password"
+    private const val TOKEN_PARAM = "resetToken"
+    override val route = "auth_reset_password/{$TOKEN_PARAM}"
     override val destination = "auth_reset_password_destination"
+
+    fun createRoute(resetToken: String): String {
+        return "auth_reset_password/$resetToken"
+    }
 }
