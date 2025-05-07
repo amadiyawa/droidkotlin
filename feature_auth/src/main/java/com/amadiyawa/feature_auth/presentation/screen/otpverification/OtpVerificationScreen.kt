@@ -1,14 +1,19 @@
 package com.amadiyawa.feature_auth.presentation.screen.otpverification
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -16,7 +21,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -36,101 +40,108 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.domain.model.OtpForm
 import com.amadiyawa.feature_auth.domain.model.VerificationResult
-import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.feature_base.domain.model.ValidatedField
 import com.amadiyawa.feature_base.presentation.compose.composable.AppTextButton
 import com.amadiyawa.feature_base.presentation.compose.composable.AuthHeader
-import com.amadiyawa.feature_base.presentation.compose.composable.FilledButton
+import com.amadiyawa.feature_base.presentation.compose.composable.FormConfig
 import com.amadiyawa.feature_base.presentation.compose.composable.FormScaffold
-import com.amadiyawa.feature_base.presentation.compose.composable.LoadingAnimation
+import com.amadiyawa.feature_base.presentation.compose.composable.LoadingButton
+import com.amadiyawa.feature_base.presentation.compose.composable.LoadingButtonParams
 import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyLarge
+import com.amadiyawa.feature_base.presentation.compose.composable.TextBodyMedium
 import com.amadiyawa.feature_base.presentation.compose.composable.otpFieldColors
+import com.amadiyawa.feature_base.presentation.theme.dimension
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
+import timber.log.Timber
+import java.util.Locale
 
 @Composable
 internal fun OtpVerificationScreen(
     data: VerificationResult,
-    onOtpValidated: (data: VerificationResult) -> Unit,
+    onOtpValidated: () -> Unit,
+    onResetPassword: (resetToken: String) -> Unit,
     onCancel: () -> Unit,
 ) {
-    val viewModel: OtpVerificationViewModel = koinViewModel()
-    val uiState by viewModel.uiStateFlow.collectAsState()
-    val uiEvent = viewModel.uiEvent.collectAsState(initial = null)
+    Timber.d("OtpVerificationScreen: $data")
 
-    LaunchedEffect(data) {
-        viewModel.dispatch(OtpAction.Initialize(data))
+    val viewModel: OtpVerificationViewModel = koinViewModel {
+        parametersOf(data)
+    }
+
+    val uiState by viewModel.uiStateFlow.collectAsState()
+
+    // Process UI events
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is OtpUiEvent.NavigateToHome -> {
+                    onOtpValidated()
+                }
+                is OtpUiEvent.NavigateToResetPassword -> {
+                    onResetPassword(event.resetToken)
+                }
+                is OtpUiEvent.ShowError -> {
+                    // Show error using a Snackbar or Toast
+                }
+                is OtpUiEvent.ClearError -> {
+                    // Clear any displayed errors
+                }
+                is OtpUiEvent.UpdateResendAvailability -> {
+                    // This is handled implicitly through state observation
+                }
+            }
+        }
     }
 
     SetupContent(
         state = uiState,
         onAction = viewModel::dispatch,
-        viewModel = viewModel
+        onCancel = onCancel
     )
-
-    uiEvent.value?.let { event ->
-        when (event) {
-            is OtpUiEvent.NavigateToNextScreen -> onOtpValidated(event.data)
-        }
-    }
 }
 
 @Composable
 private fun SetupContent(
     state: OtpUiState,
     onAction: (OtpAction) -> Unit,
-    viewModel: OtpVerificationViewModel
+    onCancel: () -> Unit
 ) {
-    val isSubmitting by viewModel.isSubmitting.collectAsState()
-
-    when (state) {
-        is OtpUiState.Idle -> {
-            OtpFormUI(
-                form = state.form,
-                isSubmitting = isSubmitting,
-                errorMessage = null,
-                onAction = onAction,
-                viewModel = viewModel
-            )
-        }
-
-        is OtpUiState.Loading -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                LoadingAnimation(visible = true)
-            }
-        }
-
-        is OtpUiState.Error -> {
-            OtpFormUI(
-                form = state.form,
-                isSubmitting = isSubmitting,
-                errorMessage = state.message,
-                onAction = onAction,
-                viewModel = viewModel
-            )
+    if (state is OtpUiState.Error) {
+        LaunchedEffect(state.errorMessage) {
+            Timber.e("Form error: ${state.errorMessage}")
         }
     }
+
+    OtpFormUI(
+        form = state.form,
+        errorMessage = state.errorMessage,
+        onAction = onAction,
+        state = state,
+        onCancel = onCancel
+    )
 }
 
 @Composable
 private fun OtpFormUI(
     form: OtpForm,
-    isSubmitting: Boolean,
     errorMessage: String?,
     onAction: (OtpAction) -> Unit,
-    viewModel: OtpVerificationViewModel
+    state: OtpUiState,
+    onCancel: () -> Unit
 ) {
-    val verificationResult = viewModel.verificationResult.collectAsStateWithLifecycle()
-    val (emailOrPhone, description) = if (verificationResult.value.recipient.contains("@")) {
-        "e-mails" to stringResource(R.string.otp_description_email, verificationResult.value.recipient)
+    val (emailOrPhone, description) = if (form.recipient.contains("@")) {
+        "e-mails" to stringResource(R.string.otp_description_email, form.recipient)
     } else {
-        "sms" to stringResource(R.string.otp_description_phone, verificationResult.value.recipient)
+        "sms" to stringResource(R.string.otp_description_phone, form.recipient)
     }
 
-    FormScaffold {
+    FormScaffold(
+        config = FormConfig(onBackPressed = onCancel)
+    ) {
         AuthHeader(
             title = stringResource(R.string.otp_title, emailOrPhone),
             description = description,
@@ -145,15 +156,24 @@ private fun OtpFormUI(
             }
         )
 
-        OtpResendField(verificationResult)
+        ResendSection(
+            form = form,
+            onResend = { onAction(OtpAction.ResendOtp) }
+        )
 
-        FilledButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .requiredHeight(Dimen.Size.extraLarge),
-            text = stringResource(id = R.string.verify),
-            onClick = {  onAction(OtpAction.Submit) },
-            enabled = form.isFullyFilled() && !isSubmitting
+        LoadingButton(
+            params = LoadingButtonParams(
+                enabled = form.isComplete && form.isValid,
+                text = when (state) {
+                    is OtpUiState.Loading ->
+                        stringResource(R.string.verifying)
+                    is OtpUiState.Idle,
+                    is OtpUiState.Error -> // Not loading states
+                        stringResource(id = R.string.verify)
+                },
+                isLoading = state.isLoading,
+                onClick = { onAction(OtpAction.Submit) }
+            )
         )
     }
 }
@@ -269,24 +289,58 @@ private fun handleKeyEvent(
 }
 
 @Composable
-private fun OtpResendField(
-    signUp: State<VerificationResult>
+private fun ResendSection(
+    form: OtpForm,
+    onResend: () -> Unit
 ) {
-    val minutes = signUp.value.expiresIn / 60
-    val seconds = signUp.value.expiresIn % 60
+    val canResend = form.resendState is ResendState.Available
+    val countdown = when (val state = form.resendState) {
+        is ResendState.Countdown -> state.secondsRemaining
+        else -> null
+    }
 
-    val formattedMinutes = String.format("%02d", minutes)
-    val formattedSeconds = String.format("%02d", seconds)
-    Row {
-        AppTextButton(
-            text = stringResource(R.string.resend),
-            onClick = { /* TODO: Handle resend OTP */ },
-            enabled = signUp.value.expiresIn <= 0
-        )
-        AnimatedVisibility(visible = signUp.value.expiresIn > 0) {
-            Row {
-                TextBodyLarge(text = " " + stringResource(R.string.resend_timer_separator) + " ")
-                TextBodyLarge(text = "$formattedMinutes:$formattedSeconds")
+    val minutes = countdown?.div(60) ?: 0
+    val seconds = countdown?.rem(60) ?: 0
+
+    val formattedMinutes = String.format(Locale.getDefault(), "%02d", minutes)
+    val formattedSeconds = String.format(Locale.getDefault(), "%02d", seconds)
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(vertical = MaterialTheme.dimension.spacing.medium)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            TextBodyMedium(
+                text = stringResource(R.string.didnt_receive_code),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(modifier = Modifier.width(MaterialTheme.dimension.spacing.small))
+
+            AppTextButton(
+                text = stringResource(R.string.resend),
+                onClick = onResend,
+                enabled = canResend
+            )
+        }
+
+        AnimatedVisibility(
+            visible = countdown != null && countdown > 0,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            countdown?.let {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(top = MaterialTheme.dimension.spacing.small)
+                ) {
+                    TextBodyLarge(text = " " + stringResource(R.string.resend_timer_separator) + " ")
+                    TextBodyLarge(text = "$formattedMinutes:$formattedSeconds")
+                }
             }
         }
     }
