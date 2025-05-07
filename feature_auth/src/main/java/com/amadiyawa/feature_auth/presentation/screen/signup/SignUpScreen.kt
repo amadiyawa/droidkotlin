@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.domain.model.SignUpForm
 import com.amadiyawa.feature_auth.domain.model.VerificationResult
-import com.amadiyawa.feature_base.common.res.Dimen
+import com.amadiyawa.feature_base.common.resources.Dimen
 import com.amadiyawa.feature_base.common.util.getCountryDialCode
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.presentation.compose.composable.AuthHeader

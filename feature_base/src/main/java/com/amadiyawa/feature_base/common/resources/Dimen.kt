@@ -1,4 +1,4 @@
-package com.amadiyawa.feature_base.common.res
+package com.amadiyawa.feature_base.common.resources
 
 import androidx.compose.ui.unit.dp
 
