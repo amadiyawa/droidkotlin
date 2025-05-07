@@ -9,4 +9,9 @@ package com.amadiyawa.feature_base.domain.model
 data class FieldValidationResult(
     val isValid: Boolean,
     val errorMessage: String? = null
-)
+) {
+    companion object {
+        val Valid = FieldValidationResult(true)
+        fun invalid(message: String) = FieldValidationResult(false, message)
+    }
+}
