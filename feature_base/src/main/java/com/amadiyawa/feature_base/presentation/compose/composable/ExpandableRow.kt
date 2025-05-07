@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import com.amadiyawa.paygo.base.R
+import com.amadiyawa.droidkotlin.base.R
 
 @Composable
 fun ExpandableRow(

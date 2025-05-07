@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.amadiyawa.paygo.base.R
+import com.amadiyawa.droidkotlin.base.R
 
 val Poppins = FontFamily(
     Font(R.font.poppins_light, FontWeight.Light),

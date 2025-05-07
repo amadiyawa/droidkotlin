@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.amadiyawa.feature_base.common.res.Dimen
-import com.amadiyawa.paygo.base.R
+import com.amadiyawa.droidkotlin.base.R
 
 sealed class TrailingIconConfig {
     data object None : TrailingIconConfig()

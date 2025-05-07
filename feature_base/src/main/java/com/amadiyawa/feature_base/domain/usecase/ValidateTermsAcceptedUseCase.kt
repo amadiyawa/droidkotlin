@@ -2,7 +2,7 @@ package com.amadiyawa.feature_base.domain.usecase
 
 import android.content.Context
 import com.amadiyawa.feature_base.domain.model.FieldValidationResult
-import com.amadiyawa.paygo.base.R
+import com.amadiyawa.droidkotlin.base.R
 
 class ValidateTermsAcceptedUseCase(private val context: Context) {
 

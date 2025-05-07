@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.amadiyawa.feature_base.common.res.Dimen
 import com.amadiyawa.feature_base.presentation.theme.dimension
-import com.amadiyawa.paygo.base.R
+import com.amadiyawa.droidkotlin.base.R
 
 /**
  * A reusable composable for displaying error states with retry functionality.

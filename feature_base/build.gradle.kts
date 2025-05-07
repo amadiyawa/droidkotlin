@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.amadiyawa.paygo.base"
+    namespace = "com.amadiyawa.droidkotlin.base"
 }
 
 dependencies {

@@ -1,7 +1,7 @@
 package com.amadiyawa.feature_base.presentation.compose.composable
 
 import androidx.compose.runtime.Composable
-import com.amadiyawa.paygo.base.R
+import com.amadiyawa.droidkotlin.base.R
 
 @Composable
 fun DataNotFoundAnim() {
