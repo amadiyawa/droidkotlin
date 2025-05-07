@@ -4,7 +4,6 @@ import com.amadiyawa.feature_base.domain.usecase.ValidateEmailOrPhoneUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateEmailUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateFullNameUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateIdentifierUseCase
-import com.amadiyawa.feature_base.domain.usecase.ValidateOtpUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidatePasswordConfirmationUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidatePasswordUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidatePhoneUseCase
@@ -36,5 +35,4 @@ internal val domainModule = module {
     single { ValidatePasswordUseCase(androidContext()) }
     single { ValidatePasswordConfirmationUseCase(androidContext()) }
     single { ValidateTermsAcceptedUseCase(androidContext()) }
-    single { ValidateOtpUseCase(androidContext()) }
 }
