@@ -85,4 +85,24 @@
     <string name="otp_length_error">OTP must be 6 digits</string>
     <string name="otp_mismatch">Codes don\'t match</string>
     <string name="invalid_otp">Invalid verification code</string>
+
+    <!-- Country Names -->
+    <string name="country_jp">Japan</string>
+    <string name="country_cm">Cameroon</string>
+    <string name="country_ng">Nigeria</string>
+    <string name="country_us">United States</string>
+    <string name="country_ca">Canada</string>
+    <string name="country_gb">United Kingdom</string>
+    <string name="country_fr">France</string>
+    <string name="country_de">Germany</string>
+    <string name="country_it">Italy</string>
+    <string name="country_es">Spain</string>
+    <string name="country_au">Australia</string>
+    <string name="country_rw">Rwanda</string>
+    <string name="country_cn">China</string>
+    <string name="country_in">India</string>
+    <string name="country_br">Brazil</string>
+    <string name="country_ru">Russia</string>
+    <string name="country_mx">Mexico</string>
+    <string name="country_za">South Africa</string>
 </resources>

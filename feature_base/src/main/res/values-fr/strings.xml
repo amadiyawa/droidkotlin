@@ -87,4 +87,24 @@
     <string name="otp_length_error">Le code OTP doit contenir 6 chiffres</string>
     <string name="otp_mismatch">Les codes ne correspondent pas</string>
     <string name="invalid_otp">Code de vérification invalide</string>
+
+    <!-- Country Names in French -->
+    <string name="country_jp">Japon</string>
+    <string name="country_cm">Cameroun</string>
+    <string name="country_ng">Nigeria</string>
+    <string name="country_us">États-Unis</string>
+    <string name="country_ca">Canada</string>
+    <string name="country_gb">Royaume-Uni</string>
+    <string name="country_fr">France</string>
+    <string name="country_de">Allemagne</string>
+    <string name="country_it">Italie</string>
+    <string name="country_es">Espagne</string>
+    <string name="country_au">Australie</string>
+    <string name="country_rw">Rwanda</string>
+    <string name="country_cn">Chine</string>
+    <string name="country_in">Inde</string>
+    <string name="country_br">Brésil</string>
+    <string name="country_ru">Russie</string>
+    <string name="country_mx">Mexique</string>
+    <string name="country_za">Afrique du Sud</string>
 </resources>

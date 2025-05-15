@@ -11,7 +11,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -26,9 +28,11 @@ import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.domain.model.SignUpForm
 import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_base.common.resources.Dimen
+import com.amadiyawa.feature_base.common.util.CountryUtil
 import com.amadiyawa.feature_base.common.util.getCountryDialCode
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.presentation.compose.composable.AuthHeader
+import com.amadiyawa.feature_base.presentation.compose.composable.CountryCodeSelector
 import com.amadiyawa.feature_base.presentation.compose.composable.DefaultTextField
 import com.amadiyawa.feature_base.presentation.compose.composable.FilledButton
 import com.amadiyawa.feature_base.presentation.compose.composable.FormScaffold
@@ -107,7 +111,13 @@ internal fun SignUpFormUI(
     onAction: (SignUpAction) -> Unit,
     viewModel: SignUpViewModel
 ) {
-    val phonePrefix = remember { getCountryDialCode() }
+    // Get all countries
+    val countries = remember { CountryUtil.getCountries() }
+
+// Find the default country based on the phonePrefix
+    var selectedCountry by remember {
+        mutableStateOf(CountryUtil.findCountryByDialCode("CM") ?: countries.first())
+    }
 
     val usernameFocusRequester = remember { FocusRequester() }
     val emailFocusRequester = remember { FocusRequester() }
@@ -216,7 +226,7 @@ internal fun SignUpFormUI(
             text = TextFieldText(
                 value = form.phone.value,
                 label = stringResource(R.string.phone),
-                placeholder = stringResource(R.string.phone_placeholder),
+                placeholder = selectedCountry.phoneExample,
                 errorMessage = if (!form.phone.validation.isValid) form.phone.validation.errorMessage else null,
             ),
             onValueChange = {
@@ -225,7 +235,13 @@ internal fun SignUpFormUI(
             onClearText = {
                 onAction(SignUpAction.UpdateField("phone", FieldValue.Text("")))
             },
-            leadingBadge = phonePrefix,
+            leadingIcon = {
+                CountryCodeSelector(
+                    selectedCountry = selectedCountry,
+                    countries = countries,
+                    onCountrySelected = { selectedCountry = it }
+                )
+            },
             config = TextFieldConfig(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Phone,

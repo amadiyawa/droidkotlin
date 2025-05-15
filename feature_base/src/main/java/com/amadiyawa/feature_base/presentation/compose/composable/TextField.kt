@@ -48,7 +48,8 @@ fun DefaultTextField(
     config: TextFieldConfig = TextFieldConfig(
         trailingIconConfig = TrailingIconConfig.None
     ),
-    leadingBadge: String? = null
+    leadingBadge: String? = null,
+    leadingIcon: @Composable (() -> Unit)? = null
 ) {
     // Create an updated trailing icon config based on the current text value
     val updatedTrailingIconConfig = when (val iconConfig = config.trailingIconConfig) {
@@ -84,7 +85,7 @@ fun DefaultTextField(
                     onVisibilityChange = onVisibilityChange
                 )
             },
-            leadingIcon = leadingBadge?.takeIf { it.isNotBlank() }?.let {
+            leadingIcon = leadingIcon ?: leadingBadge?.takeIf { it.isNotBlank() }?.let {
                 {
                     Box(
                         modifier = Modifier
@@ -98,9 +99,8 @@ fun DefaultTextField(
                                 vertical = MaterialTheme.dimension.spacing.xSmall
                             )
                     ) {
-                        Text(
+                        TextLabelMedium(
                             text = it,
-                            style = MaterialTheme.typography.labelMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
