@@ -146,9 +146,4 @@ object CountryUtil {
     fun findCountryByDialCode(dialCode: String): Country? {
         return getCountries().find { it.dialCode == dialCode }
     }
-
-    // Format a full phone number with dial code
-    fun getFormattedPhoneNumber(country: Country): String {
-        return "${country.dialCode} ${country.phoneExample}"
-    }
 }

@@ -2,6 +2,7 @@ package com.amadiyawa.droidkotlin.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import com.amadiyawa.feature_base.presentation.navigation.AppState
+import com.amadiyawa.feature_base.presentation.navigation.NavigationDestination
 
 /**
  * Composable function that represents the main scaffolded application.
@@ -16,13 +17,13 @@ import com.amadiyawa.feature_base.presentation.navigation.AppState
 @Composable
 fun MainScaffoldedApp(
     appState: AppState,
+    navigationDestinations: List<NavigationDestination>,
+    showNavigation: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val currentDestination = appState.currentDestination
-
     AppScaffoldNavigation(
         appState = appState,
-        currentDestination = currentDestination,
+        navigationDestinations = if (showNavigation) navigationDestinations else emptyList(),
         content = content
     )
 }

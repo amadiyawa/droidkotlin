@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Billing Feature Strings -->
+    <string name="bills">Factures</string>
+    <string name="search">Rechercher</string>
+    <string name="filter">Filtrer</string>
+    <string name="search_placeholder">Rechercher par ID ou ID Client</string>
+    <string name="payment_success">Paiement réussi pour la facture %1$s</string>
+    <string name="data_refreshed">Données actualisées</string>
+    <string name="summary_total">Total</string>
+    <string name="summary_pending">En attente</string>
+    <string name="summary_overdue">En retard</string>
+    <string name="summary_amount">Montant</string>
+    <string name="bill_title">Facture %1$s</string>
+    <string name="client_label">Client : %1$s</string>
+    <string name="amount_label">Montant</string>
+    <string name="fcfa_format">%.2f FCFA</string>
+    <string name="due_date_label">Date d\'échéance</string>
+    <string name="status_paid">PAYÉE</string>
+    <string name="status_pending">EN ATTENTE</string>
+    <string name="status_overdue">EN RETARD</string>
+    <string name="filter_and_sort">Filtrer et Trier</string>
+    <string name="filter_by_status">Filtrer par statut</string>
+    <string name="sort_by">Trier par</string>
+    <string name="sort_date_asc">Date (Plus ancien d\'abord)</string>
+    <string name="sort_date_desc">Date (Plus récent d\'abord)</string>
+    <string name="sort_amount_asc">Montant (Croissant)</string>
+    <string name="sort_amount_desc">Montant (Décroissant)</string>
+    <string name="no_bills_found">Aucune facture trouvée</string>
+    <string name="no_bills_help">Essayez d\'ajuster vos filtres ou votre recherche</string>
+    <string name="error">Erreur</string>
+    <string name="retry">Réessayer</string>
+    <string name="period_label">Période de facturation</string>
+    <string name="period_format">%1$s - %2$s</string>
+    <string name="consumption_label">Consommation</string>
+    <string name="consumption_format">%.1f kWh</string>
+    <string name="meter_reading_label">Relevé compteur</string>
+    <string name="meter_format">%.1f</string>
+
+    <!-- Bill Detail Strings -->
+    <string name="bill_detail">Détail de la facture</string>
+    <string name="bill_not_found">Facture introuvable</string>
+    <string name="bill_information">Informations de la facture</string>
+    <string name="consumption_details">Détails de consommation</string>
+    <string name="payment_history">Historique des paiements</string>
+    <string name="bill_id_label">ID de facture</string>
+    <string name="client_id_label">ID client</string>
+    <string name="billing_period_label">Période de facturation</string>
+    <string name="total_amount_label">Montant total</string>
+    <string name="payment_required">Paiement requis</string>
+    <string name="amount_due">Montant dû : %.2f FCFA</string>
+    <string name="pay_now">Payer maintenant</string>
+    <string name="payment_reference">Réf : %1$s</string>
+    <string name="select_payment_method">Sélectionner le mode de paiement</string>
+    <string name="amount_to_pay">Montant à payer : %.2f FCFA</string>
+    <string name="confirm_payment">Confirmer le paiement</string>
+    <string name="cancel">Annuler</string>
+    <string name="payment_mobile_money">Mobile Money</string>
+    <string name="payment_bank_transfer">Virement bancaire</string>
+    <string name="payment_cash">Espèces</string>
+    <string name="payment_online">Paiement en ligne</string>
+    <string name="payment_success_detail">Paiement réussi !</string>
+    <string name="bill_paid_title">Facture payée</string>
+    <string name="bill_paid_subtitle">Cette facture a été payée</string>
+    <string name="bill_pending_title">Paiement en attente</string>
+    <string name="bill_pending_subtitle">Échéance le %1$s</string>
+    <string name="bill_overdue_title">Paiement en retard</string>
+    <string name="bill_overdue_subtitle">Veuillez payer immédiatement pour éviter une interruption de service</string>
+</resources>

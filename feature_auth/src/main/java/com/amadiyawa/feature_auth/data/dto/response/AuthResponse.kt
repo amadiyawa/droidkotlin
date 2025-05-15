@@ -30,7 +30,7 @@ fun AuthResponse.Companion.random(): AuthResponse {
             avatarUrl = "https://avatars.githubusercontent.com/u/31802381?s=400&u=59fb0139c6b89f16aa9b04e96483eedf11df0796&v=4",
             isEmailVerified = Random.nextBoolean(),
             isPhoneVerified = Random.nextBoolean(),
-            roles = setOf("USER").takeIf { Random.nextBoolean() } ?: setOf("USER", "ADMIN"),
+            role = "CLIENT",
             lastLoginAt = Random.nextLong(100000, 1000000),
             isActive = Random.nextBoolean(),
             timezone = "UTC+1",

@@ -105,4 +105,7 @@
     <string name="country_ru">Russia</string>
     <string name="country_mx">Mexico</string>
     <string name="country_za">South Africa</string>
+
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
 </resources>

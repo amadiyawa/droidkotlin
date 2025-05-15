@@ -2,6 +2,7 @@ package com.amadiyawa.feature_base.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import com.amadiyawa.feature_base.domain.util.UserRole
 
 /**
  * Defines the contract for providing navigation graphs in the application.
@@ -25,6 +26,13 @@ interface AppNavGraphProvider {
 
     /**
      * Indicates whether this navigation graph is the main start destination of the application.
+     * Each role should have exactly one main start destination.
      */
     val isMainStartDestination: Boolean
+
+    /**
+     * The roles allowed to access this navigation graph.
+     * If empty, all roles have access.
+     */
+    val allowedRoles: Set<UserRole> get() = setOf(UserRole.NONE, UserRole.ADMIN)
 }

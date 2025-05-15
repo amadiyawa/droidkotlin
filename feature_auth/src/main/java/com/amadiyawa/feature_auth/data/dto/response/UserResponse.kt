@@ -29,8 +29,8 @@ data class UserResponse(
     @SerialName("is_phone_verified")
     val isPhoneVerified: Boolean = false,
 
-    @SerialName("roles")
-    val roles: Set<String> = emptySet(),
+    @SerialName("role")
+    val role: String,
 
     @SerialName("last_login_at")
     val lastLoginAt: Long? = null,

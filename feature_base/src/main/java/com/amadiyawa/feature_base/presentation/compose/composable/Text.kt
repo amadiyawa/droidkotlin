@@ -108,13 +108,21 @@ fun TextTitleMedium(
 fun TextTitleSmall(
     text: String,
     modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.onSurface
+    color: Color = MaterialTheme.colorScheme.onSurface,
+    textAlign: TextAlign = TextAlign.Unspecified,
+    textDecoration: TextDecoration = TextDecoration.None,
+    fontWeight: FontWeight = FontWeight.Normal,
+    fontSize: TextUnit = TextUnit.Unspecified,
 ) {
     Text(
         text = text,
         modifier = modifier,
         style = MaterialTheme.typography.titleSmall,
-        color = color
+        color = color,
+        textAlign = textAlign,
+        textDecoration = textDecoration,
+        fontWeight = fontWeight,
+        fontSize = fontSize,
     )
 }
 

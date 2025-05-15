@@ -1,5 +1,6 @@
 package com.amadiyawa.feature_auth.domain.model
 
+import com.amadiyawa.feature_base.domain.util.UserRole
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import timber.log.Timber
@@ -14,7 +15,7 @@ data class User(
     val avatarUrl: String? = null,
     val isEmailVerified: Boolean = false,
     val isPhoneVerified: Boolean = false,
-    val roles: Set<String>,
+    val role: UserRole,
     val lastLoginAt: Long? = null,
     val isActive: Boolean = true,
     val timezone: String? = null,

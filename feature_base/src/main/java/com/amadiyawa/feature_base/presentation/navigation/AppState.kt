@@ -4,15 +4,19 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.util.trace
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import timber.log.Timber
 
 /**
  * Represents the state of the application, including navigation, window size, and coroutine scope.
@@ -33,35 +37,41 @@ class AppState(
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    private val destinations: List<NavDestinationContract>
-        get() = DynamicDestinationRegistry.destinations
-
-    @Composable
-    private fun isVisibleExactly(placement: DestinationPlacement): Boolean {
-        val currentRoute = currentDestination?.route
-        return destinations.any {
-            it.placement == placement && (it.route == currentRoute || it.destination == currentRoute)
-        }
-    }
-
     val shouldUseNavRail: Boolean
         get() = windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 
+    private val _isInMainGraph = MutableStateFlow(false)
+    val isInMainGraph: StateFlow<Boolean> = _isInMainGraph.asStateFlow()
+
     val shouldShowBottomBar: Boolean
-        @Composable get() = !shouldShowNavRail && isVisibleExactly(DestinationPlacement.BottomBar)
+        @Composable get() = !shouldUseNavRail && isInMainGraph.collectAsState().value
 
     val shouldShowNavRail: Boolean
-        @Composable get() = shouldUseNavRail && isVisibleExactly(DestinationPlacement.NavRail)
+        @Composable get() = shouldUseNavRail && isInMainGraph.collectAsState().value
 
-    fun navigate(destination: NavDestinationContract, route: String? = null) {
-        trace("Navigation: ${destination.route}") {
-            navController.navigate(route ?: destination.route) {
+    /**
+     * Sets whether the user is currently in the main navigation graph
+     * where navigation elements should be displayed.
+     *
+     * @param inMain True if in the main graph, false otherwise
+     */
+    fun setInMainGraph(inMain: Boolean) {
+        _isInMainGraph.value = inMain
+    }
+
+    // In AppState.kt
+    fun navigate(route: String) {
+        try {
+            Timber.d("Navigating to $route")
+            navController.navigate(route) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
                 }
                 launchSingleTop = true
                 restoreState = true
             }
+        } catch (e: Exception) {
+            Timber.e(e, "Navigation error: $route")
         }
     }
 

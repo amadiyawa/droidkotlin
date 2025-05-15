@@ -36,7 +36,7 @@ internal object AuthDataMapper {
             avatarUrl = avatarUrl,
             isEmailVerified = isEmailVerified,
             isPhoneVerified = isPhoneVerified,
-            roles = roles,
+            role = enumValueOf(role),
             lastLoginAt = lastLoginAt,
             isActive = isActive,
             timezone = timezone,
