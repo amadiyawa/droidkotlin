@@ -9,6 +9,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import timber.log.Timber
@@ -456,7 +457,10 @@ fun rememberAppDimensions(windowSizeClass: WindowSizeClass? = null): AppDimensio
     // Use LocalDensity for device density information
     val density = LocalDensity.current
 
-    // Get configuration for orientation and screen size
+    // Get window info for modern window size detection
+    val windowInfo = LocalWindowInfo.current
+
+    // Get configuration for orientation
     val configuration = LocalConfiguration.current
 
     // Determine orientation
@@ -466,15 +470,18 @@ fun rememberAppDimensions(windowSizeClass: WindowSizeClass? = null): AppDimensio
         AppDimensions.Orientation.PORTRAIT
     }
 
-    return remember(density, windowSizeClass, orientation, configuration.screenWidthDp) {
-        // Determine device type based on window size class or screen size
-        val deviceType = when (// First try to use the provided windowSizeClass parameter
-            windowSizeClass?.widthSizeClass) {
+    return remember(density, windowSizeClass, orientation, windowInfo.containerSize.width) {
+        // Determine device type based on window size class or container size
+        val deviceType = when (windowSizeClass?.widthSizeClass) {
             WindowWidthSizeClass.Expanded -> AppDimensions.DeviceType.LARGE_TABLET
             WindowWidthSizeClass.Medium -> AppDimensions.DeviceType.TABLET
-            // Fall back to Configuration if windowSizeClass is not available
+            WindowWidthSizeClass.Compact -> AppDimensions.DeviceType.PHONE
+            // Fall back to LocalWindowInfo if windowSizeClass is not available
             else -> {
-                val screenWidthDp = configuration.screenWidthDp
+                // Convert container width from pixels to dp
+                val screenWidthDp = with(density) {
+                    windowInfo.containerSize.width.toDp().value.toInt()
+                }
                 when {
                     screenWidthDp >= 900 -> AppDimensions.DeviceType.LARGE_TABLET
                     screenWidthDp >= 600 -> AppDimensions.DeviceType.TABLET
@@ -490,8 +497,8 @@ fun rememberAppDimensions(windowSizeClass: WindowSizeClass? = null): AppDimensio
 
         // Log device information with proper formatting
         Timber.tag(TAG).d(
-            "Device info - Manufacturer: %s, Model: %s, Device Type: %s, Orientation: %s, Density: %f",
-            manufacturer, model, deviceType, orientation, density.density
+            "Device info - Manufacturer: %s, Model: %s, Device Type: %s, Orientation: %s, Density: %f, Container Width: %d px",
+            manufacturer, model, deviceType, orientation, density.density, windowInfo.containerSize.width
         )
 
         AppDimensions.Dimensions.forDeviceType(
