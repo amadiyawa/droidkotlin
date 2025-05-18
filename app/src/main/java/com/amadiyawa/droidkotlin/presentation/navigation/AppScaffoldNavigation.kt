@@ -2,7 +2,6 @@ package com.amadiyawa.droidkotlin.presentation.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -54,7 +53,6 @@ fun AppScaffoldNavigation(
             .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onBackground,
-        contentWindowInsets = WindowInsets(0.dp),
         bottomBar = {
             // Only show bottom bar if there are destinations to show
             if (bottomBarDestinations.isNotEmpty() && shouldShowBottomBar) {

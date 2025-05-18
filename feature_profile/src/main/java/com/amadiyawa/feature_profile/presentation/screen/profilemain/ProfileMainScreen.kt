@@ -5,11 +5,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -66,6 +67,7 @@ import com.amadiyawa.feature_base.presentation.compose.composable.TextHeadlineSm
 import com.amadiyawa.feature_base.presentation.compose.composable.TextTitleMedium
 import com.amadiyawa.feature_base.presentation.compose.composable.Toolbar
 import com.amadiyawa.feature_base.presentation.compose.composable.ToolbarParams
+import com.amadiyawa.feature_base.presentation.theme.dimension
 import com.amadiyawa.feature_profile.R
 import org.koin.androidx.compose.koinViewModel
 
@@ -118,8 +120,7 @@ fun ProfileMainScreen(
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = MaterialTheme.colorScheme.background,
-        contentWindowInsets = WindowInsets(0.dp)
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         PullToRefreshBox(
             isRefreshing = state.isLoading && state.userName.isNotEmpty(),
@@ -166,6 +167,7 @@ private fun ProfileTopBar(
         params = ToolbarParams(
             title = stringResource(R.string.profile)
         ),
+        backgroundColor = Color.Transparent,
         actions = {
             // Refresh button
             CircularButton(
@@ -192,7 +194,7 @@ private fun ProfileContent(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(16.dp)
+            .padding(MaterialTheme.dimension.spacing.medium)
     ) {
         // Profile Header
         ProfileHeader(
@@ -258,15 +260,20 @@ private fun ProfileHeader(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(MaterialTheme.dimension.radius.xLarge),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = MaterialTheme.dimension.elevation.small
+        )
     ) {
-        Column(
-            modifier = Modifier.padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Row(
+            modifier = Modifier.padding(MaterialTheme.dimension.spacing.large),
+            horizontalArrangement = Arrangement.spacedBy(
+                space = MaterialTheme.dimension.spacing.medium,
+                alignment = Alignment.CenterHorizontally
+            ),
         ) {
             // Avatar
             AsyncImage(
@@ -276,7 +283,7 @@ private fun ProfileHeader(
                     .build(),
                 contentDescription = stringResource(R.string.profile_avatar),
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(MaterialTheme.dimension.componentSize.bottomBar)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surface),
                 contentScale = ContentScale.Crop,
@@ -284,30 +291,30 @@ private fun ProfileHeader(
                 error = painterResource(R.drawable.ic_default_avatar)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Column {
+                // Name
+                TextHeadlineSmall(
+                    text = userName.ifEmpty { stringResource(R.string.unknown_user) },
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
 
-            // Name
-            TextHeadlineSmall(
-                text = userName.ifEmpty { stringResource(R.string.unknown_user) },
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+                Spacer(modifier = Modifier.height(MaterialTheme.dimension.spacing.xSmall))
 
-            Spacer(modifier = Modifier.height(4.dp))
+                // Email
+                TextBodyMedium(
+                    text = userEmail,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                )
 
-            // Email
-            TextBodyMedium(
-                text = userEmail,
-                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
-            )
+                Spacer(modifier = Modifier.height(MaterialTheme.dimension.grid.triple))
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Role chip
-            ProfileRoleChip(
-                role = userRole,
-                modifier = Modifier
-            )
+                // Role chip
+                ProfileRoleChip(
+                    role = userRole,
+                    modifier = Modifier
+                )
+            }
         }
     }
 }
