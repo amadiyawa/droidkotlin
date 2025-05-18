@@ -2,9 +2,9 @@ package com.amadiyawa.droidkotlin.presentation.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -51,9 +51,10 @@ fun AppScaffoldNavigation(
     Scaffold(
         modifier = Modifier
             .semantics { testTagsAsResourceId = true }
-            .safeDrawingPadding(),
+            .fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onBackground,
+        contentWindowInsets = WindowInsets(0.dp),
         bottomBar = {
             // Only show bottom bar if there are destinations to show
             if (bottomBarDestinations.isNotEmpty() && shouldShowBottomBar) {
@@ -90,7 +91,10 @@ fun AppScaffoldNavigation(
                 )
             }
 
-            Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
                 content()
             }
         }
