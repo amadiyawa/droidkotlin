@@ -43,8 +43,6 @@
     <string name="error_retry">Réessayer</string>
 
     <!-- Authentication error messages -->
-    <string name="error_invalid_credentials">Identifiants de connexion invalides</string>
-    <string name="error_session_expired">Votre session a expiré. Veuillez vous reconnecter</string>
     <string name="error_unauthorized">Vous n\'avez pas la permission d\'accéder à cette ressource</string>
     <string name="error_account_not_found">Compte introuvable. Veuillez vérifier vos identifiants</string>
     <string name="error_too_many_attempts">Trop de tentatives de connexion. Veuillez réessayer plus tard</string>
@@ -60,25 +58,12 @@
 
     <!-- Network errors -->
     <string name="error_no_internet">Pas de connexion Internet</string>
-    <string name="error_connection_timeout">Délai de connexion dépassé</string>
     <string name="error_server_unavailable">Le serveur est actuellement indisponible</string>
 
     <!-- Generic errors -->
     <string name="error_unknown">Une erreur inconnue s\'est produite</string>
-    <string name="error_authentication_failed">L\'authentification a échoué</string>
-
-    <!-- res/values-fr/strings.xml -->
-    <string name="error_400">Requête invalide: %1$s</string>
-    <string name="error_401">Échec de l\'authentification</string>
-    <string name="error_403">Accès refusé</string>
-    <string name="error_500">Erreur système</string>
-    <string name="error_503">Service indisponible. Vérifiez votre connexion</string>
 
     <!-- Session Repository Errors -->
-    <string name="error_session_save_user">Échec de l\'enregistrement des données de session utilisateur</string>
-    <string name="error_session_get_user">Échec de la récupération des données de session utilisateur</string>
-    <string name="error_session_update_state">Échec de la mise à jour de l\'état de la session</string>
-    <string name="error_session_clear">Échec de l\'effacement des données de session</string>
     <string name="error_session_generic">Échec de l\'opération de session</string>
 
     <!-- French translations (values-fr/strings.xml) -->
@@ -110,4 +95,58 @@
 
     <string name="error">Erreur</string>
     <string name="retry">Réessayer</string>
+
+    <!-- General Error Messages -->
+    <string name="error_general">Une erreur s\'est produite</string>
+    <string name="error_network_general">Erreur réseau</string>
+    <string name="error_server_general">Erreur serveur</string>
+    <string name="error_operation_failed">Opération échouée</string>
+    <string name="error_authentication_general">Échec de l\'authentification</string>
+    <string name="error_session_expired_general">Session expirée</string>
+
+    <!-- HTTP Errors -->
+    <string name="error_400">Requête invalide. Veuillez vérifier votre saisie.</string>
+    <string name="error_401">Veuillez vous connecter pour continuer.</string>
+    <string name="error_403">Vous n\'avez pas l\'autorisation d\'effectuer cette action.</string>
+    <string name="error_404">La ressource demandée n\'a pas été trouvée.</string>
+    <string name="error_405">Cette action n\'est pas autorisée.</string>
+    <string name="error_408">Délai d\'attente de la requête dépassé. Veuillez réessayer.</string>
+    <string name="error_429">Trop de requêtes. Veuillez patienter un moment et réessayer.</string>
+    <string name="error_500">Une erreur serveur s\'est produite. Veuillez réessayer plus tard.</string>
+    <string name="error_502">Service temporairement indisponible.</string>
+    <string name="error_503">Le service est actuellement en maintenance.</string>
+    <string name="error_504">Le serveur a mis trop de temps à répondre.</string>
+
+    <!-- Network Errors -->
+    <string name="error_network_unavailable">Veuillez vérifier votre connexion internet et réessayer.</string>
+    <string name="error_connection_timeout">Délai de connexion dépassé. Veuillez réessayer.</string>
+    <string name="error_host_unreachable">Impossible de joindre le serveur. Veuillez réessayer plus tard.</string>
+
+    <!-- Session Errors -->
+    <string name="error_session_save_user">Échec de la sauvegarde de votre session. Veuillez vous reconnecter.</string>
+    <string name="error_session_get_user">Échec de la récupération de votre session. Veuillez vous reconnecter.</string>
+    <string name="error_session_update_state">Échec de la mise à jour de la session. Veuillez réessayer.</string>
+    <string name="error_session_clear">Échec de la déconnexion. Veuillez redémarrer l\'application.</string>
+    <string name="error_session_expired">Votre session a expiré. Veuillez vous reconnecter.</string>
+    <string name="error_session_invalid">Session invalide. Veuillez vous reconnecter.</string>
+
+    <!-- Authentication Errors -->
+    <string name="error_authentication_failed">Échec de l\'authentification. Veuillez réessayer.</string>
+    <string name="error_invalid_credentials">Email ou mot de passe invalide. Veuillez réessayer.</string>
+    <string name="error_account_locked">Votre compte a été temporairement verrouillé. Veuillez réessayer plus tard.</string>
+    <string name="error_account_not_verified">Veuillez vérifier votre compte avant de vous connecter.</string>
+    <string name="error_token_expired">Votre session a expiré. Veuillez vous reconnecter.</string>
+    <string name="error_token_invalid">Échec de l\'authentification. Veuillez vous reconnecter.</string>
+
+    <!-- Validation Errors -->
+    <string name="error_validation">Veuillez corriger les erreurs et réessayer.</string>
+    <string name="error_required_field_missing">Veuillez remplir tous les champs obligatoires.</string>
+    <string name="error_invalid_email_format">Veuillez saisir une adresse email valide.</string>
+    <string name="error_invalid_phone_format">Veuillez saisir un numéro de téléphone valide.</string>
+    <string name="error_password_too_weak">Le mot de passe doit contenir au moins 8 caractères avec des chiffres et des symboles.</string>
+
+    <!-- Profile Errors -->
+    <string name="error_profile_update_failed">Échec de la mise à jour de votre profil. Veuillez réessayer.</string>
+    <string name="error_profile_not_found">Profil introuvable. Veuillez vous reconnecter.</string>
+    <string name="error_avatar_upload_failed">Échec du téléchargement de l\'avatar. Veuillez réessayer.</string>
 </resources>

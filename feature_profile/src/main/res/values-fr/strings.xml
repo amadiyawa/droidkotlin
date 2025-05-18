@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Profile Feature Strings -->
+    <string name="save">Enregistrer</string>
+    <string name="cancel">Annuler</string>
+
+    <!-- Settings categories -->
+    <string name="appearance">Apparence</string>
+    <string name="theme">Thème</string>
+    <string name="dark_mode">Mode sombre</string>
+    <string name="language">Langue</string>
+    <string name="notifications">Notifications</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="terms_of_service">Conditions d\'utilisation</string>
+
+    <!-- About screen -->
+    <string name="app_version">Version de l\'application</string>
+    <string name="contact_us">Nous contacter</string>
+    <string name="rate_app">Évaluer l\'application</string>
+    <string name="open_source_licenses">Licences open source</string>
+
+    <!-- Profile information -->
+    <string name="full_name">Nom complet</string>
+    <string name="email">Email</string>
+    <string name="phone">Téléphone</string>
+    <string name="change_password">Modifier le mot de passe</string>
+
+    <!-- Profile Main Screen -->
+    <string name="profile">Profil</string>
+    <string name="refresh">Actualiser</string>
+    <string name="profile_avatar">Avatar du profil</string>
+    <string name="unknown_user">Utilisateur inconnu</string>
+
+    <!-- Profile Actions -->
+    <string name="edit_profile">Modifier le profil</string>
+    <string name="edit_profile_description">Mettre à jour vos informations personnelles</string>
+    <string name="settings">Paramètres</string>
+    <string name="settings_description">Préférences et configuration de l\'application</string>
+    <string name="about">À propos</string>
+    <string name="about_description">Informations sur l\'application et support</string>
+    <string name="sign_out">Se déconnecter</string>
+    <string name="sign_out_description">Se déconnecter de votre compte</string>
+
+    <string name="unknown_error">Une erreur s\'est produite</string>
+
+    <!-- Screen titles -->
+    <string name="notification_settings">Paramètres de notification</string>
+
+    <!-- Coming soon messages -->
+    <string name="edit_profile_coming_soon">Fonctionnalité de modification du profil bientôt disponible</string>
+    <string name="settings_coming_soon">Fonctionnalité des paramètres bientôt disponible</string>
+    <string name="about_coming_soon">Section à propos bientôt disponible</string>
+    <string name="notification_settings_coming_soon">Paramètres de notification bientôt disponibles</string>
+    <string name="privacy_policy_coming_soon">Contenu de la politique de confidentialité bientôt disponible</string>
+    <string name="terms_of_service_coming_soon">Contenu des conditions d\'utilisation bientôt disponible</string>
+</resources>

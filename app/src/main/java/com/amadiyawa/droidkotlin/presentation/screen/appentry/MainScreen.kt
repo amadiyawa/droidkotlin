@@ -21,7 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.amadiyawa.droidkotlin.presentation.navigation.MainScaffoldedApp
 import com.amadiyawa.feature_auth.presentation.navigation.authGraph
-import com.amadiyawa.feature_base.domain.model.UserSessionManager
+import com.amadiyawa.feature_base.domain.manager.UserSessionManager
 import com.amadiyawa.feature_base.presentation.compose.composable.SetupSystemBars
 import com.amadiyawa.feature_base.presentation.navigation.AppState
 import com.amadiyawa.feature_base.presentation.navigation.DestinationPlacement
@@ -31,6 +31,7 @@ import com.amadiyawa.feature_base.presentation.theme.AppTheme
 import com.amadiyawa.feature_billing.presentation.navigation.InvoiceNavigationApi
 import com.amadiyawa.feature_onboarding.presentation.navigation.OnboardingNavigation
 import com.amadiyawa.feature_onboarding.presentation.navigation.onboardingGraph
+import com.amadiyawa.feature_profile.presentation.navigation.ProfileNavigationApi
 import org.koin.compose.koinInject
 import timber.log.Timber
 
@@ -90,7 +91,9 @@ fun MainScreen(
 
     // Enhanced logging to debug destination placements
     LaunchedEffect(navigationDestinations) {
-        val bottomBarItems = navigationDestinations.filter { it.placement == DestinationPlacement.BottomBar }
+        val bottomBarItems = navigationDestinations.filter {
+            it.placement == DestinationPlacement.BottomBar
+        }
         Timber.d("Bottom bar items (${bottomBarItems.size}): ${bottomBarItems.map { it.route }}")
     }
 
@@ -102,6 +105,7 @@ fun MainScreen(
             // These are the routes that are part of the main section
             val mainSectionRoutes = listOf(
                 InvoiceNavigationApi.Routes.INVOICE_LIST,
+                ProfileNavigationApi.Routes.PROFILE_MAIN,
                 "fallback"
             )
 

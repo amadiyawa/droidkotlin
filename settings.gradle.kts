@@ -4,7 +4,8 @@ include(
     ":feature_base",
     ":feature_onboarding",
     ":feature_auth",
-    ":feature_billing"
+    ":feature_billing",
+    ":feature_profile"
 )
 
 pluginManagement {

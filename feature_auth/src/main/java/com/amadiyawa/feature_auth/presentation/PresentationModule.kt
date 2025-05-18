@@ -10,7 +10,14 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
 internal val presentationModule = module {
-    viewModelOf(::SignInViewModel)
+    viewModel {
+        SignInViewModel(
+            completeSignInUseCase = get(),
+            completeSocialSignInUseCase = get(),
+            validator = get(),
+            errorHandler = get()
+        )
+    }
     viewModelOf(::SignUpViewModel)
     viewModelOf(::ForgotPasswordViewModel)
     viewModelOf(::ResetPasswordViewModel)

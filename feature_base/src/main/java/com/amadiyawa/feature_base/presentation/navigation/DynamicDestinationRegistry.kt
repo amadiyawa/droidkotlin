@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_base.presentation.navigation
 
-import com.amadiyawa.feature_base.domain.model.UserSessionManager
+import com.amadiyawa.feature_base.domain.manager.UserSessionManager
 import com.amadiyawa.feature_base.domain.util.UserRole
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

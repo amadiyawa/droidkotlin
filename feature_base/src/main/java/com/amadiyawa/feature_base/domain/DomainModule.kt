@@ -1,6 +1,7 @@
 package com.amadiyawa.feature_base.domain
 
-import com.amadiyawa.feature_base.domain.model.UserSessionManager
+import com.amadiyawa.feature_base.domain.event.DomainEventBus
+import com.amadiyawa.feature_base.domain.manager.UserSessionManager
 import com.amadiyawa.feature_base.domain.usecase.ValidateEmailOrPhoneUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateEmailUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateFullNameUseCase
@@ -48,8 +49,11 @@ internal val domainModule = module {
     single {
         UserSessionManager(
             sessionRepository = get(),
+            domainEventBus = get(),
             json = get(),
             defaultDispatcher = get(qualifier = named("defaultDispatcher"))
         )
     }
+
+    single { DomainEventBus() }
 }

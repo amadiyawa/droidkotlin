@@ -2,6 +2,7 @@ package com.amadiyawa.feature_base.presentation
 
 import com.amadiyawa.feature_base.common.resources.AndroidStringResourceProvider
 import com.amadiyawa.feature_base.common.resources.StringResourceProvider
+import com.amadiyawa.feature_base.presentation.errorhandling.ErrorHandler
 import com.amadiyawa.feature_base.presentation.navigation.NavigationRegistry
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -16,4 +17,7 @@ internal val presentationModule = module {
             Timber.d("NavigationRegistry initialized")
         }
     }
+
+    // Error handling
+    single { ErrorHandler(get()) }
 }

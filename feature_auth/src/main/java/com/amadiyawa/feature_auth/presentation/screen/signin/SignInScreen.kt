@@ -38,6 +38,7 @@ import com.amadiyawa.feature_base.presentation.compose.composable.LoadingButtonP
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldConfig
 import com.amadiyawa.feature_base.presentation.compose.composable.TextFieldText
 import com.amadiyawa.feature_base.presentation.compose.composable.TrailingIconConfig
+import com.amadiyawa.feature_base.presentation.theme.dimension
 import org.koin.androidx.compose.koinViewModel
 import timber.log.Timber
 
@@ -201,7 +202,7 @@ internal fun SignInFormUI(
             params = LoadingButtonParams(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .requiredHeight(Dimen.Size.extraLarge),
+                    .requiredHeight(MaterialTheme.dimension.componentSize.buttonLarge),
                 enabled = isFormValid,
                 text = when (uiState) {
                     is SignInUiState.Loading.Authentication ->

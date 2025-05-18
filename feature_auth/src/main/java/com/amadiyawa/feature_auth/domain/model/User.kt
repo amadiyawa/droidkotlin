@@ -1,47 +1,27 @@
 package com.amadiyawa.feature_auth.domain.model
 
+import com.amadiyawa.feature_base.domain.model.UserData
 import com.amadiyawa.feature_base.domain.util.UserRole
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import timber.log.Timber
 
 @Serializable
 data class User(
-    val id: String,
-    val fullName: String,
-    val username: String,
-    val email: String?,
-    val phoneNumber: String?,
-    val avatarUrl: String? = null,
-    val isEmailVerified: Boolean = false,
-    val isPhoneVerified: Boolean = false,
-    val role: UserRole,
-    val lastLoginAt: Long? = null,
-    val isActive: Boolean = true,
-    val timezone: String? = null,
-    val locale: String? = null,
-    val createdAt: Long,
-    val updatedAt: Long,
-    val providerData: Map<String, String>? = null,
-)
+    override val id: String,
+    override val fullName: String,
+    override val username: String,
+    override val email: String?,
+    override val phoneNumber: String? = null,
+    override val avatarUrl: String? = null,
+    override val isEmailVerified: Boolean = false,
+    override val isPhoneVerified: Boolean = false,
+    override val role: UserRole,
+    override val lastLoginAt: Long? = null,
+    override val isActive: Boolean = true,
+    override val timezone: String? = null,
+    override val locale: String? = null,
+    override val createdAt: Long? = null,
+    override val updatedAt: Long? = null,
 
-fun User.toJson(): String {
-    val json = Json {
-        ignoreUnknownKeys = true
-        encodeDefaults = true
-    }
-    return json.encodeToString(User.serializer(), this)
-}
-
-fun String.toSignIn(): User? {
-    return try {
-        val json = Json {
-            ignoreUnknownKeys = true
-            encodeDefaults = true
-        }
-        json.decodeFromString(User.serializer(), this)
-    } catch (e: Exception) {
-        Timber.e(e, "Error parsing SignIn from JSON")
-        null
-    }
-}
+    // Additional fields specific to auth feature
+    val providerData: Map<String, String>? = null
+) : UserData

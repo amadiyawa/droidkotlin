@@ -1,5 +1,9 @@
-package com.amadiyawa.feature_base.domain.model
+package com.amadiyawa.feature_base.domain.manager
 
+import com.amadiyawa.feature_base.domain.event.DomainEventBus
+import com.amadiyawa.feature_base.domain.model.DomainEvent
+import com.amadiyawa.feature_base.domain.model.SessionState
+import com.amadiyawa.feature_base.domain.model.UserData
 import com.amadiyawa.feature_base.domain.repository.SessionRepository
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_base.domain.util.UserRole
@@ -25,6 +29,7 @@ import timber.log.Timber
  */
 class UserSessionManager(
     private val sessionRepository: SessionRepository,
+    private val domainEventBus: DomainEventBus,
     private val json: Json,
     private val defaultDispatcher: CoroutineDispatcher
 ) {
@@ -43,9 +48,25 @@ class UserSessionManager(
     // Public immutable state flow that can be observed
     val currentUserId: StateFlow<String?> = _currentUserId.asStateFlow()
 
+    private val _currentUser = MutableStateFlow<UserData?>(null)
+    val currentUser: StateFlow<UserData?> = _currentUser.asStateFlow()
+
+    val sessionState: Flow<SessionState> = combine(
+        currentUser,
+        currentRole
+    ) { user, role ->
+        when {
+            user != null && role != UserRole.NONE -> SessionState.Authenticated(user)
+            role == UserRole.NONE -> SessionState.NotAuthenticated
+            else -> SessionState.Loading
+        }
+    }
+
     init {
         // Observe session changes
         observeSession()
+        // Observe domain events
+        observeDomainEvents()
     }
 
     /**
@@ -53,6 +74,35 @@ class UserSessionManager(
      */
     suspend fun initialize() {
         refreshUserData()
+    }
+
+    /**
+     * Observe domain events and update session accordingly**
+     */
+    private fun observeDomainEvents() {
+        domainEventBus.subscribe<DomainEvent.UserSignedIn>()
+            .onEach { event ->
+                _currentUser.value = event.userData
+                _currentRole.value = event.userData.role
+                _currentUserId.value = event.userData.id
+            }
+            .launchIn(scope)
+
+        domainEventBus.subscribe<DomainEvent.UserProfileUpdated>()
+            .onEach { event ->
+                _currentUser.value = event.userData
+                _currentRole.value = event.userData.role
+                _currentUserId.value = event.userData.id
+            }
+            .launchIn(scope)
+
+        domainEventBus.subscribe<DomainEvent.UserSignedOut>()
+            .onEach {
+                _currentUser.value = null
+                _currentRole.value = UserRole.NONE
+                _currentUserId.value = null
+            }
+            .launchIn(scope)
     }
 
     /**
@@ -67,7 +117,7 @@ class UserSessionManager(
                 _currentRole.value = parsedData.first
                 _currentUserId.value = parsedData.second
             } catch (e: Exception) {
-                Timber.e(e, "Error parsing user JSON")
+                Timber.Forest.e(e, "Error parsing user JSON")
                 _currentRole.value = UserRole.NONE
                 _currentUserId.value = null
             }
@@ -98,8 +148,42 @@ class UserSessionManager(
 
             Pair(role, userId)
         } catch (e: Exception) {
-            Timber.e(e, "Error extracting user data from JSON")
+            Timber.Forest.e(e, "Error extracting user data from JSON")
             Pair(UserRole.NONE, null)
+        }
+    }
+
+    /**
+     * Parse full user data from JSON**
+     */
+    private fun parseUserDataFromJson(jsonString: String): UserData? {
+        return try {
+            val jsonElement = json.parseToJsonElement(jsonString)
+            val authObject = jsonElement.jsonObject
+            val userObject = authObject["user"]?.jsonObject
+                ?: return null
+
+            object : UserData {
+                override val id = userObject["id"]?.jsonPrimitive?.content ?: ""
+                override val fullName = userObject["fullName"]?.jsonPrimitive?.content ?: ""
+                override val username = userObject["username"]?.jsonPrimitive?.content ?: ""
+                override val email = userObject["email"]?.jsonPrimitive?.content ?: ""
+                override val phoneNumber = userObject["phoneNumber"]?.jsonPrimitive?.content
+                override val avatarUrl = userObject["avatarUrl"]?.jsonPrimitive?.content
+                override val role = userObject["role"]?.jsonPrimitive?.content?.let { enumValueOf(it) }
+                    ?: UserRole.NONE
+                override val isEmailVerified = userObject["isEmailVerified"]?.jsonPrimitive?.content?.toBoolean() ?: false
+                override val isPhoneVerified = userObject["isPhoneVerified"]?.jsonPrimitive?.content?.toBoolean() ?: false
+                override val lastLoginAt = userObject["lastLoginAt"]?.jsonPrimitive?.content?.toLongOrNull()
+                override val isActive = userObject["isActive"]?.jsonPrimitive?.content?.toBoolean() ?: true
+                override val timezone = userObject["timezone"]?.jsonPrimitive?.content
+                override val locale = userObject["locale"]?.jsonPrimitive?.content
+                override val createdAt = userObject["createdAt"]?.jsonPrimitive?.content?.toLongOrNull()
+                override val updatedAt = userObject["updatedAt"]?.jsonPrimitive?.content?.toLongOrNull()
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Error parsing full user data from JSON")
+            null
         }
     }
 
@@ -127,6 +211,7 @@ class UserSessionManager(
                 if (!isActive) {
                     _currentRole.value = UserRole.NONE
                     _currentUserId.value = null
+                    _currentUser.value = null
                 } else if (_currentRole.value == UserRole.NONE || _currentUserId.value == null) {
                     refreshUserData()
                 }

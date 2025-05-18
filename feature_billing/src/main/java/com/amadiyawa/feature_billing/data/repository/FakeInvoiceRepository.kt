@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_billing.data.repository
 
-import com.amadiyawa.feature_base.domain.model.UserSessionManager
+import com.amadiyawa.feature_base.domain.manager.UserSessionManager
 import com.amadiyawa.feature_base.domain.util.UserRole
 import com.amadiyawa.feature_billing.domain.model.Bill
 import com.amadiyawa.feature_billing.domain.model.BillStatus

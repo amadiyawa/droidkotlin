@@ -1,5 +1,7 @@
 package com.amadiyawa.feature_auth.domain
 
+import com.amadiyawa.feature_auth.domain.usecase.CompleteSignInUseCase
+import com.amadiyawa.feature_auth.domain.usecase.CompleteSocialSignInUseCase
 import com.amadiyawa.feature_auth.domain.usecase.ForgotPasswordUseCase
 import com.amadiyawa.feature_auth.domain.usecase.OtpVerificationUseCase
 import com.amadiyawa.feature_auth.domain.usecase.ResendOtpUseCase
@@ -13,11 +15,37 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 internal val domainModule = module {
-    singleOf(::SignInUseCase)
-    singleOf(::SocialSignInUseCase)
+    factory {
+        SignInUseCase(
+            authRepository = get()
+        )
+    }
+
+    factory {
+        SocialSignInUseCase(
+            authRepository = get()
+        )
+    }
+
+    factory {
+        CompleteSignInUseCase(
+            signInUseCase = get(),
+            sessionRepository = get(),
+            domainEventBus = get()
+        )
+    }
+
+    factory {
+        CompleteSocialSignInUseCase(
+            socialSignInUseCase = get(),
+            sessionRepository = get(),
+            domainEventBus = get()
+        )
+    }
     singleOf(::ForgotPasswordUseCase)
     singleOf(::OtpVerificationUseCase)
     singleOf(::ResendOtpUseCase)
+
     single {
         SignUpFormValidator(
             validateFullName = get(),

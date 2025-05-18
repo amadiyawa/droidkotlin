@@ -42,8 +42,6 @@
     <string name="error_retry">Try Again</string>
 
     <!-- Authentication error messages -->
-    <string name="error_invalid_credentials">Invalid login credentials</string>
-    <string name="error_session_expired">Your session has expired. Please log in again</string>
     <string name="error_unauthorized">You don\'t have permission to access this resource</string>
     <string name="error_account_not_found">Account not found. Please check your credentials</string>
     <string name="error_too_many_attempts">Too many login attempts. Please try again later</string>
@@ -59,25 +57,12 @@
 
     <!-- Network errors -->
     <string name="error_no_internet">No internet connection</string>
-    <string name="error_connection_timeout">Connection timed out</string>
     <string name="error_server_unavailable">Server is currently unavailable</string>
 
     <!-- Generic errors -->
     <string name="error_unknown">An unknown error occurred</string>
-    <string name="error_authentication_failed">Authentication failed</string>
-
-
-    <string name="error_400">Invalid request: %1$s</string>
-    <string name="error_401">Authentication failed</string>
-    <string name="error_403">Access denied</string>
-    <string name="error_500">System error occurred</string>
-    <string name="error_503">Service unavailable. Please check your connection</string>
 
     <!-- Session Repository Errors -->
-    <string name="error_session_save_user">Failed to save user session data</string>
-    <string name="error_session_get_user">Failed to retrieve user session data</string>
-    <string name="error_session_update_state">Failed to update session state</string>
-    <string name="error_session_clear">Failed to clear session data</string>
     <string name="error_session_generic">Session operation failed</string>
 
     <string name="single_digit_only">Please enter a single digit</string>
@@ -108,4 +93,58 @@
 
     <string name="error">Error</string>
     <string name="retry">Retry</string>
+
+    <!-- General Error Messages -->
+    <string name="error_general">An error occurred</string>
+    <string name="error_network_general">Network error</string>
+    <string name="error_server_general">Server error</string>
+    <string name="error_operation_failed">Operation failed</string>
+    <string name="error_authentication_general">Authentication failed</string>
+    <string name="error_session_expired_general">Session expired</string>
+
+    <!-- HTTP Errors -->
+    <string name="error_400">Invalid request. Please check your input.</string>
+    <string name="error_401">Please sign in to continue.</string>
+    <string name="error_403">You don\'t have permission to perform this action.</string>
+    <string name="error_404">The requested resource was not found.</string>
+    <string name="error_405">This action is not allowed.</string>
+    <string name="error_408">Request timed out. Please try again.</string>
+    <string name="error_429">Too many requests. Please wait a moment and try again.</string>
+    <string name="error_500">A server error occurred. Please try again later.</string>
+    <string name="error_502">Service temporarily unavailable.</string>
+    <string name="error_503">Service is currently down for maintenance.</string>
+    <string name="error_504">The server took too long to respond.</string>
+
+    <!-- Network Errors -->
+    <string name="error_network_unavailable">Please check your internet connection and try again.</string>
+    <string name="error_connection_timeout">Connection timed out. Please try again.</string>
+    <string name="error_host_unreachable">Unable to reach the server. Please try again later.</string>
+
+    <!-- Session Errors -->
+    <string name="error_session_save_user">Failed to save your session. Please try signing in again.</string>
+    <string name="error_session_get_user">Failed to retrieve your session. Please sign in again.</string>
+    <string name="error_session_update_state">Failed to update session. Please try again.</string>
+    <string name="error_session_clear">Failed to sign out properly. Please restart the app.</string>
+    <string name="error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="error_session_invalid">Invalid session. Please sign in again.</string>
+
+    <!-- Authentication Errors -->
+    <string name="error_authentication_failed">Authentication failed. Please try again.</string>
+    <string name="error_invalid_credentials">Invalid email or password. Please try again.</string>
+    <string name="error_account_locked">Your account has been temporarily locked. Please try again later.</string>
+    <string name="error_account_not_verified">Please verify your account before signing in.</string>
+    <string name="error_token_expired">Your session has expired. Please sign in again.</string>
+    <string name="error_token_invalid">Authentication failed. Please sign in again.</string>
+
+    <!-- Validation Errors -->
+    <string name="error_validation">Please correct the errors and try again.</string>
+    <string name="error_required_field_missing">Please fill in all required fields.</string>
+    <string name="error_invalid_email_format">Please enter a valid email address.</string>
+    <string name="error_invalid_phone_format">Please enter a valid phone number.</string>
+    <string name="error_password_too_weak">Password must be at least 8 characters with numbers and symbols.</string>
+
+    <!-- Profile Errors -->
+    <string name="error_profile_update_failed">Failed to update your profile. Please try again.</string>
+    <string name="error_profile_not_found">Profile not found. Please sign in again.</string>
+    <string name="error_avatar_upload_failed">Failed to upload avatar. Please try again.</string>
 </resources>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Profile Feature Strings -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Settings categories -->
+    <string name="appearance">Appearance</string>
+    <string name="theme">Theme</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="language">Language</string>
+    <string name="notifications">Notifications</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
+
+    <!-- About screen -->
+    <string name="app_version">App Version</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="rate_app">Rate App</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
+
+    <!-- Profile information -->
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="change_password">Change Password</string>
+
+    <!-- Profile Main Screen -->
+    <string name="profile">Profile</string>
+    <string name="refresh">Refresh</string>
+    <string name="profile_avatar">Profile Avatar</string>
+    <string name="unknown_user">Unknown User</string>
+
+    <!-- Profile Actions -->
+    <string name="edit_profile">Edit Profile</string>
+    <string name="edit_profile_description">Update your personal information</string>
+    <string name="settings">Settings</string>
+    <string name="settings_description">App preferences and configuration</string>
+    <string name="about">About</string>
+    <string name="about_description">App information and support</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_description">Sign out of your account</string>
+
+    <string name="unknown_error">An error occurred</string>
+
+    <!-- Screen titles -->
+    <string name="notification_settings">Notification Settings</string>
+
+    <!-- Coming soon messages -->
+    <string name="edit_profile_coming_soon">Profile editing feature coming soon</string>
+    <string name="settings_coming_soon">Settings functionality coming soon</string>
+    <string name="about_coming_soon">About section coming soon</string>
+    <string name="notification_settings_coming_soon">Notification settings coming soon</string>
+    <string name="privacy_policy_coming_soon">Privacy policy content coming soon</string>
+    <string name="terms_of_service_coming_soon">Terms of service content coming soon</string>
+</resources>

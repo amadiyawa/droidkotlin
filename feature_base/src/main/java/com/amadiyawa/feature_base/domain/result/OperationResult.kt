@@ -1,5 +1,7 @@
 package com.amadiyawa.feature_base.domain.result
 
+import com.amadiyawa.feature_base.presentation.errorhandling.ErrorHandler
+
 /**
  * A sealed interface that represents the result of an operation,
  * encapsulating success, business failure, or unexpected error states.
@@ -101,5 +103,25 @@ inline fun <T, R> OperationResult<T>.fold(
         is OperationResult.Success -> onSuccess(this.data)
         is OperationResult.Failure -> onFailure(this)
         is OperationResult.Error -> onError(this)
+    }
+}
+
+fun OperationResult<*>.getLocalizedMessage(errorHandler: ErrorHandler): String {
+    return errorHandler.getLocalizedMessage(this)
+}
+
+fun OperationResult<*>.isNetworkError(): Boolean {
+    return when (this) {
+        is OperationResult.Error -> this.code in 700..799 || this.throwable is java.io.IOException
+        is OperationResult.Failure -> this.code in 700..799
+        is OperationResult.Success -> false
+    }
+}
+
+fun OperationResult<*>.isAuthError(): Boolean {
+    return when (this) {
+        is OperationResult.Error -> this.code in 401..403 || this.code in 2000..2999
+        is OperationResult.Failure -> this.code in 401..403 || this.code in 2000..2999
+        is OperationResult.Success -> false
     }
 }

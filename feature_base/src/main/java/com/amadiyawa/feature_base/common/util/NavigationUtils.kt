@@ -1,6 +1,6 @@
 package com.amadiyawa.feature_base.common.util
 
-import com.amadiyawa.feature_base.domain.model.UserSessionManager
+import com.amadiyawa.feature_base.domain.manager.UserSessionManager
 import com.amadiyawa.feature_base.presentation.navigation.AppNavGraphProvider
 import timber.log.Timber
 

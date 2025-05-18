@@ -79,6 +79,7 @@ dependencies {
     implementation(projects.featureOnboarding)
     implementation(projects.featureAuth)
     implementation(projects.featureBilling)
+    implementation(projects.featureProfile)
 }
 
 /**
