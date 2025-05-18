@@ -23,15 +23,3 @@ interface UserData {
     val createdAt: Long?
     val updatedAt: Long?
 }
-
-// Extension functions for UserData
-val UserData.displayName: String
-    get() = fullName.ifEmpty { username }
-
-val UserData.initials: String
-    get() = fullName.split(" ")
-        .take(2)
-        .mapNotNull { it.firstOrNull()?.uppercaseChar() }
-        .joinToString("")
-
-fun UserData.hasVerifiedContact(): Boolean = isEmailVerified || isPhoneVerified
