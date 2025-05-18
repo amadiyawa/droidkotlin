@@ -11,7 +11,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -23,13 +22,13 @@ import com.amadiyawa.droidkotlin.presentation.navigation.MainScaffoldedApp
 import com.amadiyawa.feature_auth.presentation.navigation.authGraph
 import com.amadiyawa.feature_base.domain.manager.UserSessionManager
 import com.amadiyawa.feature_base.presentation.compose.composable.SetupSystemBars
+import com.amadiyawa.feature_base.presentation.navigation.AppRoutes
 import com.amadiyawa.feature_base.presentation.navigation.AppState
 import com.amadiyawa.feature_base.presentation.navigation.DestinationPlacement
 import com.amadiyawa.feature_base.presentation.navigation.NavigationRegistry
 import com.amadiyawa.feature_base.presentation.navigation.rememberAppState
 import com.amadiyawa.feature_base.presentation.theme.AppTheme
 import com.amadiyawa.feature_billing.presentation.navigation.InvoiceNavigationApi
-import com.amadiyawa.feature_onboarding.presentation.navigation.OnboardingNavigation
 import com.amadiyawa.feature_onboarding.presentation.navigation.onboardingGraph
 import com.amadiyawa.feature_profile.presentation.navigation.ProfileNavigationApi
 import org.koin.compose.koinInject
@@ -54,10 +53,6 @@ fun MainScreen(
     val navController = appState.navController
     val navigationRegistry: NavigationRegistry = koinInject()
     val userSessionManager: UserSessionManager = koinInject()
-
-    val startDestination = rememberSaveable { mutableStateOf(OnboardingNavigation.route) }
-    val mainAppGraphRoute = "main"
-    val authGraphRoute = "auth"
 
     // State to track whether we're in the main graph
     val inMainGraph = remember { mutableStateOf(false) }
@@ -145,16 +140,11 @@ fun MainScreen(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = startDestination.value,
-                modifier = Modifier
-                    .fillMaxSize()
+                startDestination = AppRoutes.ONBOARDING_GRAPH,
+                modifier = Modifier.fillMaxSize()
             ) {
                 // ✅ 1. Onboarding
-                onboardingGraph(onFinished = {
-                    navController.navigate(authGraphRoute) {
-                        popUpTo(0) { inclusive = true }
-                    }
-                })
+                onboardingGraph(navController)
 
                 // ✅ 2. Auth
                 authGraph(navController)
@@ -162,7 +152,7 @@ fun MainScreen(
                 // ✅ 3. Main app graph
                 navigation(
                     startDestination = mainStartDestination.takeIf { it.isNotEmpty() } ?: "fallback",
-                    route = mainAppGraphRoute
+                    route = AppRoutes.MAIN_GRAPH
                 ) {
                     // Register all feature navigation's
                     with(navigationRegistry) {
