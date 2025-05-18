@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.amadiyawa.feature_auth.domain.model.VerificationResult
+import com.amadiyawa.feature_auth.presentation.screen.authcheck.AuthCheckScreen
 import com.amadiyawa.feature_auth.presentation.screen.forgotpassword.ForgotPasswordScreen
 import com.amadiyawa.feature_auth.presentation.screen.otpverification.OtpVerificationScreen
 import com.amadiyawa.feature_auth.presentation.screen.resetpassword.ResetPasswordScreen
@@ -20,9 +21,26 @@ import timber.log.Timber
 
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
     navigation(
-        startDestination = AuthRoutes.WELCOME,
+        startDestination = AuthRoutes.AUTH_CHECK,
         route = AppRoutes.AUTH_GRAPH
     ) {
+        composable(AuthRoutes.AUTH_CHECK) {
+            Timber.d("Checking authentication status")
+            AuthCheckScreen(
+                onAuthenticated = {
+                    Timber.d("User already authenticated, navigating to main")
+                    navController.navigateToMain()
+                },
+                onNotAuthenticated = {
+                    Timber.d("User not authenticated, showing welcome")
+                    navController.navigate(AuthRoutes.WELCOME) {
+                        popUpTo(AuthRoutes.AUTH_CHECK) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
         composable(AuthRoutes.WELCOME) {
             Timber.d("Navigating to WelcomeScreen")
             WelcomeScreen(

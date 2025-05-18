@@ -9,6 +9,11 @@ package com.amadiyawa.feature_auth.presentation.navigation
  */
 object AuthRoutes {
     /**
+     * Route for the authentication check screen.
+     */
+    const val AUTH_CHECK = "auth_check"
+
+    /**
      * Route for the welcome screen.
      */
     const val WELCOME = "welcome"
