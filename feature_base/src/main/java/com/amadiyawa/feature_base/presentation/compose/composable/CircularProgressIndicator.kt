@@ -15,7 +15,7 @@ fun DefaultCircularProgressIndicator() {
             .size(MaterialTheme.dimension.componentSize.iconLarge)
             .padding(end = MaterialTheme.dimension.spacing.small),
         color = MaterialTheme.colorScheme.primary,
-        strokeWidth = MaterialTheme.dimension.radius.small,
+        strokeWidth = MaterialTheme.dimension.radius.tiny,
         trackColor = MaterialTheme.colorScheme.surfaceVariant,
     )
 }
