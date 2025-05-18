@@ -258,63 +258,58 @@ private fun ProfileHeader(
     avatarUrl: String?,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(MaterialTheme.dimension.radius.xLarge),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(
+            space = MaterialTheme.dimension.spacing.medium,
+            alignment = Alignment.CenterHorizontally
         ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = MaterialTheme.dimension.elevation.small
-        )
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            modifier = Modifier.padding(MaterialTheme.dimension.spacing.large),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = MaterialTheme.dimension.spacing.medium,
-                alignment = Alignment.CenterHorizontally
-            ),
+        // Avatar
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(avatarUrl)
+                .crossfade(true)
+                .build(),
+            contentDescription = stringResource(R.string.profile_avatar),
+            modifier = Modifier
+                .size(MaterialTheme.dimension.componentSize.bottomBar)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surface),
+            contentScale = ContentScale.Crop,
+            fallback = painterResource(R.drawable.ic_default_avatar),
+            error = painterResource(R.drawable.ic_default_avatar)
+        )
+
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = MaterialTheme.dimension.spacing.xSmall),
+            verticalArrangement = Arrangement.spacedBy(
+                space = MaterialTheme.dimension.spacing.xSmall,
+                alignment = Alignment.CenterVertically
+            )
         ) {
-            // Avatar
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(avatarUrl)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = stringResource(R.string.profile_avatar),
-                modifier = Modifier
-                    .size(MaterialTheme.dimension.componentSize.bottomBar)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surface),
-                contentScale = ContentScale.Crop,
-                fallback = painterResource(R.drawable.ic_default_avatar),
-                error = painterResource(R.drawable.ic_default_avatar)
+            // Name
+            TextHeadlineSmall(
+                text = userName.ifEmpty { stringResource(R.string.unknown_user) },
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
-            Column {
-                // Name
-                TextHeadlineSmall(
-                    text = userName.ifEmpty { stringResource(R.string.unknown_user) },
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+            // Email
+            TextBodyMedium(
+                text = userEmail,
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+            )
 
-                Spacer(modifier = Modifier.height(MaterialTheme.dimension.spacing.xSmall))
+            Spacer(modifier = Modifier.height(MaterialTheme.dimension.spacing.xSmall))
 
-                // Email
-                TextBodyMedium(
-                    text = userEmail,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
-                )
-
-                Spacer(modifier = Modifier.height(MaterialTheme.dimension.grid.triple))
-
-                // Role chip
-                ProfileRoleChip(
-                    role = userRole,
-                    modifier = Modifier
-                )
-            }
+            // Role chip
+            ProfileRoleChip(
+                role = userRole,
+                modifier = Modifier
+            )
         }
     }
 }
