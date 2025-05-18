@@ -14,132 +14,132 @@ import com.amadiyawa.feature_auth.presentation.screen.resetpassword.ResetPasswor
 import com.amadiyawa.feature_auth.presentation.screen.signin.SignInScreen
 import com.amadiyawa.feature_auth.presentation.screen.signup.SignUpScreen
 import com.amadiyawa.feature_auth.presentation.screen.welcome.WelcomeScreen
+import com.amadiyawa.feature_base.presentation.navigation.AppRoutes
 import kotlinx.serialization.json.Json
+import timber.log.Timber
 
-internal data class AuthGraphCallbacks(
-    val onSignIn: () -> Unit,
-    val onNavigateToSignUp: () -> Unit,
-    val onNavigateToForgotPassword: () -> Unit,
-    val onSignInSuccess: () -> Unit,
-    val onSignUpSuccess: (data: VerificationResult) -> Unit,
-    val onOtpSentFromReset: (data: VerificationResult) -> Unit,
-    val onOtpValidated: () -> Unit,
-    val onOtpResetPassword: (resetToken: String) -> Unit,
-    val onOtpFailed: () -> Unit,
-    val onResetPasswordSuccess: (recipient: String) -> Unit
-)
-
-internal fun NavGraphBuilder.authGraph(callbacks: AuthGraphCallbacks) {
+fun NavGraphBuilder.authGraph(navController: NavHostController) {
     navigation(
-        startDestination = WelcomeNavigation.destination,
-        route = "auth"
+        startDestination = AuthRoutes.WELCOME,
+        route = AppRoutes.AUTH_GRAPH
     ) {
-        composable(WelcomeNavigation.destination) {
+        composable(AuthRoutes.WELCOME) {
+            Timber.d("Navigating to WelcomeScreen")
             WelcomeScreen(
-                onSignIn = callbacks.onSignIn,
-                onSignUp = callbacks.onNavigateToSignUp
+                onSignIn = {
+                    navController.navigate(AuthRoutes.SIGN_IN)
+                },
+                onSignUp = {
+                    navController.navigate(AuthRoutes.SIGN_UP)
+                }
             )
         }
 
         composable(
-            route = SignInNavigation.route,
-            arguments = listOf(navArgument("recipient") { type = NavType.StringType })
+            route = "${AuthRoutes.SIGN_IN}?recipient={recipient}",
+            arguments = listOf(navArgument("recipient") {
+                type = NavType.StringType
+                defaultValue = ""
+            })
         ) { backStackEntry ->
-            val recipient = backStackEntry.arguments?.getString("recipient")
+            val recipient = backStackEntry.arguments?.getString("recipient") ?: ""
+            Timber.d("Navigating to SignInScreen with recipient: $recipient")
 
             SignInScreen(
                 defaultIdentifier = recipient,
-                onSignInSuccess = callbacks.onSignInSuccess,
-                onForgotPassword = callbacks.onNavigateToForgotPassword
+                onSignInSuccess = {
+                    Timber.d("Sign in successful, navigating to main")
+                    navController.navigateToMain()
+                },
+                onForgotPassword = {
+                    navController.navigate(AuthRoutes.FORGOT_PASSWORD)
+                }
             )
         }
 
-        composable(SignUpNavigation.route) {
+        composable(AuthRoutes.SIGN_UP) {
+            Timber.d("Navigating to SignUpScreen")
             SignUpScreen(
-                onSignUpSuccess = callbacks.onSignUpSuccess
+                onSignUpSuccess = { verificationResult ->
+                    Timber.d("Sign up successful, navigating to OTP verification")
+                    val verificationJson = Json.encodeToString(VerificationResult.serializer(), verificationResult)
+                    val encodedJson = Uri.encode(verificationJson)
+                    navController.navigate(AuthRoutes.otpVerificationWithData(encodedJson)) {
+                        popUpTo(AuthRoutes.SIGN_UP) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
         composable(
-            route = OtpVerificationNavigation.route,
-            arguments = listOf(navArgument("verificationResultJson") { type = NavType.StringType })
+            route = "${AuthRoutes.OTP_VERIFICATION}?data={verificationResultJson}",
+            arguments = listOf(navArgument("verificationResultJson") {
+                type = NavType.StringType
+            })
         ) { backStackEntry ->
             val json = backStackEntry.arguments?.getString("verificationResultJson")
             val data = json?.let { Json.decodeFromString<VerificationResult>(Uri.decode(it)) }
 
+            Timber.d("Navigating to OtpVerificationScreen")
+
             if (data != null) {
                 OtpVerificationScreen(
                     data = data,
-                    onOtpValidated = callbacks.onOtpValidated,
-                    onResetPassword = callbacks.onOtpResetPassword,
-                    onCancel = callbacks.onOtpFailed
+                    onOtpValidated = {
+                        Timber.d("OTP validated, navigating to main")
+                        navController.navigateToMain()
+                    },
+                    onResetPassword = { resetToken ->
+                        Timber.d("OTP for reset password, navigating to reset screen")
+                        navController.navigate(AuthRoutes.resetPasswordWithToken(resetToken)) {
+                            // Clear back to the entry point (Welcome or ForgotPassword)
+                            popUpTo(AuthRoutes.WELCOME) { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    },
+                    onCancel = {
+                        navController.popBackStack()
+                    }
                 )
             }
         }
 
-        composable(ForgotPasswordNavigation.route) {
+        composable(AuthRoutes.FORGOT_PASSWORD) {
+            Timber.d("Navigating to ForgotPasswordScreen")
             ForgotPasswordScreen(
-                onOtpSent = callbacks.onOtpSentFromReset
+                onOtpSent = { verificationResult ->
+                    Timber.d("OTP sent, navigating to verification")
+                    val verificationJson = Json.encodeToString(VerificationResult.serializer(), verificationResult)
+                    val encodedJson = Uri.encode(verificationJson)
+                    navController.navigate(AuthRoutes.otpVerificationWithData(encodedJson)) {
+                        popUpTo(AuthRoutes.FORGOT_PASSWORD) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
             )
         }
 
         composable(
-            route = ResetPasswordNavigation.route,
-            arguments = listOf(navArgument("resetToken") { type = NavType.StringType })
+            route = "${AuthRoutes.RESET_PASSWORD}?token={resetToken}",
+            arguments = listOf(navArgument("resetToken") {
+                type = NavType.StringType
+            })
         ) { backStackEntry ->
             val resetToken = backStackEntry.arguments?.getString("resetToken") ?: ""
+            Timber.d("Navigating to ResetPasswordScreen")
 
             ResetPasswordScreen(
                 resetToken = resetToken,
-                onSuccess = callbacks.onResetPasswordSuccess
+                onSuccess = { recipient ->
+                    Timber.d("Password reset successful, navigating to sign in")
+                    navController.navigate(AuthRoutes.signInWithRecipient(recipient)) {
+                        // Clear all auth screens and go back to welcome as the back destination
+                        popUpTo(AuthRoutes.WELCOME) { inclusive = false }
+                        launchSingleTop = true
+                    }
+                }
             )
         }
     }
-}
-
-fun NavGraphBuilder.authGraph(navController: NavHostController) {
-    val callbacks = AuthGraphCallbacks(
-        onSignIn = { navController.navigate(SignInNavigation.createRoute("")) },
-        onNavigateToSignUp = { navController.navigate(SignUpNavigation.route) },
-        onNavigateToForgotPassword = { navController.navigate(ForgotPasswordNavigation.route) },
-        onSignInSuccess = {
-            navController.navigate("main") {
-                popUpTo("auth") { inclusive = true }
-                launchSingleTop = true
-            }
-        },
-        onSignUpSuccess = { data ->
-            navController.navigate(OtpVerificationNavigation.createRoute(data)) {
-                popUpTo(SignUpNavigation.route) { inclusive = true }
-                launchSingleTop = true
-            }
-        },
-        onOtpSentFromReset = { data ->
-            navController.navigate(OtpVerificationNavigation.createRoute(data)) {
-                popUpTo(ForgotPasswordNavigation.route) { inclusive = true }
-                launchSingleTop = true
-            }
-        },
-        onOtpValidated = {
-            navController.navigate("main") {
-                popUpTo("auth") { inclusive = true }
-                launchSingleTop = true
-            }
-        },
-        onOtpFailed = { navController.popBackStack() },
-        onOtpResetPassword = { resetToken ->
-            navController.navigate(ResetPasswordNavigation.createRoute(resetToken)) {
-                popUpTo(OtpVerificationNavigation.route) { inclusive = true }
-                launchSingleTop = true
-            }
-        },
-        onResetPasswordSuccess = { recipient ->
-            navController.navigate(SignInNavigation.createRoute(recipient)) {
-                popUpTo(ResetPasswordNavigation.route) { inclusive = true }
-                launchSingleTop = true
-            }
-        }
-    )
-
-    authGraph(callbacks)
 }
