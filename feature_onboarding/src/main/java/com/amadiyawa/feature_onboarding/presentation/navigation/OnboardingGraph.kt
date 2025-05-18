@@ -1,20 +1,33 @@
 package com.amadiyawa.feature_onboarding.presentation.navigation
 
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
+import com.amadiyawa.feature_base.presentation.navigation.AppRoutes
 import com.amadiyawa.feature_onboarding.presentation.screen.onboarding.OnboardingScreen
+import timber.log.Timber
 
 /**
  * Adds the onboarding navigation graph to the [NavGraphBuilder].
  *
- * This function defines a composable destination for the onboarding list screen
- * and associates it with the specified route. When the screen is finished, the
- * provided [onFinished] callback is invoked.
+ * This function defines the onboarding navigation graph and handles the completion
+ * internally by navigating to the auth graph.
  *
- * @param onFinished A lambda function to be executed when the onboarding process is completed.
+ * @param navController The NavHostController to handle navigation
  */
-fun NavGraphBuilder.onboardingGraph(onFinished: () -> Unit) {
-    composable(route = OnboardingNavigation.route) {
-        OnboardingScreen(onFinished = onFinished)
+fun NavGraphBuilder.onboardingGraph(navController: NavHostController) {
+    navigation(
+        startDestination = OnboardingRoutes.ONBOARDING,
+        route = AppRoutes.ONBOARDING_GRAPH
+    ) {
+        composable(OnboardingRoutes.ONBOARDING) {
+            Timber.d("Navigating to OnboardingScreen")
+            OnboardingScreen(
+                onFinished = {
+                    navController.finishOnboarding()
+                }
+            )
+        }
     }
 }
