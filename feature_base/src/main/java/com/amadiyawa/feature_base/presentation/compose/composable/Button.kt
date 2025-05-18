@@ -61,7 +61,7 @@ fun LoadingButton(
     Button(
         modifier = params.modifier
             .fillMaxWidth()
-            .requiredHeight(MaterialTheme.dimension.componentSize.inputField),
+            .requiredHeight(MaterialTheme.dimension.componentSize.buttonLarge),
         onClick = params.onClick,
         enabled = params.enabled && !params.isLoading,
         colors = colors

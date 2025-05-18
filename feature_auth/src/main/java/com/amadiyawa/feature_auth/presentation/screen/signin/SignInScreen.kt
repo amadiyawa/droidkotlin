@@ -27,7 +27,6 @@ import com.amadiyawa.feature_auth.R
 import com.amadiyawa.feature_auth.domain.model.SignInForm
 import com.amadiyawa.feature_auth.domain.util.SocialProvider
 import com.amadiyawa.feature_auth.presentation.components.SocialAuthFooter
-import com.amadiyawa.feature_base.common.resources.Dimen
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.presentation.compose.composable.AppTextButton
 import com.amadiyawa.feature_base.presentation.compose.composable.AuthHeader
