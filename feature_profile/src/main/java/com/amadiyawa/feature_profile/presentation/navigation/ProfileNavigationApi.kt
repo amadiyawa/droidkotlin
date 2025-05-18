@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.amadiyawa.feature_base.domain.util.UserRole
+import com.amadiyawa.feature_base.presentation.navigation.AppRoutes
 import com.amadiyawa.feature_base.presentation.navigation.DestinationPlacement
 import com.amadiyawa.feature_base.presentation.navigation.FeatureNavigationApi
 import com.amadiyawa.feature_base.presentation.navigation.NavigationDestination
@@ -67,9 +68,9 @@ class ProfileNavigationApi : FeatureNavigationApi {
                     onSignOutClick = {
                         // Handle sign out and navigate to authentication feature
                         Timber.d("Sign out requested")
-                        Timber.d("Sign out requested")
-                        navController.navigate("auth") {
-                            popUpTo(Routes.PROFILE_GRAPH) { inclusive = true }
+                        navController.navigate(AppRoutes.AUTH_GRAPH) {
+                            popUpTo(0) { inclusive = true }
+                            launchSingleTop = true
                         }
                     }
                 )

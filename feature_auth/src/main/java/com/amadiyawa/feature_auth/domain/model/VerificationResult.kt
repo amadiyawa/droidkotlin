@@ -5,7 +5,7 @@ import com.amadiyawa.feature_auth.domain.util.VerificationType
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal data class VerificationResult(
+data class VerificationResult(
     val verificationId: String,
     val recipient: String,
     val expiresIn: Int,
