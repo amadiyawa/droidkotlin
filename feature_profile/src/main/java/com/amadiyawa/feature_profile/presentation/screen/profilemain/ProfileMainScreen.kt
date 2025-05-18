@@ -45,7 +45,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -167,7 +166,6 @@ private fun ProfileTopBar(
         params = ToolbarParams(
             title = stringResource(R.string.profile)
         ),
-        backgroundColor = Color.Transparent,
         actions = {
             // Refresh button
             CircularButton(
@@ -294,13 +292,13 @@ private fun ProfileHeader(
             TextHeadlineSmall(
                 text = userName.ifEmpty { stringResource(R.string.unknown_user) },
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             // Email
             TextBodyMedium(
                 text = userEmail,
-                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.dimension.spacing.xSmall))
@@ -326,7 +324,7 @@ private fun ProfileRoleChip(
             .padding(horizontal = 12.dp, vertical = 6.dp)
     ) {
         TextBodySmall(
-            text = role.replaceFirstChar { it.uppercase() },
+            text = role.lowercase().replaceFirstChar { it.uppercase() },
             color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Medium
         )
@@ -340,11 +338,13 @@ private fun ProfileActionsSection(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shape = RoundedCornerShape(MaterialTheme.dimension.radius.xLarge),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = MaterialTheme.dimension.elevation.small
+        )
     ) {
         Column(
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier.padding(vertical = MaterialTheme.dimension.spacing.small)
         ) {
             // Edit Profile
             if (state.hasEditProfileAccess) {
@@ -406,7 +406,7 @@ private fun ProfileActionItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(16.dp),
+            .padding(MaterialTheme.dimension.spacing.medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -420,7 +420,7 @@ private fun ProfileActionItem(
             }
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.dimension.spacing.medium))
 
         Column(modifier = Modifier.weight(1f)) {
             TextTitleMedium(
@@ -445,7 +445,7 @@ private fun ProfileActionItem(
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = null,
-            modifier = Modifier.size(16.dp),
+            modifier = Modifier.size(MaterialTheme.dimension.componentSize.iconSmall),
             tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
         )
     }

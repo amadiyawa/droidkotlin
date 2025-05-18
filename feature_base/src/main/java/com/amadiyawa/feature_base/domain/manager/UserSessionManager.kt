@@ -113,17 +113,30 @@ class UserSessionManager(
 
         if (userJsonResult is OperationResult.Success && userJsonResult.data != null) {
             try {
-                val parsedData = extractUserDataFromJson(userJsonResult.data)
-                _currentRole.value = parsedData.first
-                _currentUserId.value = parsedData.second
+                // Parse the FULL user data, not just role and ID
+                val userData = parseUserDataFromJson(userJsonResult.data)
+                if (userData != null) {
+                    _currentUser.value = userData
+                    _currentRole.value = userData.role
+                    _currentUserId.value = userData.id
+                    Timber.d("User data refreshed: ${userData.id}, role: ${userData.role}")
+                } else {
+                    _currentUser.value = null
+                    _currentRole.value = UserRole.NONE
+                    _currentUserId.value = null
+                    Timber.w("Failed to parse user data from JSON")
+                }
             } catch (e: Exception) {
-                Timber.Forest.e(e, "Error parsing user JSON")
+                Timber.e(e, "Error parsing user JSON")
+                _currentUser.value = null
                 _currentRole.value = UserRole.NONE
                 _currentUserId.value = null
             }
         } else {
+            _currentUser.value = null
             _currentRole.value = UserRole.NONE
             _currentUserId.value = null
+            Timber.d("No session data found")
         }
     }
 
@@ -217,26 +230,6 @@ class UserSessionManager(
                 }
             }
             .launchIn(scope)
-    }
-
-    /**
-     * Gets the user role as a Flow, re-evaluated each time
-     * the session changes
-     */
-    fun observeUserRole(): Flow<UserRole?> {
-        return sessionRepository.isSessionActive().combine(currentRole) { isActive, role ->
-            if (isActive) role else null
-        }
-    }
-
-    /**
-     * Gets the user ID as a Flow, re-evaluated each time
-     * the session changes
-     */
-    fun observeUserId(): Flow<String?> {
-        return sessionRepository.isSessionActive().combine(currentUserId) { isActive, userId ->
-            if (isActive) userId else null
-        }
     }
 
     /**
