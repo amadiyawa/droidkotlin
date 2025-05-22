@@ -31,7 +31,7 @@ fun WelcomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(MaterialTheme.dimension.spacing.large),
+            .padding(MaterialTheme.dimension.spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Top section: Logo, title and description

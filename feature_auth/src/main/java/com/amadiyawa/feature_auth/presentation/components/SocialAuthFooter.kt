@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -30,7 +29,6 @@ fun SocialAuthFooter(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = MaterialTheme.dimension.spacing.medium)
             .navigationBarsPadding() // Ensure safe distance from system UI
     ) {
         Row(
