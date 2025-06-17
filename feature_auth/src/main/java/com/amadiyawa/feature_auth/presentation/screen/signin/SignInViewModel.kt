@@ -3,116 +3,171 @@ package com.amadiyawa.feature_auth.presentation.screen.signin
 import androidx.lifecycle.viewModelScope
 import com.amadiyawa.feature_auth.data.dto.request.SignInRequest
 import com.amadiyawa.feature_auth.domain.model.SignInForm
-import com.amadiyawa.feature_auth.domain.model.toSignInForm
-import com.amadiyawa.feature_auth.domain.model.togglePasswordVisibility
-import com.amadiyawa.feature_auth.domain.model.updateAndValidateField
 import com.amadiyawa.feature_auth.domain.usecase.CompleteSignInUseCase
 import com.amadiyawa.feature_auth.domain.usecase.CompleteSocialSignInUseCase
 import com.amadiyawa.feature_auth.domain.util.SocialProvider
-import com.amadiyawa.feature_auth.domain.util.validation.SignInFormValidator
-import com.amadiyawa.feature_base.domain.model.ValidatedForm
+import com.amadiyawa.feature_base.common.resources.StringResourceProvider
+import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.domain.result.OperationResult
 import com.amadiyawa.feature_base.presentation.errorhandling.ErrorHandler
 import com.amadiyawa.feature_base.presentation.screen.viewmodel.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 internal class SignInViewModel(
     private val completeSignInUseCase: CompleteSignInUseCase,
     private val completeSocialSignInUseCase: CompleteSocialSignInUseCase,
-    private val validator: SignInFormValidator,
+    private val stringProvider: StringResourceProvider,
     errorHandler: ErrorHandler
-) : BaseViewModel<SignInUiState, SignInAction>(
-    SignInUiState.Idle(),
+) : BaseViewModel<SignInContract.State, SignInContract.Action>(
+    initialState = SignInContract.State.Idle(),
     errorHandler = errorHandler
 ) {
 
-    // Jobs
+    // Jobs for cancellation
     private var signInJob: Job? = null
     private var socialSignInJob: Job? = null
 
-    // Properties
+    // Current form reference for easy access (following your pattern)
     val form: SignInForm
         get() = when (val s = state) {
-            is SignInUiState.Idle -> s.form
-            is SignInUiState.Loading -> s.form
-            is SignInUiState.Error -> s.form
+            is SignInContract.State.Idle -> s.form
+            is SignInContract.State.Loading -> s.form
+            is SignInContract.State.Error -> s.form
+            is SignInContract.State.Success -> s.form
         }
 
-    override fun dispatch(action: SignInAction) {
+    /**
+     * Handle user actions dispatched from the UI (following your dispatch pattern).
+     */
+    override fun dispatch(action: SignInContract.Action) {
         logAction(action)
 
         when (action) {
-            is SignInAction.UpdateField -> handleUpdateField(action)
-            SignInAction.TogglePasswordVisibility -> handleTogglePasswordVisibility()
-            SignInAction.Submit -> handleSignIn()
-            SignInAction.ForgotPassword -> handleForgotPassword()
-            is SignInAction.SocialSignIn -> handleSocialSignIn(action.provider)
-            SignInAction.ClearErrors -> handleClearErrors()
+            is SignInContract.Action.Initialize -> handleInitialize(action.defaultIdentifier)
+            is SignInContract.Action.UpdateField -> handleUpdateField(action.field, action.value)
+            is SignInContract.Action.UpdateFields -> handleUpdateFields(action.updates)
+            is SignInContract.Action.TogglePasswordVisibility -> handleTogglePasswordVisibility()
+            is SignInContract.Action.ToggleRememberMe -> handleToggleRememberMe()
+            is SignInContract.Action.Submit -> handleSubmit()
+            is SignInContract.Action.Retry -> handleRetry()
+            is SignInContract.Action.ForgotPassword -> handleForgotPassword()
+            is SignInContract.Action.SocialSignIn -> handleSocialSignIn(action.provider)
+            is SignInContract.Action.ClearErrors -> handleClearErrors()
+            is SignInContract.Action.NavigateBack -> handleNavigateBack()
+            is SignInContract.Action.NavigateToSignUp -> handleNavigateToSignUp()
         }
     }
 
-    private fun handleUpdateField(action: SignInAction.UpdateField) {
-        val updatedForm = form.updateAndValidateField(
-            key = action.key,
-            fieldValue = action.value,
-            validator = validator
-        )
-        setState { SignInUiState.Idle(form = updatedForm) }
+    /**
+     * Initialize the screen with optional pre-filled data.
+     */
+    private fun handleInitialize(defaultIdentifier: String) {
+        Timber.d("Initializing SignIn screen with identifier: $defaultIdentifier")
+
+        val smartForm = if (defaultIdentifier.isNotBlank()) {
+            SignInForm.withAutoDetectedIdentifier(defaultIdentifier)
+        } else {
+            SignInForm()
+        }
+
+        setState {
+            SignInContract.State.Idle(
+                form = smartForm,
+                defaultIdentifier = defaultIdentifier
+            )
+        }
     }
 
+    /**
+     * Update a single form field (following your existing pattern).
+     */
+    private fun handleUpdateField(field: String, value: FieldValue) {
+        when (value) {
+            is FieldValue.Text -> {
+                val updatedForm = form.updateField(field, value.value, stringProvider)
+                setState { SignInContract.State.Idle(form = updatedForm) }
+            }
+            else -> {
+                Timber.w("Unsupported field value type: ${value::class.simpleName}")
+            }
+        }
+    }
+
+    /**
+     * Update multiple form fields at once.
+     */
+    private fun handleUpdateFields(updates: Map<String, String>) {
+        val updatedForm = form.updateFields(updates, stringProvider)
+        setState { SignInContract.State.Idle(form = updatedForm) }
+    }
+
+    /**
+     * Toggle password visibility (show/hide).
+     */
     private fun handleTogglePasswordVisibility() {
-        val updated = form.togglePasswordVisibility()
-        setState { SignInUiState.Idle(form = updated) }
+        val updatedForm = form.togglePasswordVisibility()
+        setState { SignInContract.State.Idle(form = updatedForm) }
     }
 
-    private fun handleClearErrors() {
-        setState { SignInUiState.Idle(form = form) }
+    /**
+     * Toggle remember me state.
+     */
+    private fun handleToggleRememberMe() {
+        val updatedForm = form.toggleRememberMe()
+        setState { SignInContract.State.Idle(form = updatedForm) }
     }
 
-    private fun handleForgotPassword() {
-        launchSafely {
-            emitEvent(SignInUiEvent.NavigateToForgotPassword)
-        }
-    }
+    /**
+     * Submit the sign-in form (following your existing pattern).
+     */
+    private fun handleSubmit() {
+        val validatedForm = form.validateForm(stringProvider)
 
-    private fun handleSignIn() {
-        val validated = validator.validate(form)
-        if (!validated.isValid) {
-            handleValidationError(validated)
+        if (!validatedForm.canSubmit) {
+            handleValidationError(validatedForm)
             return
         }
 
-        setState { SignInUiState.Loading.Authentication(form = form) }
+        setState { SignInContract.State.Loading.Authentication(form = validatedForm) }
 
         signInJob?.cancel()
         signInJob = viewModelScope.launch {
             val result = completeSignInUseCase(
                 SignInRequest(
-                    identifier = form.identifier.value,
-                    password = form.password.value
+                    identifier = validatedForm.identifier.value,
+                    password = validatedForm.password.value
                 )
             )
 
             handleResult(
                 result = result,
                 onSuccess = {
-                    // Success handling
-                    emitEvent(SignInUiEvent.ShowSnackbar("Sign in successful"))
-                    emitEvent(SignInUiEvent.NavigateToMainScreen)
-                    setState { SignInUiState.Idle(form = SignInForm()) }
+                    // Success handling (following your pattern)
+                    setState { SignInContract.State.Success(form = validatedForm) }
+                    emitEvent(SignInContract.Event.ShowSnackbar("Sign in successful"))
+                    emitEvent(SignInContract.Event.NavigateToMainScreen)
                 },
                 onError = { errorMessage ->
-                    // Custom error handling (optional)
-                    setState { SignInUiState.Error(form = form, message = errorMessage) }
+                    // Custom error handling (following your pattern)
+                    setState {
+                        SignInContract.State.Error(
+                            form = validatedForm,
+                            message = errorMessage
+                        )
+                    }
                 },
                 customErrorHandling = true
             )
         }
     }
 
+    /**
+     * Handle social sign-in (following your existing pattern).
+     */
     private fun handleSocialSignIn(provider: SocialProvider) {
-        setState { SignInUiState.Loading.SocialAuthentication(form = form, provider = provider) }
+        setState { SignInContract.State.Loading.SocialAuthentication(form = form, provider = provider) }
 
         socialSignInJob?.cancel()
         socialSignInJob = viewModelScope.launch {
@@ -122,21 +177,21 @@ internal class SignInViewModel(
                 result = result,
                 onSuccess = {
                     // Success handling
-                    emitEvent(SignInUiEvent.SocialSignInResult(
-                        provider = provider,
-                        success = true
-                    ))
-                    emitEvent(SignInUiEvent.ShowSnackbar("Sign in successful"))
-                    emitEvent(SignInUiEvent.NavigateToMainScreen)
-                    setState { SignInUiState.Idle(form = SignInForm()) }
+                    setState { SignInContract.State.Success(form = form) }
+                    emitEvent(SignInContract.Event.SocialSignInResult(provider, true))
+                    emitEvent(SignInContract.Event.ShowSnackbar("Sign in successful"))
+                    emitEvent(SignInContract.Event.NavigateToMainScreen)
                 },
                 onError = { errorMessage ->
                     // Custom error handling
-                    setState { SignInUiState.Error(form = form, message = errorMessage) }
-                    emitEvent(SignInUiEvent.SocialSignInResult(
-                        provider = provider,
-                        success = false,
-                        message = errorMessage
+                    setState {
+                        SignInContract.State.Error(
+                            form = form,
+                            message = errorMessage
+                        )
+                    }
+                    emitEvent(SignInContract.Event.SocialSignInResult(
+                        provider, false, errorMessage
                     ))
                 },
                 customErrorHandling = true
@@ -144,10 +199,57 @@ internal class SignInViewModel(
         }
     }
 
-    private fun handleValidationError(validated: ValidatedForm) {
+    /**
+     * Retry the last failed operation.
+     */
+    private fun handleRetry() {
+        val currentState = state
+        if (currentState is SignInContract.State.Error && currentState.form.canSubmit) {
+            handleSubmit()
+        }
+    }
+
+    /**
+     * Clear all errors and return to idle state (following your pattern).
+     */
+    private fun handleClearErrors() {
+        setState { SignInContract.State.Idle(form = form) }
+    }
+
+    /**
+     * Navigate to forgot password screen (following your pattern).
+     */
+    private fun handleForgotPassword() {
+        launchSafely {
+            emitEvent(SignInContract.Event.NavigateToForgotPassword)
+        }
+    }
+
+    /**
+     * Navigate back to previous screen.
+     */
+    private fun handleNavigateBack() {
+        launchSafely {
+            emitEvent(SignInContract.Event.NavigateBack)
+        }
+    }
+
+    /**
+     * Navigate to sign-up screen.
+     */
+    private fun handleNavigateToSignUp() {
+        launchSafely {
+            emitEvent(SignInContract.Event.NavigateToSignUp)
+        }
+    }
+
+    /**
+     * Handle validation error (following your existing pattern).
+     */
+    private fun handleValidationError(validatedForm: SignInForm) {
         setState {
-            SignInUiState.Error(
-                form = validated.toSignInForm(),
+            SignInContract.State.Error(
+                form = validatedForm,
                 message = errorHandler?.getLocalizedMessage(
                     OperationResult.Failure(
                         code = 3000, // ValidationError code
@@ -155,7 +257,7 @@ internal class SignInViewModel(
                 ) ?: "Please correct the form errors"
             )
         }
-        emitEvent(SignInUiEvent.ShowSnackbar("Please correct the form errors", isError = true))
+        emitEvent(SignInContract.Event.ShowSnackbar("Please correct the form errors", isError = true))
     }
 
     override fun onCleared() {
