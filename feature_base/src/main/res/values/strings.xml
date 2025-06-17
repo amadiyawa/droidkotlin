@@ -5,13 +5,6 @@
     <string name="empty_toolbar_title"> </string>
     <string name="back">Back</string>
 
-    <string name="invalid_identifier">Invalid identifier</string>
-    <string name="error_password_length">The password must contain at least %d characters.</string>
-    <string name="add_uppercase">Add at least an uppercase letter.</string>
-    <string name="add_lowercase">Add at least a lowercase letter.</string>
-    <string name="add_digit">Add at least a digit.</string>
-    <string name="add_special_character">Add at least a special character.</string>
-    <string name="error_password_space">The password must not contain space.</string>
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
     <string name="clear_text">Clear text</string>
@@ -19,11 +12,8 @@
     <string name="full_name">Full name</string>
     <string name="invalid_full_name">Full name must contain only letters, dashes or spaces (2 to 50 characters)</string>
     <string name="username">Username</string>
-    <string name="invalid_username">Invalid username (3–20 chars, . - _ allowed)</string>
     <string name="email">Email</string>
-    <string name="invalid_email">Invalid email address. Example: name@example.com</string>
     <string name="phone">Phone number</string>
-    <string name="invalid_phone">Invalid phone number. Expected format: +2376XXXXXXXX</string>
     <string name="passwords_do_not_match">Passwords do not match.</string>
     <string name="terms_not_accepted">You must accept the terms and conditions.</string>
 
@@ -147,4 +137,73 @@
     <string name="error_profile_update_failed">Failed to update your profile. Please try again.</string>
     <string name="error_profile_not_found">Profile not found. Please sign in again.</string>
     <string name="error_avatar_upload_failed">Failed to upload avatar. Please try again.</string>
+
+    <!-- Validation Messages - General -->
+    <string name="identifier_required">Please enter your email, username, or phone number</string>
+    <string name="invalid_identifier">Please enter a valid email, username, or phone number</string>
+
+    <!-- Email Validation -->
+    <string name="invalid_email">Please enter a valid email address</string>
+    <string name="email_required">Email address is required</string>
+    <string name="email_too_long">Email address is too long (max %d characters)</string>
+    <string name="email_missing_at_symbol">Email must contain @ symbol</string>
+    <string name="email_multiple_at_symbols">Email must contain only one @ symbol</string>
+    <string name="email_invalid_format">Email format is invalid</string>
+    <string name="email_local_empty">Email username cannot be empty</string>
+    <string name="email_local_too_long">Email username is too long (max %d characters)</string>
+    <string name="email_local_starts_with_dot">Email username cannot start with a dot</string>
+    <string name="email_local_ends_with_dot">Email username cannot end with a dot</string>
+    <string name="email_local_consecutive_dots">Email username cannot contain consecutive dots</string>
+    <string name="email_local_invalid_characters">Email username contains invalid characters</string>
+    <string name="email_domain_empty">Email domain cannot be empty</string>
+    <string name="email_domain_too_long">Email domain is too long (max %d characters)</string>
+    <string name="email_domain_starts_with_dot">Email domain cannot start with a dot</string>
+    <string name="email_domain_ends_with_dot">Email domain cannot end with a dot</string>
+    <string name="email_domain_consecutive_dots">Email domain cannot contain consecutive dots</string>
+    <string name="email_domain_missing_dot">Email domain must contain at least one dot</string>
+    <string name="email_domain_invalid_format">Email domain format is invalid</string>
+
+    <!-- Username Validation -->
+    <string name="invalid_username">Username must be 3–30 characters with letters, numbers, dots, underscores, or hyphens only</string>
+    <string name="username_required">Username is required</string>
+    <string name="username_too_short">Username must be at least %d characters</string>
+    <string name="username_too_long">Username must not exceed %d characters</string>
+    <string name="username_must_start_with_letter">Username must start with a letter</string>
+    <string name="username_cannot_end_with_special">Username cannot end with special characters</string>
+    <string name="username_no_consecutive_special">Username cannot have consecutive special characters</string>
+    <string name="username_invalid_characters">Username contains invalid characters. Only letters, numbers, dots, underscores, and hyphens are allowed</string>
+    <string name="username_reserved">This username is reserved and cannot be used</string>
+    <string name="username_inappropriate">Username contains inappropriate content</string>
+
+    <!-- Phone Validation -->
+    <string name="invalid_phone">Please enter a valid phone number</string>
+    <string name="phone_number_required">Phone number is required</string>
+    <string name="phone_processing_error">Failed to process phone number</string>
+    <string name="phone_format_not_recognized">Phone number format is not recognized</string>
+    <string name="phone_invalid_country_code">Invalid country code</string>
+    <string name="phone_not_valid_number">Input is not a valid phone number</string>
+    <string name="phone_too_short">Phone number is too short</string>
+    <string name="phone_too_short_after_prefix">Phone number is too short after international prefix</string>
+    <string name="phone_too_long">Phone number is too long</string>
+    <string name="phone_invalid_format">Invalid phone number format</string>
+    <string name="phone_validation_error">Unable to validate phone number</string>
+
+    <!-- Password Validation -->
+    <string name="password_required">Password is required</string>
+    <string name="confirm_password_required">Confirm password is required</string>
+    <string name="error_password_length">Password must be at least %d characters long</string>
+    <string name="error_password_too_long">Password must not exceed %d characters</string>
+    <string name="add_uppercase">Password must contain at least one uppercase letter</string>
+    <string name="add_lowercase">Password must contain at least one lowercase letter</string>
+    <string name="add_digit">Password must contain at least one number</string>
+    <string name="add_special_character">Password must contain at least one special character (!@#$%^&amp;*()_-+=&lt;&gt;?/{}~|)</string>
+    <string name="error_password_space">Password cannot contain spaces</string>
+
+    <!-- Password Strength Descriptions -->
+    <string name="password_strength_very_strong">Very Strong</string>
+    <string name="password_strength_strong">Strong</string>
+    <string name="password_strength_good">Good</string>
+    <string name="password_strength_fair">Fair</string>
+    <string name="password_strength_weak">Weak</string>
+    <string name="password_strength_very_weak">Very Weak</string>
 </resources>

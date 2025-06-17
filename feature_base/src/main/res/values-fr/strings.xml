@@ -6,13 +6,6 @@
     <string name="empty_toolbar_title"> </string>
     <string name="back">Retour</string>
 
-    <string name="invalid_identifier">Identifiant invalide</string>
-    <string name="error_password_length">Le mot de passe doit contenir au moins %d caractères.</string>
-    <string name="add_uppercase">Ajouter au moins une majuscule.</string>
-    <string name="add_lowercase">Ajouter au moins une minuscule.</string>
-    <string name="add_digit">Ajouter au moins un chiffre.</string>
-    <string name="add_special_character">Ajouter au moins un caractère spécial.</string>
-    <string name="error_password_space">Le mot de passe ne doit pas contenir d\'espace.</string>
     <string name="hide_password">Masquer le mot de passe</string>
     <string name="show_password">Afficher le mot de passe</string>
     <string name="clear_text">Effacer le texte</string>
@@ -20,11 +13,8 @@
     <string name="full_name">Nom complet</string>
     <string name="invalid_full_name">Le nom complet ne doit contenir que des lettres, des tirets ou des espaces (2 à 50 caractères)</string>
     <string name="username">Nom d\'utilisateur</string>
-    <string name="invalid_username">Nom d\'utilisateur invalide (3–20 caractères, . - _ autorisés)</string>
     <string name="email">Email</string>
-    <string name="invalid_email">Adresse email invalide. Exemple : nom@example.com</string>
     <string name="phone">Numéro de téléphone</string>
-    <string name="invalid_phone">Numéro de téléphone invalide. Format attendu : +2376XXXXXXXX.</string>
     <string name="passwords_do_not_match">Les mots de passe ne correspondent pas.</string>
     <string name="terms_not_accepted">Vous devez accepter les termes et conditions</string>.
 
@@ -33,6 +23,17 @@
     <string name="tos_separator"> et </string>
     <string name="tos_privacy">Politique de confidentialité</string>
     <string name="tos_post_text">.</string>
+
+    <!-- Validation Mot de passe -->
+    <string name="password_required">Le mot de passe est requis</string>
+    <string name="confirm_password_required">La confirmation du mot de passe est requise</string>
+    <string name="error_password_length">Le mot de passe doit contenir au moins %d caractères</string>
+    <string name="error_password_too_long">Le mot de passe ne doit pas dépasser %d caractères</string>
+    <string name="add_uppercase">Le mot de passe doit contenir au moins une lettre majuscule</string>
+    <string name="add_lowercase">Le mot de passe doit contenir au moins une lettre minuscule</string>
+    <string name="add_digit">Le mot de passe doit contenir au moins un chiffre</string>
+    <string name="add_special_character">Le mot de passe doit contenir au moins un caractère spécial (!@#$%^&amp;*()_-+=&lt;&gt;?/{}~|)</string>
+    <string name="error_password_space">Le mot de passe ne peut pas contenir d\'espaces</string>
 
     <!-- Chaînes de validation du code OTP -->
     <string name="invalid_otp_digit">Chaque champ doit contenir exactement un chiffre.</string>
@@ -149,4 +150,62 @@
     <string name="error_profile_update_failed">Échec de la mise à jour de votre profil. Veuillez réessayer.</string>
     <string name="error_profile_not_found">Profil introuvable. Veuillez vous reconnecter.</string>
     <string name="error_avatar_upload_failed">Échec du téléchargement de l\'avatar. Veuillez réessayer.</string>
+
+    <!-- Messages de validation - Général -->
+    <string name="identifier_required">Veuillez saisir votre email, nom d\'utilisateur ou numéro de téléphone</string>
+    <string name="invalid_identifier">Veuillez saisir un email, nom d\'utilisateur ou numéro de téléphone valide</string>
+
+    <!-- Validation Email -->
+    <string name="invalid_email">Veuillez saisir une adresse email valide</string>
+    <string name="email_required">L\'adresse email est requise</string>
+    <string name="email_too_long">L\'adresse email est trop longue (max %d caractères)</string>
+    <string name="email_missing_at_symbol">L\'email doit contenir le symbole @</string>
+    <string name="email_multiple_at_symbols">L\'email ne doit contenir qu\'un seul symbole @</string>
+    <string name="email_invalid_format">Le format de l\'email est invalide</string>
+    <string name="email_local_empty">Le nom d\'utilisateur de l\'email ne peut pas être vide</string>
+    <string name="email_local_too_long">Le nom d\'utilisateur de l\'email est trop long (max %d caractères)</string>
+    <string name="email_local_starts_with_dot">Le nom d\'utilisateur de l\'email ne peut pas commencer par un point</string>
+    <string name="email_local_ends_with_dot">Le nom d\'utilisateur de l\'email ne peut pas se terminer par un point</string>
+    <string name="email_local_consecutive_dots">Le nom d\'utilisateur de l\'email ne peut pas contenir de points consécutifs</string>
+    <string name="email_local_invalid_characters">Le nom d\'utilisateur de l\'email contient des caractères invalides</string>
+    <string name="email_domain_empty">Le domaine de l\'email ne peut pas être vide</string>
+    <string name="email_domain_too_long">Le domaine de l\'email est trop long (max %d caractères)</string>
+    <string name="email_domain_starts_with_dot">Le domaine de l\'email ne peut pas commencer par un point</string>
+    <string name="email_domain_ends_with_dot">Le domaine de l\'email ne peut pas se terminer par un point</string>
+    <string name="email_domain_consecutive_dots">Le domaine de l\'email ne peut pas contenir de points consécutifs</string>
+    <string name="email_domain_missing_dot">Le domaine de l\'email doit contenir au moins un point</string>
+    <string name="email_domain_invalid_format">Le format du domaine de l\'email est invalide</string>
+
+    <!-- Validation Nom d'utilisateur -->
+    <string name="invalid_username">Le nom d\'utilisateur doit contenir 3 à 30 caractères avec des lettres, chiffres, points, traits de soulignement ou tirets uniquement</string>
+    <string name="username_required">Le nom d\'utilisateur est requis</string>
+    <string name="username_too_short">Le nom d\'utilisateur doit contenir au moins %d caractères</string>
+    <string name="username_too_long">Le nom d\'utilisateur ne doit pas dépasser %d caractères</string>
+    <string name="username_must_start_with_letter">Le nom d\'utilisateur doit commencer par une lettre</string>
+    <string name="username_cannot_end_with_special">Le nom d\'utilisateur ne peut pas se terminer par des caractères spéciaux</string>
+    <string name="username_no_consecutive_special">Le nom d\'utilisateur ne peut pas contenir de caractères spéciaux consécutifs</string>
+    <string name="username_invalid_characters">Le nom d\'utilisateur contient des caractères invalides. Seuls les lettres, chiffres, points, traits de soulignement et tirets sont autorisés</string>
+    <string name="username_reserved">Ce nom d\'utilisateur est réservé et ne peut pas être utilisé</string>
+    <string name="username_inappropriate">Le nom d\'utilisateur contient du contenu inapproprié</string>
+
+    <!-- Validation Téléphone -->
+    <string name="invalid_phone">Veuillez saisir un numéro de téléphone valide</string>
+    <string name="phone_number_required">Le numéro de téléphone est requis</string>
+    <string name="phone_processing_error">Échec du traitement du numéro de téléphone</string>
+    <string name="phone_format_not_recognized">Le format du numéro de téléphone n\'est pas reconnu</string>
+    <string name="phone_invalid_country_code">Code pays invalide</string>
+    <string name="phone_not_valid_number">La saisie n\'est pas un numéro de téléphone valide</string>
+    <string name="phone_too_short">Le numéro de téléphone est trop court</string>
+    <string name="phone_too_short_after_prefix">Le numéro de téléphone est trop court après le préfixe international</string>
+    <string name="phone_too_long">Le numéro de téléphone est trop long</string>
+    <string name="phone_invalid_format">Format de numéro de téléphone invalide</string>
+    <string name="phone_validation_error">Impossible de valider le numéro de téléphone</string>
+
+    <!-- Descriptions de Force du Mot de Passe -->
+    <string name="password_strength_very_strong">Très Fort</string>
+    <string name="password_strength_strong">Fort</string>
+    <string name="password_strength_good">Bon</string>
+    <string name="password_strength_fair">Correct</string>
+    <string name="password_strength_weak">Faible</string>
+    <string name="password_strength_very_weak">Très Faible</string>
 </resources>
