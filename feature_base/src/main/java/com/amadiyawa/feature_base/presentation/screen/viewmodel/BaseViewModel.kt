@@ -189,13 +189,6 @@ abstract class BaseViewModel<State : BaseState, Action>(
         emitEvent(BaseUiEvent.ShowSnackbar(message, isError = true))
     }
 
-    protected open fun handleUnexpectedError(throwable: Throwable) {
-        val message = errorHandler?.getLocalizedMessage(
-            OperationResult.Error(throwable = throwable)
-        ) ?: "An unexpected error occurred"
-        emitEvent(BaseUiEvent.ShowSnackbar(message, isError = true))
-    }
-
     protected fun logError(result: OperationResult<*>, operation: String = "Operation") {
         when (result) {
             is OperationResult.Error -> {
