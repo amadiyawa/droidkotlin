@@ -7,7 +7,7 @@ sealed class BaseUiEvent {
     data class ShowSnackbar(
         val message: String,
         val isError: Boolean = false,
-        val actionLabel: String? = null,
+        val actionText: String? = null,
         val action: (() -> Unit)? = null
     ) : BaseUiEvent()
 
