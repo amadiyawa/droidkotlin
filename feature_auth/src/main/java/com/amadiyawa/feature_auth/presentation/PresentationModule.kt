@@ -14,7 +14,7 @@ internal val presentationModule = module {
         SignInViewModel(
             completeSignInUseCase = get(),
             completeSocialSignInUseCase = get(),
-            validator = get(),
+            stringProvider = get(),
             errorHandler = get()
         )
     }
