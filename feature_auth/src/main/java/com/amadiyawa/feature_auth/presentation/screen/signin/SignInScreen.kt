@@ -49,12 +49,63 @@ internal fun SignInScreen(
 ) {
     val viewModel: SignInViewModel = koinViewModel()
     val uiState by viewModel.uiStateFlow.collectAsState()
-    val events = viewModel.events.collectAsState(initial = null)
+    val context = LocalContext.current
 
     // Set default identifier if provided
     LaunchedEffect(defaultIdentifier) {
         defaultIdentifier?.takeIf { it.isNotEmpty() }?.let {
-            viewModel.dispatch(SignInAction.UpdateField("identifier", FieldValue.Text(it)))
+            viewModel.dispatch(
+                SignInContract.Action.Initialize(defaultIdentifier)
+            )
+        }
+    }
+
+    // ✅ Proper event handling using LaunchedEffect + collect
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is SignInContract.Event.NavigateToMainScreen -> {
+                    onSignInSuccess()
+                }
+
+                is SignInContract.Event.NavigateToForgotPassword -> {
+                    onForgotPassword()
+                }
+
+                is SignInContract.Event.ShowSnackbar -> {
+                    Toast.makeText(
+                        context,
+                        event.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                is SignInContract.Event.SocialSignInResult -> {
+                    // Handle social sign-in result
+                    if (!event.success && event.message != null) {
+                        Toast.makeText(
+                            context,
+                            event.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                is SignInContract.Event.RequestFocus -> {
+                    // Handle focus requests if needed
+                    Timber.d("Request focus on field: ${event.field}")
+                }
+
+                is SignInContract.Event.HideKeyboard,
+                is SignInContract.Event.ShowKeyboard -> {
+                    // Handle keyboard visibility if needed
+                }
+
+                is SignInContract.Event.NavigateBack,
+                is SignInContract.Event.NavigateToSignUp -> {
+                    // Handle other navigation events if needed
+                }
+            }
         }
     }
 
@@ -62,51 +113,21 @@ internal fun SignInScreen(
         state = uiState,
         onAction = viewModel::dispatch
     )
-
-    events.value?.let { event ->
-        when (event) {
-            is SignInUiEvent.NavigateToMainScreen -> {
-                onSignInSuccess()
-            }
-
-            is SignInUiEvent.NavigateToForgotPassword -> {
-                onForgotPassword()
-            }
-
-            is SignInUiEvent.ShowSnackbar -> {
-                Toast.makeText(
-                    LocalContext.current,
-                    event.snackbarMessage.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            is SignInUiEvent.SocialSignInResult -> {
-                // Handle social sign-in result if needed
-                if (!event.success && event.message != null) {
-                    Toast.makeText(
-                        LocalContext.current,
-                        event.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-    }
 }
 
 @Composable
 private fun SetupContent(
-    state: SignInUiState,
-    onAction: (SignInAction) -> Unit
+    state: SignInContract.State,
+    onAction: (SignInContract.Action) -> Unit
 ) {
     val form = when (state) {
-        is SignInUiState.Idle -> state.form
-        is SignInUiState.Loading -> state.form
-        is SignInUiState.Error -> state.form
+        is SignInContract.State.Idle -> state.form
+        is SignInContract.State.Loading -> state.form
+        is SignInContract.State.Error -> state.form
+        is SignInContract.State.Success -> state.form
     }
 
-    if (state is SignInUiState.Error) {
+    if (state is SignInContract.State.Error) {
         LaunchedEffect(state.message) {
             Timber.e("Form error: ${state.message}")
         }
@@ -122,11 +143,14 @@ private fun SetupContent(
 @Composable
 internal fun SignInFormUI(
     form: SignInForm,
-    onAction: (SignInAction) -> Unit,
-    uiState: SignInUiState
+    onAction: (SignInContract.Action) -> Unit,
+    uiState: SignInContract.State
 ) {
     val passwordFocusRequester = remember { FocusRequester() }
-    val isFormValid by remember(form) { derivedStateOf { form.asValidatedForm().isValid } }
+
+    val isFormValid by remember(form) {
+        derivedStateOf { form.canSubmit }
+    }
 
     FormScaffold {
         AuthHeader(
@@ -142,10 +166,10 @@ internal fun SignInFormUI(
                 errorMessage = if (!form.identifier.validation.isValid) form.identifier.validation.errorMessage else null,
             ),
             onValueChange = {
-                onAction(SignInAction.UpdateField("identifier", FieldValue.Text(it)))
+                onAction(SignInContract.Action.UpdateField("identifier", FieldValue.Text(it)))
             },
             onClearText = {
-                onAction(SignInAction.UpdateField("identifier", FieldValue.Text("")))
+                onAction(SignInContract.Action.UpdateField("identifier", FieldValue.Text("")))
             },
             config = TextFieldConfig(
                 keyboardOptions = KeyboardOptions(
@@ -170,12 +194,12 @@ internal fun SignInFormUI(
                 errorMessage = if (!form.password.validation.isValid) form.password.validation.errorMessage else null,
             ),
             onValueChange = {
-                onAction(SignInAction.UpdateField("password", FieldValue.Text(it)))
+                onAction(SignInContract.Action.UpdateField("password", FieldValue.Text(it)))
             },
             onClearText = {
-                onAction(SignInAction.UpdateField("password", FieldValue.Text("")))
+                onAction(SignInContract.Action.UpdateField("password", FieldValue.Text("")))
             },
-            onVisibilityChange = { onAction(SignInAction.TogglePasswordVisibility) },
+            onVisibilityChange = { onAction(SignInContract.Action.TogglePasswordVisibility) },
             config = TextFieldConfig(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
@@ -191,7 +215,7 @@ internal fun SignInFormUI(
 
         AppTextButton(
             text = stringResource(R.string.forgot_password),
-            onClick = { onAction(SignInAction.ForgotPassword) },
+            onClick = { onAction(SignInContract.Action.ForgotPassword) },
             color = MaterialTheme.colorScheme.primaryContainer,
             modifier = Modifier.align(Alignment.End)
         )
@@ -204,23 +228,25 @@ internal fun SignInFormUI(
                     .requiredHeight(MaterialTheme.dimension.componentSize.buttonLarge),
                 enabled = isFormValid,
                 text = when (uiState) {
-                    is SignInUiState.Loading.Authentication ->
+                    is SignInContract.State.Loading.Authentication ->
                         stringResource(R.string.signing_in)
 
-                    is SignInUiState.Loading.SocialAuthentication ->
+                    is SignInContract.State.Loading.SocialAuthentication ->
                         stringResource(R.string.social_signing_in, uiState.provider.name.lowercase())
 
-                    is SignInUiState.Loading.SessionSaving ->
+                    is SignInContract.State.Loading.SessionSaving ->
                         stringResource(R.string.saving_session)
 
-                    is SignInUiState.Loading.SessionActivation ->
+                    is SignInContract.State.Loading.SessionActivation ->
                         stringResource(R.string.activating_session)
-                    is SignInUiState.Idle,
-                    is SignInUiState.Error -> // Not loading states
+
+                    is SignInContract.State.Idle,
+                    is SignInContract.State.Error,
+                    is SignInContract.State.Success ->
                         stringResource(id = R.string.login)
                 },
-                isLoading = uiState is SignInUiState.Loading,
-                onClick = { onAction(SignInAction.Submit) }
+                isLoading = uiState is SignInContract.State.Loading,
+                onClick = { onAction(SignInContract.Action.Submit) }
             )
         )
 
@@ -228,8 +254,12 @@ internal fun SignInFormUI(
         Spacer(modifier = Modifier.weight(1f))
 
         SocialAuthFooter(
-            onGoogleSignIn = { onAction(SignInAction.SocialSignIn(SocialProvider.GOOGLE)) },
-            onFacebookSignIn = { onAction(SignInAction.SocialSignIn(SocialProvider.FACEBOOK)) }
+            onGoogleSignIn = {
+                onAction(SignInContract.Action.SocialSignIn(SocialProvider.GOOGLE))
+            },
+            onFacebookSignIn = {
+                onAction(SignInContract.Action.SocialSignIn(SocialProvider.FACEBOOK))
+            }
         )
     }
 }
