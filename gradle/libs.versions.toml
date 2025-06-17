@@ -16,32 +16,30 @@ coroutines = "1.8.1"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
 coil = "2.7.0"
-lifecycle = "2.8.7"
+lifecycle = "2.9.1"
 room = "2.7.1"
-serializationJson = "1.6.3"
+serializationJson = "1.7.3"
 kotlinxSerializationConverter = "1.0.0"
 coreKtx = "1.16.0"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.7"
+lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
-composeBom = "2025.04.01"
-appcompat = "1.7.0"
+composeBom = "2025.06.00"
+appcompat = "1.7.1"
 material = "1.12.0"
 lottie = "6.4.0"
 material3Android = "1.3.2"
 timber = "5.0.1"
-navigationCompose = "2.8.9"
-composeFoundation = "1.8.0"
+navigationCompose = "2.9.0"
+composeFoundation = "1.8.2"
 hilt = "2.52"
 material3WindowSizeClassAndroidVersion = "1.2.1"
 material3WindowSize = "1.3.2"
 koin-bom = "3.5.3"
-navigation = "2.8.9"
+navigation = "2.9.0"
 testLogger = "3.2.0"
 googleServices = "4.4.2"
-firebaseBom = "33.13.0"
-datastorePreferences = "1.1.4"
+firebaseBom = "33.15.0"
+datastorePreferences = "1.1.7"
 systemUiController = "0.28.0"
 libphonenumber = "8.2.0"
 
@@ -50,10 +48,10 @@ spotless = "6.25.0"
 detekt = "1.23.6"
 
 # Muss von Waindja immer gändert werden
-androidGradlePlugin = "8.9.2"
+androidGradlePlugin = "8.10.1"
 
 # Test versionsandroid-junit5-plugin-dsl
-junit = "5.11.3"
+junit = "5.12.2"
 androidJUnit5 = "1.11.2.0"
 kluent = "1.73"
 testRunner = "1.6.2"
@@ -74,7 +72,6 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 viewmodelKtx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 livedataKtx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
 livedataRuntime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -100,7 +97,6 @@ hiltCompiler = { group = "com.google.dagger", name = "hilt-compiler", version.re
 material3WindowSize = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSize" }
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 koin-core = { module = "io.insert-koin:koin-core" }
-koin-androidx-navigation = { module = "io.insert-koin:koin-androidx-navigation" }
 koin-compose = { module = "io.insert-koin:koin-compose" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose" }
 koin-androidx-compose-navigation = { module = "io.insert-koin:koin-androidx-compose-navigation" }
@@ -123,9 +119,6 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 coreTesting = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
 junitJupiterApi = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junitJupiterEngine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
-
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 testng = { group = "org.testng", name = "testng", version.ref = "testng" }
 
 [bundles]
@@ -158,5 +151,4 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 junit5Android = { id = "de.mannodermaus.android-junit5", version.ref = "androidJUnit5" }
 testLogger = { id = "com.adarshr.test-logger", version.ref = "testLogger" }
-hiltAndroidGradlePlugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "googleServices" }
