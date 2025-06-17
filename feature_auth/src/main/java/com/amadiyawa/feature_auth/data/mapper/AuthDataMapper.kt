@@ -2,12 +2,14 @@ package com.amadiyawa.feature_auth.data.mapper
 
 import com.amadiyawa.feature_auth.data.dto.response.AuthResponse
 import com.amadiyawa.feature_auth.data.dto.response.OtpVerificationResponse
+import com.amadiyawa.feature_auth.data.dto.response.ResetPasswordResponse
 import com.amadiyawa.feature_auth.data.dto.response.TokenResponse
 import com.amadiyawa.feature_auth.data.dto.response.UserResponse
 import com.amadiyawa.feature_auth.data.dto.response.VerificationResponse
 import com.amadiyawa.feature_auth.domain.model.AuthResult
 import com.amadiyawa.feature_auth.domain.model.AuthTokens
 import com.amadiyawa.feature_auth.domain.model.OtpVerificationResult
+import com.amadiyawa.feature_auth.domain.model.ResetPasswordResult
 import com.amadiyawa.feature_auth.domain.model.User
 import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_auth.domain.util.VerificationType
@@ -77,6 +79,23 @@ internal object AuthDataMapper {
             message = message,
             authResponse = authResponse,
             resetToken = resetToken
+        )
+    }
+
+    /**
+     * Maps a ResetPasswordResponse DTO to a ResetPasswordResult domain model.
+     *
+     * @return ResetPasswordResult domain model
+     */
+    fun ResetPasswordResponse.toDomain(): ResetPasswordResult {
+        return ResetPasswordResult(
+            success = success,
+            message = message,
+            recipient = recipient,
+            expiresAt = expiresAt,
+            resetMethod = metadata?.get("reset_method"),
+            verificationMethod = metadata?.get("verification_method"),
+            timestamp = metadata?.get("timestamp")?.toLongOrNull() ?: System.currentTimeMillis()
         )
     }
 }
