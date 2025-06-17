@@ -8,8 +8,6 @@ import com.amadiyawa.feature_auth.domain.usecase.ResendOtpUseCase
 import com.amadiyawa.feature_auth.domain.usecase.SignInUseCase
 import com.amadiyawa.feature_auth.domain.usecase.SocialSignInUseCase
 import com.amadiyawa.feature_auth.domain.util.validation.ForgotPasswordFormValidator
-import com.amadiyawa.feature_auth.domain.util.validation.ResetPasswordValidator
-import com.amadiyawa.feature_auth.domain.util.validation.SignInFormValidator
 import com.amadiyawa.feature_auth.domain.util.validation.SignUpFormValidator
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -58,20 +56,8 @@ internal val domainModule = module {
         )
     }
     single {
-        SignInFormValidator(
-            validateIdentifier = get(),
-            validatePassword = get()
-        )
-    }
-    single {
         ForgotPasswordFormValidator(
             validateEmailOrPhone = get()
-        )
-    }
-    single {
-        ResetPasswordValidator(
-            validatePassword = get(),
-            validatePasswordConfirmation = get()
         )
     }
 }
