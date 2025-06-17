@@ -29,7 +29,6 @@ import com.amadiyawa.feature_auth.domain.model.SignUpForm
 import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_base.common.resources.Dimen
 import com.amadiyawa.feature_base.common.util.CountryUtil
-import com.amadiyawa.feature_base.common.util.getCountryDialCode
 import com.amadiyawa.feature_base.domain.model.FieldValue
 import com.amadiyawa.feature_base.presentation.compose.composable.AuthHeader
 import com.amadiyawa.feature_base.presentation.compose.composable.CountryCodeSelector
@@ -66,7 +65,6 @@ internal fun SignUpScreen(
                     Timber.e("Snackbar: ${event.message}")
                 }
             }
-            else -> Unit
         }
     }
 }
@@ -114,7 +112,7 @@ internal fun SignUpFormUI(
     // Get all countries
     val countries = remember { CountryUtil.getCountries() }
 
-// Find the default country based on the phonePrefix
+    // Find the default country based on the phonePrefix
     var selectedCountry by remember {
         mutableStateOf(CountryUtil.findCountryByDialCode("CM") ?: countries.first())
     }
