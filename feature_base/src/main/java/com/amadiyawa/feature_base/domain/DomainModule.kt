@@ -5,7 +5,6 @@ import com.amadiyawa.feature_base.domain.manager.UserSessionManager
 import com.amadiyawa.feature_base.domain.usecase.ValidateEmailOrPhoneUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateEmailUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidateFullNameUseCase
-import com.amadiyawa.feature_base.domain.usecase.ValidateIdentifierUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidatePasswordConfirmationUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidatePasswordUseCase
 import com.amadiyawa.feature_base.domain.usecase.ValidatePhoneUseCase
@@ -21,14 +20,7 @@ internal val domainModule = module {
     single { ValidateUsernameUseCase(androidContext()) }
     single { ValidateEmailUseCase(androidContext()) }
     single { ValidatePhoneUseCase(androidContext()) }
-    single {
-        ValidateIdentifierUseCase(
-            validateEmail = get(),
-            validateUsername = get(),
-            validatePhone = get(),
-            context = androidContext()
-        )
-    }
+    single { ValidateTermsAcceptedUseCase(androidContext()) }
     single {
         ValidateEmailOrPhoneUseCase(
             validateEmail = get(),
@@ -38,7 +30,6 @@ internal val domainModule = module {
     }
     single { ValidatePasswordUseCase(androidContext()) }
     single { ValidatePasswordConfirmationUseCase(androidContext()) }
-    single { ValidateTermsAcceptedUseCase(androidContext()) }
 
     // Add dispatchers for dependency injection
     factory(qualifier = named("ioDispatcher")) { Dispatchers.IO }
