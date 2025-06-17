@@ -3,9 +3,11 @@ package com.amadiyawa.feature_auth.domain.repository
 import com.amadiyawa.feature_auth.data.dto.request.ForgotPasswordRequest
 import com.amadiyawa.feature_auth.data.dto.request.OtpVerificationRequest
 import com.amadiyawa.feature_auth.data.dto.request.ResendOtpRequest
+import com.amadiyawa.feature_auth.data.dto.request.ResetPasswordRequest
 import com.amadiyawa.feature_auth.data.dto.request.SignInRequest
 import com.amadiyawa.feature_auth.domain.model.AuthResult
 import com.amadiyawa.feature_auth.domain.model.OtpVerificationResult
+import com.amadiyawa.feature_auth.domain.model.ResetPasswordResult
 import com.amadiyawa.feature_auth.domain.model.VerificationResult
 import com.amadiyawa.feature_auth.domain.util.SocialProvider
 import com.amadiyawa.feature_base.domain.result.OperationResult
@@ -50,4 +52,17 @@ internal interface AuthRepository {
     suspend fun verifyOtp(data: OtpVerificationRequest): OperationResult<OtpVerificationResult>
 
     suspend fun resendOtp(request: ResendOtpRequest): OperationResult<VerificationResult>
+
+    /**
+     * Resets a user's password using a valid reset token obtained after OTP verification.
+     *
+     * This method processes a password reset request using the provided reset token
+     * (obtained from successful OTP verification) and new password.
+     *
+     * Flow: ForgotPassword → OTP Verification → ResetPassword
+     *
+     * @param request The request object containing the reset token and new password
+     * @return An `OperationResult` containing the reset password result
+     */
+    suspend fun resetPassword(request: ResetPasswordRequest): OperationResult<ResetPasswordResult>
 }
