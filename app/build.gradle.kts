@@ -1,8 +1,17 @@
 import com.android.build.api.dsl.ApplicationDefaultConfig
+import java.io.FileInputStream
 import java.util.Locale
+import java.util.Properties
 
 plugins {
     id("local.app")
+}
+
+// Load keystore properties
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
 android {
@@ -14,17 +23,13 @@ android {
     compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
 
     defaultConfig {
-        minSdk = libs.findVersion("minSdk").get().toString().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    defaultConfig {
         applicationId = "com.amadiyawa.droidkotlin"
 
-        versionCode = 1
-        versionName = "1.0.0" // SemVer (Major.Minor.Patch)
-        minSdk = 24
+        minSdk = libs.findVersion("minSdk").get().toString().toInt()
+        targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
+        versionCode = 2
+        versionName = "1.0.1" // SemVer (Major.Minor.Patch)
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         multiDexEnabled = true
@@ -39,10 +44,12 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("../droidkotlin-release-key.keystore")
-            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: project.findProperty("KEYSTORE_PASSWORD") as String?
-            keyAlias = System.getenv("KEY_ALIAS") ?: project.findProperty("KEY_ALIAS") as String?
-            keyPassword = System.getenv("KEY_PASSWORD") ?: project.findProperty("KEY_PASSWORD") as String?
+            if (keystorePropertiesFile.exists()) {
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+            }
         }
     }
 
@@ -50,8 +57,15 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
+
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("release")
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 
