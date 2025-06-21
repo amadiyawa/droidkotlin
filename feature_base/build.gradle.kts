@@ -7,42 +7,60 @@ android {
 }
 
 dependencies {
+    // Kotlin core
+    api(libs.kotlin.reflect)
+    api(libs.kotlinx.coroutines.android)
+    api(libs.kotlinx.serialization.json)
 
-    api(libs.kotlin)
+    // Android core
     api(libs.androidx.core.ktx)
-    api(libs.timber)
     api(libs.androidx.appcompat)
-    api(libs.coroutines)
-    api(libs.material)
     api(libs.androidx.activity.compose)
-    api(libs.navigationCompose)
+
+    // Lifecycle and ViewModel
+    api(libs.bundles.androidx.lifecycle)
+
+    /// Jetpack compose
     api(platform(libs.androidx.compose.bom))
-    api(libs.androidx.material3)
-    api(libs.androidx.material3.android)
-    api(libs.material3WindowSize)
-    api(platform(libs.koin.bom))
-    api(libs.koin.core)
-    api(libs.koin.compose)
-    api(libs.koin.androidx.compose)
-    api(libs.koin.androidx.compose.navigation)
-    api(libs.bundles.retrofit)
     api(libs.bundles.compose)
-    api(libs.bundles.lifecycle)
-    api(libs.bundles.room)
-    api(libs.hilt)
-    api(libs.datastorePreferences)
-    api(libs.systemUiController)
+    api(libs.bundles.compose.material)
+    api(libs.androidx.navigation.compose)
+
+    // Material design
+    api(libs.material)
+
+    // Room database
+    api(libs.bundles.androidx.room)
+    kapt(libs.androidx.room.compiler)
+
+    // Dependency injection
+    api(platform(libs.koin.bom))
+    api(libs.bundles.koin)
+
+    // Networking
+    api(libs.bundles.networking)
+
+    // Data storage
+    api(libs.androidx.datastore.preferences)
+
+    //Utilities
+    api(libs.timber)
     api(libs.libphonenumber)
-    kapt(libs.hiltCompiler)
+    api(libs.system.ui.controller)
 
-    // Import the Firebase BoM
-    api(platform(libs.firebaseBom))
-    // Declare the dependency for the Firebase SDK for Google Analytics
-    api(libs.firebaseAnalytics)
-    // Declare the dependency for the Firebase SDK for Firestore
-    api(libs.firebaseFirestore)
+    // Firebase
+    api(platform(libs.firebase.bom))
+    api(libs.firebase.analytics)
+    api(libs.firebase.firestore)
 
-    testImplementation(libs.bundles.test)
-
-    testRuntimeOnly(libs.junitJupiterEngine)
+    // Testing
+    api(libs.junit5.api)
+    api(libs.junit5.params)
+    api(libs.junit5.engine)
+    api(libs.mockk)
+    api(libs.kotlinx.coroutines.test)
+    api(libs.androidx.compose.ui.test.junit4)
+    api(libs.androidx.compose.ui.test.manifest)
+    api(libs.androidx.compose.ui.tooling)
+    api(libs.konsist)
 }

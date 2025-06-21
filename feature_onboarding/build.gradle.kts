@@ -3,14 +3,9 @@ plugins {
 }
 
 android {
-    namespace = "com.amadiyawa.onboarding"
+    namespace = "com.droidkotlin.onboarding"
 }
 
 dependencies {
     api(projects.featureBase)
-
-    testImplementation(libs.bundles.test)
-    androidTestImplementation(libs.testng)
-
-    testRuntimeOnly(libs.junitJupiterEngine)
 }

@@ -20,13 +20,13 @@ android {
 
     namespace = "com.amadiyawa.droidkotlin"
 
-    compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
+    compileSdk = libs.findVersion("android-compile-sdk").get().toString().toInt()
 
     defaultConfig {
         applicationId = "com.amadiyawa.droidkotlin"
 
-        minSdk = libs.findVersion("minSdk").get().toString().toInt()
-        targetSdk = libs.findVersion("targetSdk").get().toString().toInt()
+        minSdk = libs.findVersion("android-target-sdk").get().toString().toInt()
+        targetSdk = libs.findVersion("android-min-sdk").get().toString().toInt()
         versionCode = 2
         versionName = "1.0.1" // SemVer (Major.Minor.Patch)
 
