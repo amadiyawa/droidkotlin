@@ -10,11 +10,11 @@ android {
     val catalogs = extensions.getByType<VersionCatalogsExtension>()
     val libs = catalogs.named("libs")
 
-    namespace = "com.amadiyawa.droidkotlin"
-    compileSdk = libs.findVersion("android-compile-sdk").get().toString().toInt()
+    namespace = "com.igorwojda.showcase"
+    compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
 
     defaultConfig {
-        minSdk = libs.findVersion("android-min-sdk").get().toString().toInt()
+        minSdk = libs.findVersion("minSdk").get().toString().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -25,6 +25,10 @@ android {
         viewBinding = true
         buildConfig = true
         compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.findVersion("kotlinCompilerExtensionVersion").get().toString()
     }
 
     compileOptions {

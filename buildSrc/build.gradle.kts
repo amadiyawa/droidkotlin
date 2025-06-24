@@ -6,15 +6,15 @@ dependencies {
     implementation(plugin(libs.plugins.kotlin.android))
     implementation(plugin(libs.plugins.kotlin.compose))
     implementation(plugin(libs.plugins.kotlin.serialization))
-    implementation(plugin(libs.plugins.kotlin.symbol.processing))
+    implementation(plugin(libs.plugins.kotlin.symbolProcessing))
     implementation(plugin(libs.plugins.android.application))
-    implementation(plugin(libs.plugins.google.services))
+    implementation(plugin(libs.plugins.googleServices))
     implementation(plugin(libs.plugins.android.library))
     implementation(plugin(libs.plugins.spotless))
-    implementation(plugin(libs.plugins.test.logger))
+    implementation(plugin(libs.plugins.testLogger))
     implementation(plugin(libs.plugins.detekt))
-    implementation(plugin(libs.plugins.junit5.android))
-    implementation(plugin(libs.plugins.navigation.safe.args))
+    implementation(plugin(libs.plugins.junit5Android))
+    implementation(plugin(libs.plugins.safeArgs))
 }
 
 kotlin {
