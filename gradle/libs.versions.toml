@@ -11,6 +11,7 @@ kotlinCompilerExtensionVersion = "1.5.14"
 
 compileSdk = "35"
 minSdk = "24"
+targetSdk = "35"
 
 coroutines = "1.8.1"
 retrofit = "2.11.0"

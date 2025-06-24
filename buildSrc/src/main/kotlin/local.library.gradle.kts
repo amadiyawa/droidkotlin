@@ -20,27 +20,21 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
-    @Suppress("UnstableApiUsage")
     buildFeatures {
         viewBinding = true
         buildConfig = true
         compose = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.findVersion("kotlinCompilerExtensionVersion").get().toString()
-    }
-
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
-
-    @Suppress("UnstableApiUsage")
+    
     testOptions {
         unitTests.isReturnDefaultValues = true
     }

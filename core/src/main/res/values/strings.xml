@@ -1,0 +1,209 @@
+<resources>
+    <string name="data_not_found">Data not found</string>
+    <string name="show_less">Show less</string>
+    <string name="show_more">Show more</string>
+    <string name="empty_toolbar_title"> </string>
+    <string name="back">Back</string>
+
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="clear_text">Clear text</string>
+
+    <string name="full_name">Full name</string>
+    <string name="invalid_full_name">Full name must contain only letters, dashes or spaces (2 to 50 characters)</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone number</string>
+    <string name="passwords_do_not_match">Passwords do not match.</string>
+    <string name="terms_not_accepted">You must accept the terms and conditions.</string>
+
+    <string name="tos_pre_text">By signing up, you agree to our </string>
+    <string name="tos_terms">Terms of Service</string>
+    <string name="tos_separator"> and </string>
+    <string name="tos_privacy">Privacy Policy</string>
+    <string name="tos_post_text">.</string>
+
+    <!-- OTP Validation Strings -->
+    <string name="invalid_otp_digit">Each field must contain exactly one digit.</string>
+    <string name="invalid_otp_format">The OTP code must contain exactly 6 digits.</string>
+    <string name="otp_code_mismatch">The code you entered does not match.</string>
+
+    <string name="error_title">Oops! Something went wrong.</string>
+    <string name="error_retry">Try Again</string>
+
+    <!-- Authentication error messages -->
+    <string name="error_unauthorized">You don\'t have permission to access this resource</string>
+    <string name="error_account_not_found">Account not found. Please check your credentials</string>
+    <string name="error_too_many_attempts">Too many login attempts. Please try again later</string>
+
+    <!-- Social authentication errors -->
+    <string name="error_social_account_not_linked">Social account not linked to any existing account</string>
+    <string name="error_social_auth_cancelled">Social authentication was cancelled</string>
+    <string name="error_social_auth_connection_failed">Failed to connect to authentication server</string>
+
+    <!-- Session errors -->
+    <string name="error_session_save_failed">Your session couldn\'t be saved</string>
+    <string name="error_session_activation_failed">Session activation failed</string>
+
+    <!-- Network errors -->
+    <string name="error_no_internet">No internet connection</string>
+    <string name="error_server_unavailable">Server is currently unavailable</string>
+
+    <!-- Generic errors -->
+    <string name="error_unknown">An unknown error occurred</string>
+
+    <!-- Session Repository Errors -->
+    <string name="error_session_generic">Session operation failed</string>
+
+    <string name="single_digit_only">Please enter a single digit</string>
+    <string name="numbers_only">Only numbers are allowed</string>
+    <string name="otp_length_error">OTP must be 6 digits</string>
+    <string name="otp_mismatch">Codes don\'t match</string>
+    <string name="invalid_otp">Invalid verification code</string>
+
+    <!-- Country Names -->
+    <string name="country_jp">Japan</string>
+    <string name="country_cm">Cameroon</string>
+    <string name="country_ng">Nigeria</string>
+    <string name="country_us">United States</string>
+    <string name="country_ca">Canada</string>
+    <string name="country_gb">United Kingdom</string>
+    <string name="country_fr">France</string>
+    <string name="country_de">Germany</string>
+    <string name="country_it">Italy</string>
+    <string name="country_es">Spain</string>
+    <string name="country_au">Australia</string>
+    <string name="country_rw">Rwanda</string>
+    <string name="country_cn">China</string>
+    <string name="country_in">India</string>
+    <string name="country_br">Brazil</string>
+    <string name="country_ru">Russia</string>
+    <string name="country_mx">Mexico</string>
+    <string name="country_za">South Africa</string>
+
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+
+    <!-- General Error Messages -->
+    <string name="error_general">An error occurred</string>
+    <string name="error_network_general">Network error</string>
+    <string name="error_server_general">Server error</string>
+    <string name="error_operation_failed">Operation failed</string>
+    <string name="error_authentication_general">Authentication failed</string>
+    <string name="error_session_expired_general">Session expired</string>
+
+    <!-- HTTP Errors -->
+    <string name="error_400">Invalid request. Please check your input.</string>
+    <string name="error_401">Please sign in to continue.</string>
+    <string name="error_403">You don\'t have permission to perform this action.</string>
+    <string name="error_404">The requested resource was not found.</string>
+    <string name="error_405">This action is not allowed.</string>
+    <string name="error_408">Request timed out. Please try again.</string>
+    <string name="error_429">Too many requests. Please wait a moment and try again.</string>
+    <string name="error_500">A server error occurred. Please try again later.</string>
+    <string name="error_502">Service temporarily unavailable.</string>
+    <string name="error_503">Service is currently down for maintenance.</string>
+    <string name="error_504">The server took too long to respond.</string>
+
+    <!-- Network Errors -->
+    <string name="error_network_unavailable">Please check your internet connection and try again.</string>
+    <string name="error_connection_timeout">Connection timed out. Please try again.</string>
+    <string name="error_host_unreachable">Unable to reach the server. Please try again later.</string>
+
+    <!-- Session Errors -->
+    <string name="error_session_save_user">Failed to save your session. Please try signing in again.</string>
+    <string name="error_session_get_user">Failed to retrieve your session. Please sign in again.</string>
+    <string name="error_session_update_state">Failed to update session. Please try again.</string>
+    <string name="error_session_clear">Failed to sign out properly. Please restart the app.</string>
+    <string name="error_session_expired">Your session has expired. Please sign in again.</string>
+    <string name="error_session_invalid">Invalid session. Please sign in again.</string>
+
+    <!-- Authentication Errors -->
+    <string name="error_authentication_failed">Authentication failed. Please try again.</string>
+    <string name="error_invalid_credentials">Invalid email or password. Please try again.</string>
+    <string name="error_account_locked">Your account has been temporarily locked. Please try again later.</string>
+    <string name="error_account_not_verified">Please verify your account before signing in.</string>
+    <string name="error_token_expired">Your session has expired. Please sign in again.</string>
+    <string name="error_token_invalid">Authentication failed. Please sign in again.</string>
+
+    <!-- Validation Errors -->
+    <string name="error_validation">Please correct the errors and try again.</string>
+    <string name="error_required_field_missing">Please fill in all required fields.</string>
+    <string name="error_invalid_email_format">Please enter a valid email address.</string>
+    <string name="error_invalid_phone_format">Please enter a valid phone number.</string>
+    <string name="error_password_too_weak">Password must be at least 8 characters with numbers and symbols.</string>
+
+    <!-- Profile Errors -->
+    <string name="error_profile_update_failed">Failed to update your profile. Please try again.</string>
+    <string name="error_profile_not_found">Profile not found. Please sign in again.</string>
+    <string name="error_avatar_upload_failed">Failed to upload avatar. Please try again.</string>
+
+    <!-- Validation Messages - General -->
+    <string name="identifier_required">Please enter your email, username, or phone number</string>
+    <string name="invalid_identifier">Please enter a valid email, username, or phone number</string>
+
+    <!-- Email Validation -->
+    <string name="invalid_email">Please enter a valid email address</string>
+    <string name="email_required">Email address is required</string>
+    <string name="email_too_long">Email address is too long (max %d characters)</string>
+    <string name="email_missing_at_symbol">Email must contain @ symbol</string>
+    <string name="email_multiple_at_symbols">Email must contain only one @ symbol</string>
+    <string name="email_invalid_format">Email format is invalid</string>
+    <string name="email_local_empty">Email username cannot be empty</string>
+    <string name="email_local_too_long">Email username is too long (max %d characters)</string>
+    <string name="email_local_starts_with_dot">Email username cannot start with a dot</string>
+    <string name="email_local_ends_with_dot">Email username cannot end with a dot</string>
+    <string name="email_local_consecutive_dots">Email username cannot contain consecutive dots</string>
+    <string name="email_local_invalid_characters">Email username contains invalid characters</string>
+    <string name="email_domain_empty">Email domain cannot be empty</string>
+    <string name="email_domain_too_long">Email domain is too long (max %d characters)</string>
+    <string name="email_domain_starts_with_dot">Email domain cannot start with a dot</string>
+    <string name="email_domain_ends_with_dot">Email domain cannot end with a dot</string>
+    <string name="email_domain_consecutive_dots">Email domain cannot contain consecutive dots</string>
+    <string name="email_domain_missing_dot">Email domain must contain at least one dot</string>
+    <string name="email_domain_invalid_format">Email domain format is invalid</string>
+
+    <!-- Username Validation -->
+    <string name="invalid_username">Username must be 3–30 characters with letters, numbers, dots, underscores, or hyphens only</string>
+    <string name="username_required">Username is required</string>
+    <string name="username_too_short">Username must be at least %d characters</string>
+    <string name="username_too_long">Username must not exceed %d characters</string>
+    <string name="username_must_start_with_letter">Username must start with a letter</string>
+    <string name="username_cannot_end_with_special">Username cannot end with special characters</string>
+    <string name="username_no_consecutive_special">Username cannot have consecutive special characters</string>
+    <string name="username_invalid_characters">Username contains invalid characters. Only letters, numbers, dots, underscores, and hyphens are allowed</string>
+    <string name="username_reserved">This username is reserved and cannot be used</string>
+    <string name="username_inappropriate">Username contains inappropriate content</string>
+
+    <!-- Phone Validation -->
+    <string name="invalid_phone">Please enter a valid phone number</string>
+    <string name="phone_number_required">Phone number is required</string>
+    <string name="phone_processing_error">Failed to process phone number</string>
+    <string name="phone_format_not_recognized">Phone number format is not recognized</string>
+    <string name="phone_invalid_country_code">Invalid country code</string>
+    <string name="phone_not_valid_number">Input is not a valid phone number</string>
+    <string name="phone_too_short">Phone number is too short</string>
+    <string name="phone_too_short_after_prefix">Phone number is too short after international prefix</string>
+    <string name="phone_too_long">Phone number is too long</string>
+    <string name="phone_invalid_format">Invalid phone number format</string>
+    <string name="phone_validation_error">Unable to validate phone number</string>
+
+    <!-- Password Validation -->
+    <string name="password_required">Password is required</string>
+    <string name="confirm_password_required">Confirm password is required</string>
+    <string name="error_password_length">Password must be at least %d characters long</string>
+    <string name="error_password_too_long">Password must not exceed %d characters</string>
+    <string name="add_uppercase">Password must contain at least one uppercase letter</string>
+    <string name="add_lowercase">Password must contain at least one lowercase letter</string>
+    <string name="add_digit">Password must contain at least one number</string>
+    <string name="add_special_character">Password must contain at least one special character (!@#$%^&amp;*()_-+=&lt;&gt;?/{}~|)</string>
+    <string name="error_password_space">Password cannot contain spaces</string>
+
+    <!-- Password Strength Descriptions -->
+    <string name="password_strength_very_strong">Very Strong</string>
+    <string name="password_strength_strong">Strong</string>
+    <string name="password_strength_good">Good</string>
+    <string name="password_strength_fair">Fair</string>
+    <string name="password_strength_weak">Weak</string>
+    <string name="password_strength_very_weak">Very Weak</string>
+</resources>
